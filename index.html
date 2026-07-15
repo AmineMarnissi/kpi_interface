@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -111,7 +111,7 @@
     }
 
     @media print {
-      aside, #top-actions, #filter-bar, #data-banner, footer { display:none!important; }
+      aside, #top-actions, #filter-bar, footer { display:none!important; }
       main { padding:0!important; }
       .print-break { break-before:page; }
       body { background:white!important; color:black!important; }
@@ -122,21 +122,27 @@
   <div id="toast-container" class="fixed right-5 bottom-5 z-[100] space-y-2"></div>
 
     <header class="sticky top-0 z-50 border-b border-slate-200 dark:border-[#1e2a4a] bg-white/90 dark:bg-gradient-to-r dark:from-[#02040f] via-[#050b1f] to-[#10042a] backdrop-blur-xl shadow-sm dark:shadow-[#02040f]/60">
-    <div class="px-4 lg:px-6 py-3 flex flex-col xl:flex-row xl:items-center justify-between gap-3">
-      <div class="flex items-center gap-4 min-w-0">
-        <div class="flex items-center justify-center h-12 shrink-0">
-          <img src="light_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain dark:hidden" />
-          <img src="dark_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain hidden dark:block" />
-        </div>
-        <div class="min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <span class="text-[10px] uppercase tracking-[.18em] font-black text-[#2952ff] dark:text-[#93b8ff]">MEL-T Components &amp; Manufacturing</span>
-            <span id="period-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/20">Juin 2026</span>
+    <div class="px-4 lg:px-6 py-3 flex flex-col gap-4">
+      <!-- Ligne 1: Logos et Titre -->
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0">
+          <div class="flex items-center justify-center h-12 shrink-0">
+            <img src="light_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain dark:hidden" />
+            <img src="dark_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain hidden dark:block" />
           </div>
-          <h1 class="text-lg lg:text-xl font-black tracking-tight truncate dark:text-white">Factory Meeting Dashboard</h1>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] uppercase tracking-[.18em] font-black text-[#2952ff] dark:text-[#93b8ff]">MEL-T Components &amp; Manufacturing</span>
+              <span id="period-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/20">Juin 2026</span>
+            </div>
+            <h1 class="text-lg lg:text-xl font-black tracking-tight truncate dark:text-white">Factory Meeting Dashboard</h1>
+          </div>
         </div>
+        <img src="melt_logo.jpeg" alt="MEL-T Icon" class="h-10 w-auto rounded border border-slate-200 dark:border-[#2d3f6e] shadow-sm object-contain hidden sm:block" />
       </div>
-      <div id="top-actions" class="flex flex-wrap items-center gap-2">
+      
+      <!-- Ligne 2: Boutons -->
+      <div id="top-actions" class="flex flex-wrap items-center justify-center gap-2 border-t border-slate-200/50 dark:border-[#1e2a4a] pt-3">
         <!-- Language Switcher 4 boutons -->
         <div class="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#ffffff]/4 border border-slate-200 dark:border-[#2d3f6e]/50">
           <button onclick="setMatrixLang('ar')" id="lang-btn-ar" class="lang-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#1432e0]/30" title="العربية">🇹🇳 AR</button>
@@ -146,12 +152,6 @@
         </div>
         <button id="theme-toggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-[#2d3f6e]/50 bg-slate-100 dark:bg-[#ffffff]/4 dark:text-[#b9cdff] hover:dark:bg-indigo-800/40 transition-all" title="Changer le thème"><i data-lucide="sun" class="w-4 h-4"></i></button>
         <button id="print-btn" class="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-[#2d3f6e]/50 bg-white dark:bg-[#ffffff]/4 dark:text-[#b9cdff] text-xs font-bold flex items-center gap-2 hover:dark:bg-indigo-800/40 transition-all"><i data-lucide="printer" class="w-4 h-4"></i><span id="hdr-print">Imprimer</span></button>
-        <div class="px-4 py-2.5 rounded-xl bg-[#059669]/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/25 dark:border-emerald-500/25 text-xs font-bold flex items-center gap-2">
-          <i data-lucide="database" class="w-4 h-4"></i>
-          ${t("btn_data")}
-        </div>
-        <div class="h-7 border-l border-slate-300 dark:border-[#2d3f6e] mx-1 hidden sm:block"></div>
-        <img src="melt_logo.jpeg" alt="MEL-T Icon" class="h-7 w-auto rounded border border-slate-200 dark:border-[#2d3f6e] shadow-sm object-contain hidden sm:block" />
       </div>
     </div>
   </header>
@@ -176,15 +176,7 @@
         <div id="mobile-nav" class="flex gap-2 min-w-max pb-1"></div>
       </div>
 
-      <section id="data-banner" class="rounded-2xl border border-dashed border-indigo-300 dark:border-indigo-700 bg-indigo-50/70 dark:bg-[#060b40]/25 p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div class="flex items-start gap-3">
-          <div class="p-2 rounded-xl bg-[#2952ff]/10 text-[#2952ff] dark:text-[#7aa3ff]"><i data-lucide="file-spreadsheet" class="w-5 h-5"></i></div>
-          <div>
-            <div class="font-bold text-sm" id="data-banner-title">Données statiques consolidées — Factory Meeting Juin 2026</div>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="data-banner-desc">Valeurs statiques consolidées depuis le RECAP Factory Meeting et le rapport complet QHSE KPI 2026. Les colonnes 2024 et 2025 correspondent aux valeurs annuelles réelles lorsqu'elles existent ; Mai/Juin 2026 sont mensuels et YTD 2026 est indiqué dans la source. Aucune valeur fictive n'est générée.</p>
-          </div>
-        </div>
-        </section>
+
 
       <section id="filter-bar" class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-4 shadow-sm">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
@@ -1886,7 +1878,7 @@ function applyStaticData(){
   function render(){
     updateNav(); updateDataMeta(); destroyCharts();
     const showHeader = state.page !== 'overview';
-    document.getElementById('data-banner').style.display = showHeader ? '' : 'none';
+
     document.getElementById('filter-bar').style.display = showHeader ? '' : 'none';
     if(state.page==='overview') renderOverview();
     else if(state.page==='hoshin') renderHoshin();
@@ -1904,8 +1896,7 @@ function applyStaticData(){
   function updateDataMeta(){
     const loaded=state.kpis.filter(k=>k.quality!=='missing').length, missing=state.kpis.length-loaded;
     $('#side-loaded').textContent=loaded; $('#side-missing').textContent=missing; $('#side-source').textContent='RECAP + GRH/QHSE';
-    $('#data-banner-title').textContent='Données statiques consolidées — Factory Meeting Juin 2026';
-    $('#data-banner-desc').textContent=`2 sources consolidées · ${loaded} KPI alimentés · ${missing} KPI sans donnée disponible · aucune valeur simulée`;
+
     $('#period-badge').textContent=periodLabel(state.period);
   }
 
@@ -2210,25 +2201,16 @@ function applyStaticData(){
         <div class="overflow-auto max-h-[720px]" id="hoshin-process-table"></div>
       </section>
 
-      <section class="grid grid-cols-1 xl:grid-cols-[1.12fr_.88fr] gap-5">
+      <section class="grid grid-cols-1 xl:grid-cols-2 gap-5">
         <div class="rounded-[28px] border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-5 shadow-sm">
-          <div class="flex items-center justify-between gap-3 mb-4">
-            <div><div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Chaîne sélectionnée</div><h3 class="mt-1 text-lg font-black">Objectif → initiative → KPI → réalité</h3></div>
-            <span class="text-[11px] text-slate-500">Détail de la ligne sélectionnée dans le tableau</span>
-          </div>
-          <div class="space-y-4" id="hoshin-objective-stack"></div>
+          <div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Analyse des écarts</div>
+          <h3 class="mt-1 text-lg font-black">Lecture managériale</h3>
+          <div class="mt-4 space-y-3" id="hoshin-process-observations"></div>
         </div>
-        <div class="space-y-5">
-          <div class="rounded-[28px] border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-5 shadow-sm">
-            <div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Analyse des écarts</div>
-            <h3 class="mt-1 text-lg font-black">Lecture managériale</h3>
-            <div class="mt-4 space-y-3" id="hoshin-process-observations"></div>
-          </div>
-          <div class="rounded-[28px] border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-5 shadow-sm">
-            <div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Plan d’action</div>
-            <h3 class="mt-1 text-lg font-black">Priorités proposées</h3>
-            <div class="mt-4 space-y-3" id="hoshin-action-plan"></div>
-          </div>
+        <div class="rounded-[28px] border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-5 shadow-sm">
+          <div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Plan d’action</div>
+          <h3 class="mt-1 text-lg font-black">Priorités proposées</h3>
+          <div class="mt-4 space-y-3" id="hoshin-action-plan"></div>
         </div>
       </section>
     `;
@@ -2295,7 +2277,6 @@ function applyStaticData(){
       $('#hoshin-blueprint-stats').innerHTML = '';
       $('#hoshin-process-pills').innerHTML = '';
       $('#hoshin-process-spotlight').innerHTML = '<div class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-4 text-sm text-slate-500">Aucun blueprint Hoshin chargé depuis data/hoshin_content.json.</div>';
-      $('#hoshin-objective-stack').innerHTML = '';
       $('#hoshin-process-table').innerHTML = '';
       $('#hoshin-process-observations').innerHTML = '';
       return;
@@ -2305,9 +2286,6 @@ function applyStaticData(){
     const unique = (arr) => [...new Set(arr.filter(Boolean))];
     const complete = selectedRows.filter(r => r.objectiveId && r.initiativeId && r.kpiId).length;
     const mapped = selectedRows.reduce((sum, r) => sum + hoshinReality(r,r.process).mappedCount, 0);
-    if (!selectedRows.some(r => r.rowKey === activeHoshinRowKey)) activeHoshinRowKey = selectedRows[0]?.rowKey || null;
-    const selectedRow = selectedRows.find(r => r.rowKey === activeHoshinRowKey) || selectedRows[0] || null;
-    const selectedReality = selectedRow ? hoshinReality(selectedRow, selectedRow.process) : {items:[], status:'gray', label:'Aucune ligne sélectionnée', mappedCount:0};
     const stats = [
       ['Processus', activeHoshinProcess === 'ALL' ? processes.length : 1, 'layers-3','text-violet-500'],
       ['Axes', unique(selectedRows.map(r=>r.axis)).length, 'compass','text-indigo-500'],
@@ -2318,25 +2296,14 @@ function applyStaticData(){
     ];
     $('#hoshin-blueprint-stats').innerHTML = stats.map(([label,val,icon,color]) => `<div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-950/35 p-4"><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">${label}</span><i data-lucide="${icon}" class="w-4 h-4 ${color}"></i></div><div class="mt-2 text-2xl font-black">${val}</div></div>`).join('');
 
-    $('#hoshin-process-pills').innerHTML = [`<button onclick="setHoshinProcess('ALL')" class="px-4 py-2.5 rounded-xl border text-sm font-black transition-all ${activeHoshinProcess==='ALL'?'bg-[#2952ff] text-white border-[#2952ff] shadow-lg':'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800'}">Vue globale</button>`, ...processes.map(p => `<button onclick="setHoshinProcess('${p.process.replace(/'/g,"'")}')" class="px-4 py-2.5 rounded-xl border text-sm font-bold transition-all ${p.process===activeHoshinProcess?'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white shadow-lg':'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 hover:border-slate-400'}">${p.process}</button>`)].join('');
+    $('#hoshin-process-pills').innerHTML = processes.map(p => `<button onclick="setHoshinProcess('${p.process.replace(/'/g,"'")}')" class="px-4 py-2.5 rounded-xl border text-sm font-bold transition-all ${p.process===activeHoshinProcess?'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white shadow-lg':'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 hover:border-slate-400'}">${p.process}</button>`).join('');
 
     const current = activeHoshinProcess === 'ALL' ? null : processes.find(p=>p.process===activeHoshinProcess);
     const coverage = selectedRows.length ? Math.round(complete/selectedRows.length*100) : 0;
     $('#hoshin-process-spotlight').innerHTML = `<div class="rounded-[28px] overflow-hidden border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] shadow-sm"><div class="p-6 bg-gradient-to-br ${current ? current.theme : 'from-slate-900 via-indigo-900 to-violet-800'} text-white"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5"><div><div class="text-[10px] uppercase tracking-[.22em] font-black text-white/65">${current ? 'Pilote · '+current.pilot : 'Vue consolidée MEL-T'}</div><h3 class="mt-2 text-2xl font-black">${current ? current.process : 'Tous les processus'}</h3><p class="mt-2 text-sm text-white/75 max-w-3xl">${current ? 'Pilotage de bout en bout des chaînes stratégiques affectées à ce processus.' : 'Consolidation des chaînes Hoshin de tous les processus et de leur traduction dans les indicateurs opérationnels.'}</p></div><div class="min-w-[280px]"><div class="flex justify-between text-xs font-bold"><span>Couverture des chaînes</span><span>${coverage}%</span></div><div class="mt-2 h-3 rounded-full bg-white/15 overflow-hidden"><div class="h-full rounded-full bg-white transition-all" style="width:${coverage}%"></div></div><div class="mt-3 grid grid-cols-3 gap-2 text-center"><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${complete}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Complètes</div></div><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${selectedRows.filter(r=>!r.initiativeId).length}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Sans initiative</div></div><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${selectedRows.filter(r=>r.initiativeId&&!r.kpiId).length}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Sans KPI</div></div></div></div></div></div></div>`;
 
-    if (!selectedRow) {
-      $('#hoshin-objective-stack').innerHTML = '<div class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-4 text-sm text-slate-500">Aucune ligne Hoshin disponible pour ce filtre.</div>';
-      $('#hoshin-process-table').innerHTML = '';
-      $('#hoshin-process-observations').innerHTML = '';
-      $('#hoshin-action-plan').innerHTML = '';
-      lucide.createIcons();
-      return;
-    }
-
-    $('#hoshin-objective-stack').innerHTML = `<article class="rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden"><div class="p-4 bg-slate-50 dark:bg-slate-950/40 flex items-start justify-between gap-3"><div><div class="text-[10px] uppercase tracking-[.18em] text-[#2952ff] dark:text-[#93b8ff] font-black">${selectedRow.process} · ${selectedRow.axis || 'Sans axe'} · ${selectedRow.objectiveId || '—'}</div><h4 class="mt-1 font-black text-slate-900 dark:text-white">${selectedRow.objective || 'Objectif non renseigné'}</h4></div><span class="px-2.5 py-1 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[10px] font-black">Ligne sélectionnée</span></div><div class="p-4 space-y-3"><div class="rounded-xl border border-slate-200/80 dark:border-slate-800 p-3"><div class="text-[9px] uppercase tracking-[.18em] text-slate-400 font-black">Initiative</div><div class="mt-1 text-sm font-bold">${selectedRow.initiativeId || '—'} · ${selectedRow.initiative || 'Aucune initiative explicitement renseignée'}</div></div><div class="rounded-xl border border-slate-200/80 dark:border-slate-800 p-3"><div class="text-[9px] uppercase tracking-[.18em] text-slate-400 font-black">KPI Hoshin</div><div class="mt-1 text-sm font-bold">${selectedRow.kpiId || '—'} · ${selectedRow.kpi || 'KPI non renseigné'}</div></div><div class="rounded-xl border border-slate-200/80 dark:border-slate-800 p-3"><div class="flex items-center justify-between gap-2 mb-2"><div class="text-[9px] uppercase tracking-[.18em] text-slate-400 font-black">Réalité terrain</div><span class="px-2 py-1 rounded-full text-[9px] font-black ${statusClass(selectedReality.status)}">${selectedReality.label}</span></div>${renderRealityList(selectedReality)}</div></div></article>`;
-
-    const rowsHtml = selectedRows.map(r=>{const real=hoshinReality(r,r.process); const selected = r.rowKey === activeHoshinRowKey; return `<tr onclick="setHoshinRow('${r.rowKey.replace(/'/g,"'")}')" class="align-top cursor-pointer transition-colors ${selected ? 'bg-indigo-50 dark:bg-slate-900/70' : 'hover:bg-slate-50 dark:hover:bg-slate-900/40'}"><td class="p-3"><div class="font-black">${r.process}</div><div class="text-[10px] text-slate-400">${r.pilot}</div></td><td class="p-3 font-black text-[#2952ff] dark:text-[#93b8ff]">${r.axis||'—'}</td><td class="p-3"><div class="font-black">${r.objectiveId||'—'}</div><div class="mt-1 text-slate-500 max-w-[260px]">${r.objective||'Non renseigné'}</div></td><td class="p-3"><div class="font-black">${r.initiativeId||'—'}</div><div class="mt-1 text-slate-500 max-w-[280px]">${r.initiative||'Non renseignée'}</div></td><td class="p-3"><div class="font-black">${r.kpiId||'—'}</div><div class="mt-1 text-slate-500 max-w-[230px]">${r.kpi||'Non renseigné'}</div></td><td class="p-3" colspan="4">${renderRealityList(real, true)}</td></tr>`;}).join('');
-    $('#hoshin-process-table').innerHTML = `<table class="w-full text-xs table-sticky min-w-[1500px]"><thead class="bg-slate-100/95 dark:bg-slate-950/95"><tr class="text-[9px] uppercase tracking-[.16em] text-slate-500"><th class="p-3 text-left">Processus</th><th class="p-3 text-left">Axe</th><th class="p-3 text-left">Objectif annuel</th><th class="p-3 text-left">Initiative</th><th class="p-3 text-left">KPI Hoshin</th><th class="p-3 text-left" colspan="4">KPI réels liés / Réalité / Cible / Écart / Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${rowsHtml}</tbody></table>`;
+    const rowsHtml = selectedRows.map(r=>{const real=hoshinReality(r,r.process); return `<tr onclick="openHoshinRowModal('${r.rowKey.replace(/'/g,"'")}')" class="align-top cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-900/40"><td class="p-3"><div class="font-black">${r.process}</div><div class="text-[10px] text-slate-400">${r.pilot}</div></td><td class="p-3 font-black text-[#2952ff] dark:text-[#93b8ff]">${r.axis||'—'}</td><td class="p-3"><div class="font-black">${r.objectiveId||'—'}</div><div class="mt-1 text-slate-500 max-w-[260px]">${r.objective||'Non renseigné'}</div></td><td class="p-3"><div class="font-black">${r.initiativeId||'—'}</div><div class="mt-1 text-slate-500 max-w-[280px]">${r.initiative||'Non renseignée'}</div></td><td class="p-3"><div class="font-black">${r.kpiId||'—'}</div><div class="mt-1 text-slate-500 max-w-[230px]">${r.kpi||'Non renseigné'}</div></td><td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-black ${statusClass(real.status)}">${real.label}</span></td></tr>`;}).join('');
+    $('#hoshin-process-table').innerHTML = `<table class="w-full text-xs table-sticky min-w-[1100px]"><thead class="bg-slate-100/95 dark:bg-slate-950/95"><tr class="text-[9px] uppercase tracking-[.16em] text-slate-500"><th class="p-3 text-left">Processus</th><th class="p-3 text-left">Axe</th><th class="p-3 text-left">Objectif annuel</th><th class="p-3 text-left">Initiative</th><th class="p-3 text-left">KPI Hoshin</th><th class="p-3 text-left">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${rowsHtml}</tbody></table>`;
 
     const reals=selectedRows.map(r=>({r,real:hoshinReality(r,r.process)}));
     const counts={green:0,orange:0,red:0,gray:0};reals.forEach(x=>counts[x.real.status]++);
@@ -2359,14 +2326,41 @@ function applyStaticData(){
     lucide.createIcons();
   }
 
+  function openHoshinRowModal(rowKey) {
+    const processes = window.hoshin_process_blueprint || [];
+    const allRows = processes.flatMap(p => p.rows.map((r, index) => ({...r, rowKey:`${p.process}::${index}::${r.axis || ''}::${r.objectiveId || ''}::${r.initiativeId || ''}::${r.kpiId || ''}`, process:p.process, pilot:p.pilot, theme:p.theme})));
+    const row = allRows.find(r => r.rowKey === rowKey);
+    if (!row) return;
+    const real = hoshinReality(row, row.process);
+    $('#modal-eyebrow').textContent = `${row.process} · ${row.objectiveId || '—'}`;
+    $('#modal-title').textContent = `${row.axis || 'Sans axe'} · ${row.objective || 'Chaîne Hoshin'}`;
+    $('#modal-body').innerHTML = `
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
+          <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">Objectif annuel</div>
+          <div class="mt-2 font-black text-sm">${row.objectiveId || '—'} · ${row.objective || 'Non renseigné'}</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
+          <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">Initiative</div>
+          <div class="mt-2 font-black text-sm">${row.initiativeId || '—'} · ${row.initiative || 'Non renseignée'}</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
+          <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">KPI Hoshin</div>
+          <div class="mt-2 font-black text-sm">${row.kpiId || '—'} · ${row.kpi || 'Non renseigné'}</div>
+        </div>
+      </div>
+      <div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
+        <div class="flex items-center justify-between gap-3 mb-3"><h3 class="font-black">Réalité terrain liée</h3><span class="px-2.5 py-1 rounded-full text-[10px] font-black ${statusClass(real.status)}">${real.label}</span></div>
+        ${renderRealityList(real)}
+      </div>
+    `;
+    $('#detail-modal').showModal();
+    lucide.createIcons();
+  }
+
   function setHoshinProcess(process) {
     activeHoshinProcess = process;
     activeHoshinRowKey = null;
-    renderHoshinBlueprint();
-  }
-
-  function setHoshinRow(rowKey) {
-    activeHoshinRowKey = rowKey;
     renderHoshinBlueprint();
   }
 
@@ -2379,7 +2373,7 @@ function applyStaticData(){
     if(selected) state.selectedKpi=selected.id;
     $('#page-content').innerHTML=`
       ${pageHeader(p.label,p.description,p.icon)}
-      <div class="flex flex-wrap gap-2">${['ALL',...SITES].map(s=>quickSite(s)).join('')}</div>
+      <div class="flex flex-wrap gap-2">${SITES.map(s=>quickSite(s)).join('')}</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         ${visible.length?visible.map(k=>renderKpiCard(k)).join(''):emptyState('Aucun KPI ne correspond aux filtres actifs.')}
       </div>
@@ -3159,7 +3153,7 @@ function applyStaticData(){
   window.exportData = exportData;
   window.toggleCorrelation = toggleCorrelation;
   window.setHoshinProcess = setHoshinProcess;
-  window.setHoshinRow = setHoshinRow;
+  window.openHoshinRowModal = openHoshinRowModal;
   window.selectItem = selectItem;
 
 

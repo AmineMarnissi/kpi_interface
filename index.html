@@ -1877,7 +1877,7 @@ function applyStaticData(){
 
   function render(){
     updateNav(); updateDataMeta(); destroyCharts();
-    const showHeader = state.page !== 'overview';
+    const showHeader = state.page !== 'overview' && state.page !== 'hoshin';
 
     document.getElementById('filter-bar').style.display = showHeader ? '' : 'none';
     if(state.page==='overview') renderOverview();
@@ -1962,7 +1962,10 @@ function applyStaticData(){
         
         card.onclick = () => {
           activeHoshinLeader = leader.id;
+          const pMap = {'kapusi':'Manufacturing','sniha-daf':'DAF','sniha-log':'Logistic Manager','neffeti':'GRH','fathallah':'QHSE'};
+          if (pMap[leader.id]) activeHoshinProcess = pMap[leader.id];
           renderHoshinTabLogic();
+          renderHoshinBlueprint();
         };
 
         card.innerHTML = `
@@ -2181,15 +2184,7 @@ function applyStaticData(){
         <div id="hoshin-interactive-slide" class="mt-5 rounded-[24px] border border-slate-200/80 dark:border-[#1e2a4a] bg-slate-50/70 dark:bg-slate-950/30 p-5"></div>
       </section>
 
-      <section class="rounded-[28px] border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-5 shadow-sm">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div>
-            <div class="text-[10px] uppercase tracking-[.2em] font-black text-slate-400">Navigation unique</div>
-            <h3 class="mt-1 text-lg font-black">Sélectionner un processus</h3>
-          </div>
-          <div class="flex flex-wrap gap-2" id="hoshin-process-pills"></div>
-        </div>
-      </section>
+
 
       <section id="hoshin-process-spotlight"></section>
 
@@ -2222,17 +2217,34 @@ function applyStaticData(){
   function hoshinKpiBindings(row, process) {
     const explicit = (row.realityKpis || []).map(id => state.kpis.find(k => k.id === id)).filter(Boolean);
     if (explicit.length) return explicit;
+
+    const kpiCode = String(row.kpiId || '').match(/K\d+/i)?.[0]?.toUpperCase() || '';
     const key = `${process} ${row.kpiId || ''} ${row.kpi || ''}`.toLowerCase();
-    const candidates = [];
-    if (key.includes('k3') || key.includes('oee') || key.includes('productiv')) candidates.push('productivity','operational-efficiency','production-volume');
-    if (key.includes('k4') || key.includes('polyval') || key.includes('skill')) candidates.push('training-completion','training-hours-per-employee');
-    if (key.includes('k6') || key.includes('otif') || key.includes('lead time')) candidates.push('otif','production-lead-time','lead-time','service-level');
-    if (key.includes('k7') || key.includes('formation') || key.includes('etcr')) candidates.push('training-completion','training-hours-per-employee');
-    if (key.includes('k8') || key.includes('turnover') || key.includes('absent')) candidates.push('turnover','absenteeism','overtime-rate');
-    if (key.includes('k5') || key.includes('audit') || key.includes('dhu')) candidates.push('qualipro-completion','fqc','oqc','customer-complaints');
-    if (key.includes('k2') || key.includes('co₂') || key.includes('co2') || key.includes('energy') || key.includes('ec,')) candidates.push('co2','electricity','water','electric-intensity');
-    if (key.includes('k9') || key.includes('accident') || key.includes('fr,') || key.includes('tf1')) candidates.push('tf1','accidents','lost-time-accidents','lost-days');
-    if (key.includes('k1') || key.includes('mch') || key.includes('bcr')) candidates.push('maintenance-cost-hour','capex-consumption-rate','maintenance-cost');
+    const codeMap = {
+      K1: ['maintenance-cost-hour', 'maintenance-cost'],
+      K2: ['electricity', 'electric-intensity', 'co2', 'water'],
+      K3: ['productivity', 'operational-efficiency', 'production-volume'],
+      K4: ['training-completion', 'training-hours-per-employee'],
+      K5: ['fqc', 'oqc', 'qualipro-completion', 'customer-quality', 'pnc'],
+      K6: ['otif', 'production-lead-time', 'lead-time', 'service-level'],
+      K7: ['training-completion', 'training-hours-per-employee'],
+      K8: ['turnover', 'absenteeism'],
+      K9: ['tf1', 'tg', 'lost-time-accidents', 'lost-days']
+    };
+
+    const candidates = [...(codeMap[kpiCode] || [])];
+    if (!candidates.length) {
+      if (key.includes('k3') || key.includes('oee') || key.includes('productiv')) candidates.push('productivity', 'operational-efficiency', 'production-volume');
+      if (key.includes('k4') || key.includes('polyval') || key.includes('skill')) candidates.push('training-completion', 'training-hours-per-employee');
+      if (key.includes('k6') || key.includes('otif') || key.includes('lead time')) candidates.push('otif', 'production-lead-time', 'lead-time', 'service-level');
+      if (key.includes('k7') || key.includes('formation') || key.includes('etcr')) candidates.push('training-completion', 'training-hours-per-employee');
+      if (key.includes('k8') || key.includes('turnover') || key.includes('absent')) candidates.push('turnover', 'absenteeism');
+      if (key.includes('k5') || key.includes('audit') || key.includes('dhu')) candidates.push('fqc', 'oqc', 'qualipro-completion', 'customer-quality', 'pnc');
+      if (key.includes('k2') || key.includes('co₂') || key.includes('co2') || key.includes('energy') || key.includes('ec,')) candidates.push('electricity', 'electric-intensity', 'co2', 'water');
+      if (key.includes('k9') || key.includes('accident') || key.includes('fr,') || key.includes('tf1')) candidates.push('tf1', 'tg', 'lost-time-accidents', 'lost-days');
+      if (key.includes('k1') || key.includes('mch') || key.includes('bcr')) candidates.push('maintenance-cost-hour', 'maintenance-cost');
+    }
+
     return [...new Map(candidates.map(id => [id, state.kpis.find(k => k.id === id)])).values()].filter(Boolean);
   }
 
@@ -2271,6 +2283,24 @@ function applyStaticData(){
     }).join('')}</div>`;
   }
 
+
+  function extractCodeNumber(value, prefix) {
+    const match = String(value || '').match(new RegExp(`^${prefix}(\\d+)$`, 'i'));
+    return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+  }
+
+  function compareInitiatives(a, b) {
+    return extractCodeNumber(a, 'I') - extractCodeNumber(b, 'I');
+  }
+
+  function compareObjectives(a, b) {
+    return extractCodeNumber(a, 'A') - extractCodeNumber(b, 'A');
+  }
+
+  function compareAxes(a, b) {
+    return extractCodeNumber(a, 'S') - extractCodeNumber(b, 'S');
+  }
+
   function renderHoshinBlueprint() {
     const processes = window.hoshin_process_blueprint || [];
     if (!processes.length) {
@@ -2282,7 +2312,7 @@ function applyStaticData(){
       return;
     }
     const allRows = processes.flatMap(p => p.rows.map((r, index) => ({...r, rowKey:`${p.process}::${index}::${r.axis || ''}::${r.objectiveId || ''}::${r.initiativeId || ''}::${r.kpiId || ''}`, process:p.process, pilot:p.pilot, theme:p.theme})));
-    const selectedRows = activeHoshinProcess === 'ALL' ? allRows : allRows.filter(r => r.process === activeHoshinProcess);
+    const selectedRows = (activeHoshinProcess === 'ALL' ? allRows : allRows.filter(r => r.process === activeHoshinProcess)).slice().sort((a,b) => compareInitiatives(a.initiativeId, b.initiativeId) || compareObjectives(a.objectiveId, b.objectiveId) || compareAxes(a.axis, b.axis) || a.rowKey.localeCompare(b.rowKey));
     const unique = (arr) => [...new Set(arr.filter(Boolean))];
     const complete = selectedRows.filter(r => r.objectiveId && r.initiativeId && r.kpiId).length;
     const mapped = selectedRows.reduce((sum, r) => sum + hoshinReality(r,r.process).mappedCount, 0);
@@ -2296,7 +2326,7 @@ function applyStaticData(){
     ];
     $('#hoshin-blueprint-stats').innerHTML = stats.map(([label,val,icon,color]) => `<div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-950/35 p-4"><div class="flex items-center justify-between"><span class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">${label}</span><i data-lucide="${icon}" class="w-4 h-4 ${color}"></i></div><div class="mt-2 text-2xl font-black">${val}</div></div>`).join('');
 
-    $('#hoshin-process-pills').innerHTML = processes.map(p => `<button onclick="setHoshinProcess('${p.process.replace(/'/g,"'")}')" class="px-4 py-2.5 rounded-xl border text-sm font-bold transition-all ${p.process===activeHoshinProcess?'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-slate-900 dark:border-white shadow-lg':'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800 hover:border-slate-400'}">${p.process}</button>`).join('');
+
 
     const current = activeHoshinProcess === 'ALL' ? null : processes.find(p=>p.process===activeHoshinProcess);
     const coverage = selectedRows.length ? Math.round(complete/selectedRows.length*100) : 0;
@@ -2366,6 +2396,108 @@ function applyStaticData(){
 
 
   function renderProcess(processId){
+    if (processId === 'strategy') {
+      const DATA={"Manufacturing": {"pilote": "Imre Kapusi", "axes": {"S1 - Innovation et nouveaux produits": {"objectives": {"A1 - Développer de nouveaux produits": {"initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}}}, "S4 - Performance de service & Satisfaction client": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Imre Kapusi": ["K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Imre Kapusi": ["K3 - OEE, Productivité, Throughput"]}}}}}}}}, "DAF": {"pilote": "Mohamed Sniha", "axes": {"S1 - Innovation et nouveaux produits": {"objectives": {"A1 - Développer de nouveaux produits": {"initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}}}, "S4 - Performance de service & Satisfaction client": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Mohamed Sniha": ["K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)"]}}}}}}}}, "Logistic": {"pilote": "Mohamed Sniha (Par interim)", "axes": {"S1 - Innovation et nouveaux produits": {"objectives": {"A1 - Développer de nouveaux produits": {"initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}}}, "S4 - Performance de service & Satisfaction client": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Mohamed Sniha (Par interim)": ["K6 - OTIF, Lead Time, Service Level, Stabilité du planning"]}}}}}}}}, "GRH": {"pilote": "Sabrine Neffeti", "axes": {"S1 - Innovation et nouveaux produits": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}}}, "S4 - Performance de service & Satisfaction client": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Sabrine Neffeti": ["K7 - ETCR, Temps moyen de formation (<3 mois)"]}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"objectives": {"A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Sabrine Neffeti": ["K8 - eNPS, UAR (Absentéisme), OTR (Turnover)"]}}}}}}}}, "QHSE": {"pilote": "Zouhour Fathallah", "axes": {"S1 - Innovation et nouveaux produits": {"objectives": {"A1 - Développer de nouveaux produits": {"initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}}}, "S4 - Performance de service & Satisfaction client": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"initiatives": {"I2 - Académie interne de couture (compétences de base)": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I3 - Réduction de la complexité des opérations de couture": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"owners": {"Zouhour Fathallah": ["K9 - FR, SR, NALT, LD"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Zouhour Fathallah": ["K9 - FR, SR, NALT, LD"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"initiatives": {"I6 - Système intégré d'audits": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"owners": {"Zouhour Fathallah": ["K5 - DHU, % audits clôturés à temps"]}}, "I10 - Energy Kaizen / Green Manufacturing": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"owners": {"Zouhour Fathallah": ["K2 - EC, IE, CO₂, WC"]}}}}}}}}};
+
+      const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      function codeOf(s){const m=String(s).match(/^([A-Z]+\d+)\s*-/);return m?m[1]:''}
+      function countData(d){let axes=new Set(),objs=new Set(),inis=new Set(),kpis=new Set(),links=0;Object.values(d).forEach(p=>Object.entries(p.axes).forEach(([a,av])=>{axes.add(a);Object.entries(av.objectives).forEach(([o,ov])=>{objs.add(o);Object.entries(ov.initiatives).forEach(([i,iv])=>{inis.add(i);Object.values(iv.owners).forEach(list=>list.forEach(k=>{kpis.add(k);links++}))})})}));return{processes:Object.keys(d).length,axes:axes.size,objectives:objs.size,initiatives:inis.size,kpis:kpis.size,links}}
+      function renderStats(d){const c=countData(d);document.querySelector('#st-stats').innerHTML=[['Processus',c.processes],['Axes',c.axes],['Objectifs',c.objectives],['Initiatives',c.initiatives],['KPI distincts',c.kpis]].map(x=>`<div class="st-stat"><b>${x[1]}</b><span class="text-xs text-slate-500">${x[0]}</span></div>`).join('')}
+      function node(cls,label,count,children,extra=''){return `<details class="${cls}"><summary><span class="st-toggle"></span><span>${label}</span>${extra}<span class="st-badge">${count}</span></summary><div class="st-children">${children}</div></details>`}
+      
+      const p=PROCESS_LIST.find(x=>x.id===processId) || PROCESS_LIST[0];
+      
+      $('#page-content').innerHTML = `
+        ${pageHeader(p.label,p.description,p.icon)}
+        <style>
+          .st-container { --bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#d8e0ec;--blue:#2457d6;--blue2:#eaf0ff;--green:#157347;--shadow:0 8px 28px rgba(30,50,90,.08); color:var(--text); margin-top: 24px; }
+          .st-stats { display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin-bottom:18px }
+          .st-stat { background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:var(--shadow) }
+          .st-stat b { font-size:22px;display:block;color:#214fae }
+          .st-panel { background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow);overflow:hidden }
+          .st-panel-head { padding:14px 18px;background:#f9fbff;border-bottom:1px solid var(--line);font-weight:800;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap }
+          .st-tree { padding:8px 14px 18px }
+          .st-tree details { margin:5px 0 }
+          .st-tree summary { list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;border-radius:9px;padding:9px 10px }
+          .st-tree summary::-webkit-details-marker { display:none }
+          .st-tree summary:hover { background:#f4f7ff }
+          .st-toggle { width:22px;height:22px;border-radius:6px;background:var(--blue2);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 22px }
+          .st-tree details[open]>summary>.st-toggle::before { content:'−' }
+          .st-tree details:not([open])>summary>.st-toggle::before { content:'+' }
+          .st-level-process>summary { font-size:17px;font-weight:900;background:#edf3ff;border-left:5px solid var(--blue) }
+          .st-level-axis>summary { font-weight:800;background:#f7f9fd }
+          .st-level-objective>summary { font-weight:700 }
+          .st-level-initiative>summary { font-weight:650;color:#2e4268 }
+          .st-level-owner>summary { font-weight:650;color:#0f6b43 }
+          .st-children { margin-left:22px;padding-left:13px;border-left:1px dashed #c8d2e3 }
+          .st-badge { font-size:11px;background:#eef2f8;color:#536078;border-radius:999px;padding:3px 7px;margin-left:auto;white-space:nowrap }
+          .st-pilot { font-size:12px;color:#0f6b43;background:#e7f7ef;border-radius:999px;padding:4px 8px }
+          .st-kpis { margin:5px 0 8px 31px;display:grid;gap:5px }
+          .st-kpi { padding:8px 10px;border:1px solid #dce5f2;border-radius:8px;background:#fff;display:flex;gap:8px;align-items:flex-start }
+          .st-kcode { font-weight:800;color:#214fae;min-width:34px }
+          .st-empty { padding:28px;text-align:center;color:var(--muted) }
+          .st-controls { display:flex;gap:10px;flex-wrap:wrap;align-items:center; margin-bottom: 20px; }
+          .st-controls select, .st-controls input, .st-controls button { font:inherit;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:#fff; font-size:13px; }
+          .st-controls input { min-width:280px }
+          .st-controls button { cursor:pointer;font-weight:700;color:#214fae }
+          .st-controls button.primary { background:var(--blue);color:white;border-color:var(--blue) }
+          .dark .st-container { --bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--line:#334155;--blue:#3b82f6;--blue2:#1e3a8a;--shadow:0 8px 28px rgba(0,0,0,.3); background:var(--bg); }
+          .dark .st-controls select, .dark .st-controls input, .dark .st-controls button { background:#1e293b; color:#f1f5f9; border-color:#334155 }
+          .dark .st-panel-head { background:#1e293b; }
+          .dark .st-tree summary:hover { background:#334155 }
+          .dark .st-level-process>summary { background:#1e3a8a; border-left-color:#60a5fa }
+          .dark .st-level-axis>summary { background:#1e293b }
+          .dark .st-level-initiative>summary { color:#93c5fd }
+          .dark .st-level-owner>summary { color:#86efac }
+          .dark .st-pilot { color:#86efac; background:#14532d }
+          .dark .st-badge { background:#334155; color:#cbd5e1 }
+          .dark .st-kpi { background:#0f172a; border-color:#334155 }
+          .dark .st-kcode { color:#60a5fa }
+        </style>
+        
+        <div class="st-container">
+          <div class="st-controls">
+            <select id="st-processFilter"><option value="ALL">Tous les processus</option></select>
+            <input id="st-search" placeholder="Rechercher un axe, objectif, initiative, pilote ou KPI…">
+            <button id="st-expandAll">Tout ouvrir</button>
+            <button id="st-collapseAll">Tout fermer</button>
+          </div>
+          
+          <section class="st-stats" id="st-stats"></section>
+          
+          <section class="st-panel">
+            <div class="st-panel-head">
+              <span>Tableau hiérarchique</span>
+              <span class="text-xs text-slate-500">Cliquez sur <b>+</b> pour ouvrir chaque niveau</span>
+            </div>
+            <div id="st-tree" class="st-tree"></div>
+          </section>
+        </div>
+      `;
+
+      function renderTree(){
+        const pf=document.querySelector('#st-processFilter').value,q=document.querySelector('#st-search').value.trim().toLowerCase();
+        let filtered={};
+        Object.entries(DATA).forEach(([pn,p])=>{if(pf!=='ALL'&&pn!==pf)return; filtered[pn]=p});
+        renderStats(filtered);
+        let out='';
+        Object.entries(filtered).forEach(([pn,p])=>{let axesHtml='';Object.entries(p.axes).forEach(([an,a])=>{let objsHtml='';Object.entries(a.objectives).forEach(([on,o])=>{let inisHtml='';Object.entries(o.initiatives).forEach(([iin,i])=>{let ownersHtml='';Object.entries(i.owners).forEach(([owner,kpis])=>{let khtml=kpis.map(k=>`<div class="st-kpi"><span class="st-kcode">${esc(codeOf(k))}</span><span>${esc(k)}</span></div>`).join(''); ownersHtml+=node('st-level-owner',esc(owner),kpis.length,`<div class="st-kpis">${khtml}</div>`);});inisHtml+=node('st-level-initiative',esc(iin),Object.values(i.owners).reduce((s,x)=>s+x.length,0),ownersHtml)});objsHtml+=node('st-level-objective',esc(on),Object.keys(o.initiatives).length,inisHtml)});axesHtml+=node('st-level-axis',esc(an),Object.keys(a.objectives).length,objsHtml)});out+=node('st-level-process',esc(pn),Object.keys(p.axes).length,axesHtml,`<span class="st-pilot">Pilote : ${esc(p.pilote)}</span>`)});
+        document.querySelector('#st-tree').innerHTML=out||'<div class="st-empty">Aucun résultat.</div>'; 
+        if(q) filterTree(q);
+      }
+      
+      function filterTree(q){document.querySelectorAll('#st-tree details').forEach(d=>d.dataset.match='0');document.querySelectorAll('#st-tree summary').forEach(s=>{if(s.innerText.toLowerCase().includes(q)){let d=s.parentElement;while(d&&d.matches('details')){d.dataset.match='1';d.open=true;d=d.parentElement.closest('details')}}});document.querySelectorAll('#st-tree details').forEach(d=>{if(d.dataset.match!=='1')d.style.display='none'})}
+      
+      Object.keys(DATA).forEach(p=>document.querySelector('#st-processFilter').insertAdjacentHTML('beforeend',`<option>${esc(p)}</option>`));
+      document.querySelector('#st-processFilter').addEventListener('change',renderTree);
+      document.querySelector('#st-search').addEventListener('input',renderTree);
+      document.querySelector('#st-expandAll').onclick=()=>document.querySelectorAll('#st-tree details').forEach(d=>d.open=true);
+      document.querySelector('#st-collapseAll').onclick=()=>document.querySelectorAll('#st-tree details').forEach(d=>d.open=false);
+      
+      renderTree();
+      lucide.createIcons();
+      return;
+    }
     const p=PROCESS_LIST.find(x=>x.id===processId) || PROCESS_LIST[0];
     const all=filteredKpis(state.kpis.filter(k=>k.process===processId));
     const visible=all.filter(k=>state.status==='ALL'||statusOf(k,state.site,state.period)===state.status);
@@ -2541,94 +2673,99 @@ function applyStaticData(){
 
   // Données complètes de la Matrice (Bilingue : Original / Français)
         const matrixData = {
-            lang: 'it_en', // 'it_en' (Original de l'image) ou 'fr' (Français)
-            
-            // Objectifs Stratégiques (S) - Bas
+            lang: 'it_en',
+
             strategic: [
-                { id: 'S1', it_en: "Aumento produttività, riduzione costi e incremento competitività", fr: "Augmentation de la productivité, réduction des coûts & compétitivité accrue" },
-                { id: 'S2', it_en: "Eccellenza operativa e Lean diffuso", fr: "Excellence opérationnelle et démarche Lean globale" },
-                { id: 'S3', it_en: "Organizzazione strutturata e cultura qualità", fr: "Organisation structurée et culture de la qualité" },
-                { id: 'S4', it_en: "Performance di servizio e customer satisfaction", fr: "Performance du niveau de service & satisfaction client" },
-                { id: 'S5', it_en: "Crescita & Innovazione", fr: "Croissance & Innovation continue" }
+                { id: "S1", it_en: "Innovazione e nuovi prodotti\nAumento produttività e crescita del customer work", fr: "Innovazione e nuovi prodotti\nAumento produttività e crescita del customer work", en: "Innovazione e nuovi prodotti\nAumento produttività e crescita del customer work", ar: "Innovazione e nuovi prodotti\nAumento produttività e crescita del customer work" },
+                { id: "S2", it_en: "Eccellenza operativa & Lean\nRiduzione strutturale dei costi e aumento dell’efficienza end‑to‑end", fr: "Eccellenza operativa & Lean\nRiduzione strutturale dei costi e aumento dell’efficienza end‑to‑end", en: "Eccellenza operativa & Lean\nRiduzione strutturale dei costi e aumento dell’efficienza end‑to‑end", ar: "Eccellenza operativa & Lean\nRiduzione strutturale dei costi e aumento dell’efficienza end‑to‑end" },
+                { id: "S3", it_en: "Qualità, sicurezza, sostenibilità\nZero non conformità critiche, zero infortuni gravi, riduzione impatti ambientali", fr: "Qualità, sicurezza, sostenibilità\nZero non conformità critiche, zero infortuni gravi, riduzione impatti ambientali", en: "Qualità, sicurezza, sostenibilità\nZero non conformità critiche, zero infortuni gravi, riduzione impatti ambientali", ar: "Qualità, sicurezza, sostenibilità\nZero non conformità critiche, zero infortuni gravi, riduzione impatti ambientali" },
+                { id: "S4", it_en: "Performance di servizio e customer satisfaction\nAffidabilità di consegna e soddisfazione cliente elevata", fr: "Performance di servizio e customer satisfaction\nAffidabilità di consegna e soddisfazione cliente elevata", en: "Performance di servizio e customer satisfaction\nAffidabilità di consegna e soddisfazione cliente elevata", ar: "Performance di servizio e customer satisfaction\nAffidabilità di consegna e soddisfazione cliente elevata" },
+                { id: "S5", it_en: "Organizzazione, cultura e persone\nOrganizzazione chiara, competenze sviluppate, engagement elevato", fr: "Organizzazione, cultura e persone\nOrganizzazione chiara, competenze sviluppate, engagement elevato", en: "Organizzazione, cultura e persone\nOrganizzazione chiara, competenze sviluppate, engagement elevato", ar: "Organizzazione, cultura e persone\nOrganizzazione chiara, competenze sviluppate, engagement elevato" }
             ],
 
-            // Objectifs Annuels (O) - Gauche
             annual: [
-                { id: 'O1', it_en: "Incremento produttività e riduzione costi operativi", fr: "Accroissement de la productivité & baisse des coûts d'exploitation" },
-                { id: 'O2', it_en: "Implementazione Lean su tutti i reparti", fr: "Déploiement du Lean Management dans tous les ateliers" },
-                { id: 'O3', it_en: "Strutturazione organizzativa e sistema qualità", fr: "Structuration de l'organisation et du système qualité" },
-                { id: 'O4', it_en: "Miglioramento servizio (lead time + OTIF)", fr: "Optimisation de la livraison (Lead Time & taux OTIF)" },
-                { id: 'O5', it_en: "Sviluppo nuovi prodotti e customer work", fr: "Développement de nouveaux produits & adaptations clients" }
+                { id: "A1", it_en: "Nuovi prodotti", fr: "Nuovi prodotti", en: "Nuovi prodotti", ar: "Nuovi prodotti" },
+                { id: "A2", it_en: "Costruire una forza lavoro stabile maschile formato su macchina da cucire", fr: "Costruire una forza lavoro stabile maschile formato su macchina da cucire", en: "Costruire una forza lavoro stabile maschile formato su macchina da cucire", ar: "Costruire una forza lavoro stabile maschile formato su macchina da cucire" },
+                { id: "A3", it_en: "Ridurre la dipendenza da cucitrici esperte (skill scarcity)", fr: "Ridurre la dipendenza da cucitrici esperte (skill scarcity)", en: "Ridurre la dipendenza da cucitrici esperte (skill scarcity)", ar: "Ridurre la dipendenza da cucitrici esperte (skill scarcity)" },
+                { id: "A4", it_en: "Ridurre costi operativi e manutenzione del 10–15%", fr: "Ridurre costi operativi e manutenzione del 10–15%", en: "Ridurre costi operativi e manutenzione del 10–15%", ar: "Ridurre costi operativi e manutenzione del 10–15%" },
+                { id: "A5", it_en: "Ridurre costi building & utility del 5–10%", fr: "Ridurre costi building & utility del 5–10%", en: "Ridurre costi building & utility del 5–10%", ar: "Ridurre costi building & utility del 5–10%" },
+                { id: "A6", it_en: "Estendere Lean Thinking a tutti i reparti", fr: "Estendere Lean Thinking a tutti i reparti", en: "Estendere Lean Thinking a tutti i reparti", ar: "Estendere Lean Thinking a tutti i reparti" },
+                { id: "A7", it_en: "Puntualità consegne >98% e miglioramento livello servizio", fr: "Puntualità consegne >98% e miglioramento livello servizio", en: "Puntualità consegne >98% e miglioramento livello servizio", ar: "Puntualità consegne >98% e miglioramento livello servizio" },
+                { id: "A8", it_en: "Completare struttura organizzativa e ruoli chiari", fr: "Completare struttura organizzativa e ruoli chiari", en: "Completare struttura organizzativa e ruoli chiari", ar: "Completare struttura organizzativa e ruoli chiari" },
+                { id: "A9", it_en: "Integrare audit nei piani di miglioramento", fr: "Integrare audit nei piani di miglioramento", en: "Integrare audit nei piani di miglioramento", ar: "Integrare audit nei piani di miglioramento" },
+                { id: "A10", it_en: "Implementare piani di formazione strutturati", fr: "Implementare piani di formazione strutturati", en: "Implementare piani di formazione strutturati", ar: "Implementare piani di formazione strutturati" },
+                { id: "A11", it_en: "Migliorare sicurezza, benessere e engagement", fr: "Migliorare sicurezza, benessere e engagement", en: "Migliorare sicurezza, benessere e engagement", ar: "Migliorare sicurezza, benessere e engagement" }
             ],
 
-            // Initiatives & Projets Clés (I) - Haut
             initiatives: [
-                { id: 'I5', category: 'FOUNDATION', it_en: "Sistema audit integrato (governo processi e rispetto procedure)", fr: "Système d’audit intégré (gouvernance des processus et respect des procédures)" },
-                { id: 'I6', category: 'FOUNDATION', it_en: "Piano formazione strutturata (focus cucitrici e sviluppo skill critiche)", fr: "Plan de formation structuré (focus couturières et développement des compétences critiques)" },
-                { id: 'I7', category: 'PERFORMANCE', it_en: "Programma Lean su tutti i reparti", fr: "Programme Lean global dans tous les services" },
-                { id: 'I8', category: 'PERFORMANCE', it_en: "Riduzione costi fissi e operativi", fr: "Plan d'économie sur les charges fixes et opérationnelles" },
-                { id: 'I9', category: 'PERFORMANCE', it_en: "Ottimizzazione flusso ordine → produzione → consegna", fr: "Optimisation globale du flux Commande → Production → Livraison" },
-                { id: 'I4', category: 'PERFORMANCE', it_en: "Definizione nuova struttura organizzativa", fr: "Définition d'une nouvelle structure organisationnelle" },
-                { id: 'I1', category: 'GROWTH', it_en: "Lancio SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO", fr: "Lancement des gammes SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO" },
-                { id: 'I2', category: 'GROWTH', it_en: "Sviluppo Customer Work (customization)", fr: "Développement du Customer Work (personnalisation)" },
-                { id: 'I3', category: 'GROWTH', it_en: "Digitalizzazione e automazione sala taglio", fr: "Digitalisation et automatisation de la salle de coupe" }
+                { id: "I1", category: 'ALL', it_en: "Lanciare ≥5 nuovi prodotti (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)", fr: "Lanciare ≥5 nuovi prodotti (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)", en: "Lanciare ≥5 nuovi prodotti (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)", ar: "Lanciare ≥5 nuovi prodotti (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)" },
+                { id: "I2", category: 'ALL', it_en: "Accademia interna cucitura (skill base)", fr: "Accademia interna cucitura (skill base)", en: "Accademia interna cucitura (skill base)", ar: "Accademia interna cucitura (skill base)" },
+                { id: "I3", category: 'ALL', it_en: "Riduzione complessità operazione cucitura", fr: "Riduzione complessità operazione cucitura", en: "Riduzione complessità operazione cucitura", ar: "Riduzione complessità operazione cucitura" },
+                { id: "I4", category: 'ALL', it_en: "Bilanciamento linea orientato a skill disponibile", fr: "Bilanciamento linea orientato a skill disponibile", en: "Bilanciamento linea orientato a skill disponibile", ar: "Bilanciamento linea orientato a skill disponibile" },
+                { id: "I5", category: 'ALL', it_en: "Programma Lean Manufacturing & Kaizen", fr: "Programma Lean Manufacturing & Kaizen", en: "Programma Lean Manufacturing & Kaizen", ar: "Programma Lean Manufacturing & Kaizen" },
+                { id: "I6", category: 'ALL', it_en: "Sistema integrato Audit", fr: "Sistema integrato Audit", en: "Sistema integrato Audit", ar: "Sistema integrato Audit" },
+                { id: "I7", category: 'ALL', it_en: "Piano strutturato di formazione e sviluppo competenze", fr: "Piano strutturato di formazione e sviluppo competenze", en: "Piano strutturato di formazione e sviluppo competenze", ar: "Piano strutturato di formazione e sviluppo competenze" },
+                { id: "I8", category: 'ALL', it_en: "Programma sicurezza, benessere e engagement", fr: "Programma sicurezza, benessere e engagement", en: "Programma sicurezza, benessere e engagement", ar: "Programma sicurezza, benessere e engagement" },
+                { id: "I9", category: 'ALL', it_en: "Ottimizzazione pianificazione, flussi e logistica", fr: "Ottimizzazione pianificazione, flussi e logistica", en: "Ottimizzazione pianificazione, flussi e logistica", ar: "Ottimizzazione pianificazione, flussi e logistica" },
+                { id: "I10", category: 'ALL', it_en: "Energy Kaizen / Green Manufacturing", fr: "Energy Kaizen / Green Manufacturing", en: "Energy Kaizen / Green Manufacturing", ar: "Energy Kaizen / Green Manufacturing" },
+                { id: "I11", category: 'ALL', it_en: "Razionalizzazione spazi & riduzione building", fr: "Razionalizzazione spazi & riduzione building", en: "Razionalizzazione spazi & riduzione building", ar: "Razionalizzazione spazi & riduzione building" },
+                { id: "I12", category: 'ALL', it_en: "Riduzione costi fissi (overhead optimization)", fr: "Riduzione costi fissi (overhead optimization)", en: "Riduzione costi fissi (overhead optimization)", ar: "Riduzione costi fissi (overhead optimization)" }
             ],
 
-            // Indicateurs Clés de Performance (K) - Droite
             kpis: [
-                { id: 'K1', it_en: "Costo unitario (€ / capo)", fr: "Coût unitaire de production (€ / pièce)" },
-                { id: 'K2', it_en: "Margine operativo (%)", fr: "Marge opérationnelle globale (%)" },
-                { id: 'K3', it_en: "Costi fissi mensili", fr: "Suivi des frais fixes mensuels" },
-                { id: 'K4', it_en: "% reparti Lean attivi", fr: "Taux de déploiement des ateliers Lean (%)" },
-                { id: 'K5', it_en: "OEE (%)", fr: "Taux de Rendement Synthétique - TRS / OEE (%)" },
-                { id: 'K6', it_en: "Riduzione sprechi (%)", fr: "Taux de réduction des gaspillages (%)" },
-                { id: 'K7', it_en: "% audit completati", fr: "Taux de réalisation des audits internes (%)" },
-                { id: 'K8', it_en: "Numero non conformità", fr: "Nombre d'écarts de non-conformité" },
-                { id: 'K9', it_en: "Lead time totale (giorni)", fr: "Délai de traversée global (en jours)" },
-                { id: 'K10', it_en: "OTIF (%)", fr: "Taux de service à la livraison - OTIF (%)" },
-                { id: 'K11', it_en: "% fatturato nuovi prodotti", fr: "Part du chiffre d'affaires des nouveaux produits (%)" },
-                { id: 'K12', it_en: "Numero lanci", fr: "Nombre de nouveaux lancements commerciaux" },
-                { id: 'K13', it_en: "Ore formazione", fr: "Volume d'heures de formation dispensées" },
-                { id: 'K14', it_en: "Produttività operatore", fr: "Ratio de productivité moyenne par opérateur" }
+                { id: "K1", it_en: "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % fatturato da nuovi prodotti (< 24 mesi)", fr: "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % fatturato da nuovi prodotti (< 24 mesi)", en: "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % fatturato da nuovi prodotti (< 24 mesi)", ar: "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % fatturato da nuovi prodotti (< 24 mesi)" },
+                { id: "K2", it_en: "EC (Energy Consumption), IE (Energy Intensity), CO₂ (Carbon Emissions), WC (Water Consumption)", fr: "EC (Energy Consumption), IE (Energy Intensity), CO₂ (Carbon Emissions), WC (Water Consumption)", en: "EC (Energy Consumption), IE (Energy Intensity), CO₂ (Carbon Emissions), WC (Water Consumption)", ar: "EC (Energy Consumption), IE (Energy Intensity), CO₂ (Carbon Emissions), WC (Water Consumption)" },
+                { id: "K3", it_en: "OEE, PROD, TP (Throughput)", fr: "OEE, PROD, TP (Throughput)", en: "OEE, PROD, TP (Throughput)", ar: "OEE, PROD, TP (Throughput)" },
+                { id: "K4", it_en: "% operatopri polivalente >60%, Skill coverage vs fabbisogno linea", fr: "% operatopri polivalente >60%, Skill coverage vs fabbisogno linea", en: "% operatopri polivalente >60%, Skill coverage vs fabbisogno linea", ar: "% operatopri polivalente >60%, Skill coverage vs fabbisogno linea" },
+                { id: "K5", it_en: "Defects per unit / DHU, % audit chiusi on-time", fr: "Defects per unit / DHU, % audit chiusi on-time", en: "Defects per unit / DHU, % audit chiusi on-time", ar: "Defects per unit / DHU, % audit chiusi on-time" },
+                { id: "K6", it_en: "OTIF, LT, SL, Plan Stability (MPS changes)", fr: "OTIF, LT, SL, Plan Stability (MPS changes)", en: "OTIF, LT, SL, Plan Stability (MPS changes)", ar: "OTIF, LT, SL, Plan Stability (MPS changes)" },
+                { id: "K7", it_en: "ETCR (Employee Training Completion Rate), Tempo medio formazione operatore <3 mesi", fr: "ETCR (Employee Training Completion Rate), Tempo medio formazione operatore <3 mesi", en: "ETCR (Employee Training Completion Rate), Tempo medio formazione operatore <3 mesi", ar: "ETCR (Employee Training Completion Rate), Tempo medio formazione operatore <3 mesi" },
+                { id: "K8", it_en: "eNPS (Employee Net Promoter Score), UAR (Unplanned Absenteeism Rate), OTR (Overall Turnover Rate)", fr: "eNPS (Employee Net Promoter Score), UAR (Unplanned Absenteeism Rate), OTR (Overall Turnover Rate)", en: "eNPS (Employee Net Promoter Score), UAR (Unplanned Absenteeism Rate), OTR (Overall Turnover Rate)", ar: "eNPS (Employee Net Promoter Score), UAR (Unplanned Absenteeism Rate), OTR (Overall Turnover Rate)" },
+                { id: "K9", it_en: "FR, SR, NALT (Number of Accidents with Lost Time), LD (Lost Days)", fr: "FR, SR, NALT (Number of Accidents with Lost Time), LD (Lost Days)", en: "FR, SR, NALT (Number of Accidents with Lost Time), LD (Lost Days)", ar: "FR, SR, NALT (Number of Accidents with Lost Time), LD (Lost Days)" }
             ],
 
-            // Responsables / Porteurs de projet (OW) - Extrême Droite
             owners: [
-                { id: 'OW1', name: "Imre Kapusi", it_en: "Manufacturing Manager", fr: "Directeur de Production" },
-                { id: 'OW2', name: "Mohamed Sriba", it_en: "DAF", fr: "Directeur Financier" },
-                { id: 'OW3', name: "Said Hamraoui", it_en: "Logistic Manager", fr: "Directeur Logistique" },
-                { id: 'OW4', name: "Sabrine Neffati", it_en: "HR Manager", fr: "Responsable Ressources Humaines" },
-                { id: 'OW5', name: "Zouhour Fathallah", it_en: "QHSE Leader", fr: "Responsable QHSE" },
-                { id: 'OW6', name: "Mina Moussa", it_en: "CEO", fr: "Président Directeur Général" }
+                { id: "OW1", name: "Imre Kapusi", it_en: "Manufactring Manager", fr: "Manufactring Manager", en: "Manufactring Manager", ar: "Manufactring Manager" },
+                { id: "OW2", name: "Mohamed Sniha", it_en: "DAF", fr: "DAF", en: "DAF", ar: "DAF" },
+                { id: "OW3", name: "Mohamed Sniha", it_en: "par interim) (Logistic Manager", fr: "par interim) (Logistic Manager", en: "par interim) (Logistic Manager", ar: "par interim) (Logistic Manager" },
+                { id: "OW4", name: "Sabrine Neffeti", it_en: "HR Manager", fr: "HR Manager", en: "HR Manager", ar: "HR Manager" },
+                { id: "OW5", name: "Zouhour Fathallah", it_en: "QHSE Leader", fr: "QHSE Leader", en: "QHSE Leader", ar: "QHSE Leader" },
+                { id: "OW6", name: "Mina Moussa", it_en: "CEO", fr: "CEO", en: "CEO", ar: "CEO" }
             ],
 
-            // Corrélations d'alignement (0: rien, 1: fort ●, 2: moyen ○, 3: faible ✕, 4: autre ★)
             correlations: {}
         };
 
         // Données de corrélations par défaut (calquées au mieux sur l'image fournie)
         const defaultCorrelations = {
-            // Strategic vs Annual (S <-> O)
-            'S1_O1': 1, 'S2_O2': 1, 'S3_O3': 1, 'S4_O2': 1, 'S4_O4': 1, 'S5_O2': 1, 'S5_O5': 1,
-
-            // Initiatives vs Annual (I <-> O)
-            'I5_O3': 1, 'I6_O3': 1, 'I7_O2': 1, 'I8_O1': 1, 'I9_O4': 1, 'I4_O3': 1, 'I1_O5': 1, 'I2_O5': 1, 'I3_O1': 1, 'I3_O2': 2,
-
-            // Initiatives vs KPIs (I <-> K)
-            'I5_K7': 1, 'I5_K8': 1, 'I6_K13': 1, 'I7_K4': 1, 'I7_K6': 1, 'I8_K2': 1, 'I8_K3': 1, 'I9_K9': 1, 'I9_K10': 1, 'I4_K13': 1,
-            'I1_K11': 1, 'I1_K12': 1, 'I2_K11': 2, 'I3_K5': 1, 'I3_K14': 1,
-
-            // Strategic vs KPIs (S <-> K)
-            'S1_K1': 1, 'S1_K2': 1, 'S1_K3': 2, 'S1_K14': 1,
-            'S2_K4': 1, 'S2_K5': 1, 'S2_K6': 1,
-            'S3_K7': 1, 'S3_K8': 1,
-            'S4_K9': 1, 'S4_K10': 1,
-            'S5_K11': 1, 'S5_K12': 1,
-
-            // KPIs vs Owners (K <-> OW)
-            'K1_OW1': 1, 'K2_OW2': 1, 'K3_OW2': 1, 'K4_OW1': 1, 'K5_OW1': 1, 'K6_OW1': 1,
-            'K7_OW5': 1, 'K8_OW5': 1, 'K9_OW3': 1, 'K10_OW3': 1, 'K11_OW6': 1, 'K12_OW6': 1,
-            'K13_OW4': 1, 'K14_OW1': 1
+            "I1_A1": 1, "I2_A2": 1, "I2_A3": 2, "I3_A2": 2, "I3_A3": 1,
+            "I4_A2": 2, "I4_A3": 1, "I5_A4": 1, "I5_A6": 1, "I5_A7": 2,
+            "I6_A9": 1, "I7_A8": 1, "I7_A10": 1, "I8_A11": 1, "I9_A7": 1,
+            "I10_A4": 2, "I10_A6": 2, "I10_A9": 2, "I10_A11": 1, "I11_A5": 1,
+            "I12_A4": 1, "I12_A5": 1, "I12_A6": 2, "I1_K1": 1, "I1_K3": 2,
+            "I1_K5": 2, "I1_K6": 2, "I2_K1": 2, "I2_K3": 2, "I2_K4": 2,
+            "I2_K5": 2, "I2_K6": 2, "I2_K7": 1, "I2_K8": 2, "I3_K1": 2,
+            "I3_K3": 2, "I3_K4": 1, "I3_K5": 1, "I3_K6": 2, "I3_K7": 2,
+            "I3_K8": 1, "I4_K1": 2, "I4_K3": 2, "I4_K4": 1, "I4_K5": 2,
+            "I4_K6": 2, "I4_K7": 2, "I4_K8": 1, "I5_K1": 2, "I5_K3": 1,
+            "I5_K5": 1, "I5_K6": 2, "I6_K1": 2, "I6_K3": 2, "I6_K5": 1,
+            "I7_K3": 1, "I7_K5": 1, "I7_K6": 2, "I7_K7": 1, "I7_K8": 2,
+            "I7_K9": 2, "I8_K3": 2, "I8_K5": 2, "I8_K6": 2, "I8_K8": 1,
+            "I8_K9": 1, "I9_K6": 1, "I10_K2": 1, "I11_K1": 2, "I11_K2": 2,
+            "I11_K6": 1, "I12_K1": 1, "I12_K2": 2, "I1_OW1": 2, "I1_OW2": 1,
+            "I1_OW3": 2, "I1_OW5": 2, "I2_OW1": 2, "I2_OW2": 2, "I2_OW3": 2,
+            "I2_OW4": 1, "I2_OW5": 2, "I3_OW1": 1, "I3_OW2": 2, "I3_OW3": 2,
+            "I3_OW4": 1, "I3_OW5": 1, "I4_OW1": 1, "I4_OW2": 2, "I4_OW3": 2,
+            "I4_OW4": 1, "I4_OW5": 2, "I5_OW1": 1, "I5_OW2": 2, "I5_OW3": 2,
+            "I5_OW5": 1, "I6_OW1": 2, "I6_OW2": 2, "I6_OW5": 1, "I7_OW1": 1,
+            "I7_OW3": 2, "I7_OW4": 1, "I7_OW5": 1, "I8_OW1": 2, "I8_OW3": 2,
+            "I8_OW4": 1, "I8_OW5": 1, "I9_OW3": 1, "I10_OW5": 1, "I11_OW2": 2,
+            "I11_OW3": 1, "I11_OW5": 2, "I12_OW2": 1, "I12_OW5": 2, "S1_A1": 1,
+            "S1_A2": 1, "S1_A3": 2, "S1_A6": 2, "S2_A4": 1, "S2_A5": 2,
+            "S2_A6": 1, "S2_A7": 2, "S2_A9": 2, "S3_A4": 2, "S3_A5": 1,
+            "S3_A9": 1, "S3_A11": 1, "S4_A2": 2, "S4_A3": 2, "S4_A6": 2,
+            "S4_A7": 1, "S5_A2": 2, "S5_A3": 2, "S5_A6": 2, "S5_A8": 1,
+            "S5_A9": 2, "S5_A10": 1, "S5_A11": 1
         };
 
         // État de l'éditeur de cellule
@@ -2800,68 +2937,39 @@ function applyStaticData(){
             /* ==========================================
                PARTIE SUPÉRIEURE : Initiatives & Projets
                ========================================== */
-            const categoryMeta = {
-                FOUNDATION: { dot: '🔴', color: 'text-red-700', bg: 'bg-red-50/70' },
-                PERFORMANCE: { dot: '🔵', color: 'text-sky-700', bg: 'bg-sky-50/70' },
-                GROWTH: { dot: '🟢', color: 'text-emerald-700', bg: 'bg-emerald-50/70' }
-            };
+            matrixData.initiatives.forEach(init => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 dark:hover:bg-[#141d35]/60 dark:bg-slate-800/50 transition-colors';
 
-            ['FOUNDATION', 'PERFORMANCE', 'GROWTH'].forEach(category => {
-                const categoryItems = matrixData.initiatives.filter(init => init.category === category);
-                if (!categoryItems.length) return;
-
-                const categoryTr = document.createElement('tr');
                 for (let i = 0; i < numO; i++) {
-                    const td = document.createElement('td');
-                    td.className = 'border border-slate-300 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] h-5';
-                    categoryTr.appendChild(td);
+                    const aId = matrixData.annual[i].id;
+                    const cellKey = `${init.id}_${aId}`;
+                    const corrVal = matrixData.correlations[cellKey] || 0;
+                    tr.appendChild(createCorrelationCell(cellKey, corrVal, 'bg-slate-100 dark:bg-[#0f1729] text-slate-800 dark:text-slate-200/50'));
                 }
-                const categoryCell = document.createElement('td');
-                const meta = categoryMeta[category];
-                categoryCell.className = `border border-slate-300 dark:border-[#1e2a4a] px-2 py-1 font-bold text-left ${meta.bg}`;
-                categoryCell.innerHTML = `<span class="mr-1">${meta.dot}</span><span class="${meta.color}">${category}</span>${category === 'FOUNDATION' ? ' <span class="font-normal text-slate-900 dark:text-slate-100">(non negoziabili)</span>' : ''}`;
-                categoryTr.appendChild(categoryCell);
-                for (let i = 0; i < numK + numOW; i++) {
-                    const td = document.createElement('td');
-                    td.className = 'border border-slate-300 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] h-5';
-                    categoryTr.appendChild(td);
+
+                const labelCell = document.createElement('td');
+                labelCell.className = 'border border-slate-300 dark:border-[#1e2a4a] px-2 py-1 cursor-pointer font-medium text-left bg-white dark:bg-[#0d1326] hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all text-xs';
+                if (selectedItem?.id === init.id) labelCell.classList.add('ring-2', 'ring-indigo-500', 'ring-inset');
+                labelCell.onclick = () => selectItem('initiative', init.id);
+                labelCell.innerHTML = `<div class="flex items-center gap-2"><span class="font-mono text-slate-900 dark:text-slate-100 font-bold">${init.id}</span><span class="text-[11px] text-slate-900 dark:text-slate-100">${getItemText(init,"initiatives")}</span></div>`;
+                tr.appendChild(labelCell);
+
+                for (let i = 0; i < numK; i++) {
+                    const kId = matrixData.kpis[i].id;
+                    const cellKey = `${init.id}_${kId}`;
+                    const corrVal = matrixData.correlations[cellKey] || 0;
+                    tr.appendChild(createCorrelationCell(cellKey, corrVal));
                 }
-                container.appendChild(categoryTr);
 
-                categoryItems.forEach(init => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 dark:hover:bg-[#141d35]/60 dark:bg-slate-800/50 transition-colors';
+                for (let i = 0; i < numOW; i++) {
+                    const owId = matrixData.owners[i].id;
+                    const cellKey = `${init.id}_${owId}`;
+                    const corrVal = matrixData.correlations[cellKey] || 0;
+                    tr.appendChild(createCorrelationCell(cellKey, corrVal, 'bg-slate-50 dark:bg-[#0f1729]/50'));
+                }
 
-                    for (let i = 0; i < numO; i++) {
-                        const oId = matrixData.annual[i].id;
-                        const cellKey = `${init.id}_${oId}`;
-                        const corrVal = matrixData.correlations[cellKey] || 0;
-                        tr.appendChild(createCorrelationCell(cellKey, corrVal, 'bg-slate-100 dark:bg-[#0f1729] text-slate-800 dark:text-slate-200/50'));
-                    }
-
-                    const labelCell = document.createElement('td');
-                    labelCell.className = 'border border-slate-300 dark:border-[#1e2a4a] px-2 py-1 cursor-pointer font-medium text-left bg-white dark:bg-[#0d1326] hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all text-xs';
-                    if (selectedItem?.id === init.id) labelCell.classList.add('ring-2', 'ring-indigo-500', 'ring-inset');
-                    labelCell.onclick = () => selectItem('initiative', init.id);
-                    labelCell.innerHTML = `<div class="flex items-center gap-2"><span class="font-mono text-slate-900 dark:text-slate-100 font-bold">${init.id}</span><span class="text-[11px] text-slate-900 dark:text-slate-100">${getItemText(init,"initiatives")}</span></div>`;
-                    tr.appendChild(labelCell);
-
-                    for (let i = 0; i < numK; i++) {
-                        const kId = matrixData.kpis[i].id;
-                        const cellKey = `${init.id}_${kId}`;
-                        const corrVal = matrixData.correlations[cellKey] || 0;
-                        tr.appendChild(createCorrelationCell(cellKey, corrVal));
-                    }
-
-                    for (let i = 0; i < numOW; i++) {
-                        const owId = matrixData.owners[i].id;
-                        const cellKey = `${init.id}_${owId}`;
-                        const corrVal = matrixData.correlations[cellKey] || 0;
-                        tr.appendChild(createCorrelationCell(cellKey, corrVal, 'bg-slate-50 dark:bg-[#0f1729]/50'));
-                    }
-
-                    container.appendChild(tr);
-                });
+                container.appendChild(tr);
             });
 
             /* ==========================================
@@ -2870,7 +2978,7 @@ function applyStaticData(){
             const centerTr = document.createElement('tr');
             centerTr.className = "bg-slate-100 dark:bg-[#0f1729] text-slate-800 dark:text-slate-200";
 
-            // En-têtes des Objectifs Annuels (O1-O5, text vertical)
+            // En-têtes des Objectifs Annuels (A1-A11, text vertical)
             for (let i = 0; i < numO; i++) {
                 const o = matrixData.annual[i];
                 const td = document.createElement('td');
@@ -2898,8 +3006,8 @@ function applyStaticData(){
                 </svg>
                 <!-- Textes du Cadran -->
                 <div class="absolute top-2 left-1/2 -translate-x-1/2 text-center w-full px-2">
-                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">Progetti Chiave 2026</p>
-                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Operations</p>
+                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">INIZIATIVE / PROGETTI CHIAVE 2026</p>
+                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Operation</p>
                 </div>
                 <div class="absolute left-1.5 top-1/2 -translate-y-1/2 w-[90px] text-left">
                     <p class="font-black text-[10px] text-amber-950 dark:text-amber-400 leading-tight">Annual Objectives 2026</p>
@@ -2910,13 +3018,13 @@ function applyStaticData(){
                     <p class="text-[8px] text-amber-900/80 dark:text-amber-300/80">Performance</p>
                 </div>
                 <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-center w-full px-2">
-                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">Obiettivi Strategici</p>
-                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Results (3 anni)</p>
+                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">OBIETTIVI STRATEGICI (3 anni)</p>
+                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Results</p>
                 </div>
             `;
             centerTr.appendChild(xCell);
 
-            // En-têtes des KPIs (K1-K14, text vertical)
+            // En-têtes des KPIs (K1-K9, text vertical)
             for (let i = 0; i < numK; i++) {
                 const k = matrixData.kpis[i];
                 const td = document.createElement('td');

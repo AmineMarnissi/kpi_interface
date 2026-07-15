@@ -1,0 +1,531 @@
+{
+    "processus": "Production & Quality Control",
+    "description": "Indicateurs clés de performance par Business Unit",
+    "sites": {
+        "SAFETY": [
+            {
+                "nom": "Efficacité opérationnelle",
+                "code": "O-Eff%",
+                "formule": "Minutes standard produites / Total des minutes travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 56.3905,
+                    "mai_2026": 69.3181,
+                    "juin_2025": 66.6673,
+                    "ytd_2026": 66.292,
+                    "pytd_2025": 64.5104,
+                    "cible": 79.0
+                }
+            },
+            {
+                "nom": "Productivité en pièces/heure",
+                "code": "Productivity (p/h)",
+                "formule": "Volume de production FG / Total des heures travaillées",
+                "unite": "pièces / heure",
+                "valeurs": {
+                    "juin_2026": 0.5028,
+                    "mai_2026": 1.0056,
+                    "juin_2025": 0.8766,
+                    "ytd_2026": 0.8586,
+                    "pytd_2025": 0.8897,
+                    "cible": 1.05
+                }
+            },
+            {
+                "nom": "Volume de production",
+                "code": "Production Volume FG",
+                "formule": "Somme des unités de produits finis fabriquées",
+                "unite": "unités",
+                "valeurs": {
+                    "juin_2026": 1500.0,
+                    "mai_2026": 2532.0,
+                    "juin_2025": 2928.0,
+                    "ytd_2026": 15299.0,
+                    "pytd_2025": 20904.0,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de défaut FQC",
+                "code": "FQC Defective Rate",
+                "description": "Contrôle Qualité Final (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 11.449,
+                    "mai_2026": 5.9352,
+                    "juin_2025": 6.8409,
+                    "ytd_2026": 7.9389,
+                    "pytd_2025": 5.405,
+                    "cible": 3.5
+                }
+            },
+            {
+                "nom": "Taux de défaut OQC",
+                "code": "OQC Defective Rate",
+                "description": "Contrôle Qualité Sortant (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 1.3857,
+                    "mai_2026": 0.1385,
+                    "juin_2025": 0.5435,
+                    "ytd_2026": 1.0374,
+                    "pytd_2025": 1.4392,
+                    "cible": 1.5
+                }
+            },
+            {
+                "nom": "Ratio du volume de production",
+                "code": "Production Volume Ratio",
+                "description": "Volume réel vs Budget YTD",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 57.3742,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Taux d’utilisation de la capacité",
+                "code": "Capacity Utilization Ratio",
+                "formule": "Heures réelles de main-d'œuvre directe travaillées / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 24.5731,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Ratio d’efficacité",
+                "code": "Efficiency Ratio",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures réelles de main-d'œuvre directe travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 62.8664,
+                    "cible": 100.0
+                }
+            }
+        ],
+        "LEATHER": [
+            {
+                "nom": "Efficacité opérationnelle",
+                "code": "O-Eff%",
+                "formule": "Minutes standard produites / Total des minutes travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 66.7339,
+                    "mai_2026": 67.6131,
+                    "juin_2025": 81.2045,
+                    "ytd_2026": 63.3044,
+                    "pytd_2025": 77.7625,
+                    "cible": 77.0
+                }
+            },
+            {
+                "nom": "Productivité en pièces/heure",
+                "code": "Productivity (p/h)",
+                "formule": "Volume de production FG / Total des heures travaillées",
+                "unite": "pièces / heure",
+                "valeurs": {
+                    "juin_2026": 0.1042,
+                    "mai_2026": 0.1168,
+                    "juin_2025": 0.1457,
+                    "ytd_2026": 0.1053,
+                    "pytd_2025": 0.1347,
+                    "cible": 0.12
+                }
+            },
+            {
+                "nom": "Volume de production",
+                "code": "Production Volume FG",
+                "formule": "Somme des unités de produits finis fabriquées",
+                "unite": "unités",
+                "valeurs": {
+                    "juin_2026": 1510.0,
+                    "mai_2026": 1380.0,
+                    "juin_2025": 1764.0,
+                    "ytd_2026": 7862.0,
+                    "pytd_2025": 10030.0,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de défaut FQC",
+                "code": "FQC Defective Rate",
+                "description": "Contrôle Qualité Final (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 10.2027,
+                    "mai_2026": 12.7737,
+                    "juin_2025": 6.2683,
+                    "ytd_2026": 10.2412,
+                    "pytd_2025": 6.1077,
+                    "cible": 7.5
+                }
+            },
+            {
+                "nom": "Taux de défaut OQC",
+                "code": "OQC Defective Rate",
+                "description": "Contrôle Qualité Sortant (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 0.3738,
+                    "mai_2026": 0.6508,
+                    "juin_2025": 0.9112,
+                    "ytd_2026": 0.5179,
+                    "pytd_2025": 1.0797,
+                    "cible": 1.5
+                }
+            },
+            {
+                "nom": "Ratio du volume de production",
+                "code": "Production Volume Ratio",
+                "description": "Volume réel vs Budget YTD",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 80.8627,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Taux d’utilisation de la capacité",
+                "code": "Capacity Utilization Ratio",
+                "formule": "Heures réelles de main-d'œuvre directe travaillées / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 127.2168,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Ratio d’efficacité",
+                "code": "Efficiency Ratio",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures réelles de main-d'œuvre directe travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 63.5629,
+                    "cible": 100.0
+                }
+            }
+        ],
+        "D|AIR": [
+            {
+                "nom": "Efficacité opérationnelle",
+                "code": "O-Eff%",
+                "formule": "Minutes standard produites / Total des minutes travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 73.6534,
+                    "mai_2026": 77.1236,
+                    "juin_2025": 86.7666,
+                    "ytd_2026": 72.9075,
+                    "pytd_2025": 81.9443,
+                    "cible": 80.0
+                }
+            },
+            {
+                "nom": "Productivité en pièces/heure",
+                "code": "Productivity (p/h)",
+                "formule": "Volume de production FG / Total des heures travaillées",
+                "unite": "pièces / heure",
+                "valeurs": {
+                    "juin_2026": 1.2153,
+                    "mai_2026": 1.5582,
+                    "juin_2025": 1.2323,
+                    "ytd_2026": 1.5127,
+                    "pytd_2025": 1.6252,
+                    "cible": 2.47
+                }
+            },
+            {
+                "nom": "Volume de production",
+                "code": "Production Volume FG",
+                "formule": "Somme des unités de produits finis fabriquées",
+                "unite": "unités",
+                "valeurs": {
+                    "juin_2026": 1019.0,
+                    "mai_2026": 998.0,
+                    "juin_2025": 870.0,
+                    "ytd_2026": 6516.0,
+                    "pytd_2025": 9575.0,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de défaut FQC",
+                "code": "FQC Defective Rate",
+                "description": "Contrôle Qualité Final (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 6.5185,
+                    "mai_2026": 6.7524,
+                    "juin_2025": 0.4587,
+                    "ytd_2026": 2.2004,
+                    "pytd_2025": 0.1364,
+                    "cible": 0.5
+                }
+            },
+            {
+                "nom": "Taux de défaut OQC",
+                "code": "OQC Defective Rate",
+                "description": "Contrôle Qualité Sortant (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 0.6211,
+                    "mai_2026": 0.3731,
+                    "juin_2025": 1.3201,
+                    "ytd_2026": 0.5128,
+                    "pytd_2025": 0.6461,
+                    "cible": 0.5
+                }
+            },
+            {
+                "nom": "Ratio du volume de production",
+                "code": "Production Volume Ratio",
+                "description": "Volume réel vs Budget YTD",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 54.3162,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Taux d’utilisation de la capacité",
+                "code": "Capacity Utilization Ratio",
+                "formule": "Heures réelles de main-d'œuvre directe travaillées / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 71.1683,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Ratio d’efficacité",
+                "code": "Efficiency Ratio",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures réelles de main-d'œuvre directe travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 76.3209,
+                    "cible": 100.0
+                }
+            }
+        ],
+        "HELMET": [
+            {
+                "nom": "Efficacité opérationnelle",
+                "code": "O-Eff%",
+                "formule": "Minutes standard produites / Total des minutes travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": 79.0
+                }
+            },
+            {
+                "nom": "Productivité en pièces/heure",
+                "code": "Productivity (p/h)",
+                "formule": "Volume de production FG / Total des heures travaillées",
+                "unite": "pièces / heure",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": 1.05
+                }
+            },
+            {
+                "nom": "Volume de production",
+                "code": "Production Volume FG",
+                "formule": "Somme des unités de produits finis fabriquées",
+                "unite": "unités",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de défaut FQC",
+                "code": "FQC Defective Rate",
+                "description": "Contrôle Qualité Final (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": 3.5
+                }
+            },
+            {
+                "nom": "Taux de défaut OQC",
+                "code": "OQC Defective Rate",
+                "description": "Contrôle Qualité Sortant (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": 1.5
+                }
+            },
+            {
+                "nom": "Ratio du volume de production",
+                "code": "Production Volume Ratio",
+                "description": "Volume réel vs Budget YTD",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 78.5817,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Taux d’utilisation de la capacité",
+                "code": "Capacity Utilization Ratio",
+                "formule": "Heures réelles de main-d'œuvre directe travaillées / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 93.3064,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Ratio d’efficacité",
+                "code": "Efficiency Ratio",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures réelles de main-d'œuvre directe travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 84.2189,
+                    "cible": 100.0
+                }
+            }
+        ],
+        "MEL-T": [
+            {
+                "nom": "Efficacité opérationnelle",
+                "code": "O-Eff%",
+                "formule": "Minutes standard produites / Total des minutes travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 65.3664,
+                    "mai_2026": 68.3064,
+                    "juin_2025": 78.4417,
+                    "ytd_2026": 64.2815,
+                    "pytd_2025": 75.0015,
+                    "cible": 77.0
+                }
+            },
+            {
+                "nom": "Productivité en pièces/heure",
+                "code": "Productivity (p/h)",
+                "formule": "Volume de production FG / Total des heures travaillées",
+                "unite": "pièces / heure",
+                "valeurs": {
+                    "juin_2026": 0.2199,
+                    "mai_2026": 0.3278,
+                    "juin_2025": 0.3443,
+                    "ytd_2026": 0.3065,
+                    "pytd_2025": 0.3901,
+                    "cible": 0.52
+                }
+            },
+            {
+                "nom": "Volume de production",
+                "code": "Production Volume FG",
+                "formule": "Somme des unités de produits finis fabriquées",
+                "unite": "unités",
+                "valeurs": {
+                    "juin_2026": 4029.0,
+                    "mai_2026": 4910.0,
+                    "juin_2025": 5562.0,
+                    "ytd_2026": 29677.0,
+                    "pytd_2025": 40509.0,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de défaut FQC",
+                "code": "FQC Defective Rate",
+                "description": "Contrôle Qualité Final (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 9.5629,
+                    "mai_2026": 8.1045,
+                    "juin_2025": 4.9924,
+                    "ytd_2026": 7.4097,
+                    "pytd_2025": 4.3451,
+                    "cible": 3.8333
+                }
+            },
+            {
+                "nom": "Taux de défaut OQC",
+                "code": "OQC Defective Rate",
+                "description": "Contrôle Qualité Sortant (déplacé depuis QHSE)",
+                "formule": "(Unités défectueuses / Unités inspectées) x 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 0.7752,
+                    "mai_2026": 0.3446,
+                    "juin_2025": 0.8119,
+                    "ytd_2026": 0.7731,
+                    "pytd_2025": 1.1497,
+                    "cible": 1.1667
+                }
+            },
+            {
+                "nom": "Ratio du volume de production",
+                "code": "Production Volume Ratio",
+                "description": "Volume réel vs Budget YTD",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 75.2317,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Taux d’utilisation de la capacité",
+                "code": "Capacity Utilization Ratio",
+                "formule": "Heures réelles de main-d'œuvre directe travaillées / Heures budgétisées de main-d'œuvre directe × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 101.9766,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Ratio d’efficacité",
+                "code": "Efficiency Ratio",
+                "formule": "Heures standard de main-d'œuvre directe de la production réelle / Heures réelles de main-d'œuvre directe travaillées × 100",
+                "unite": "%",
+                "valeurs": {
+                    "ytd_2026": 68.8096,
+                    "cible": 100.0
+                }
+            }
+        ]
+    }
+}

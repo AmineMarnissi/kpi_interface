@@ -1,0 +1,980 @@
+{
+  "activeLeader": "kapusi",
+  "activeProcess": "Manufacturing",
+  "processBlueprint": [
+    {
+      "process": "Manufacturing",
+      "pilot": "Imre Kapusi",
+      "theme": "from-indigo-600 via-blue-600 to-cyan-500",
+      "rows": [
+        {
+          "axis": "S1",
+          "objectiveId": "A1",
+          "objective": "Développer de nouveaux produits",
+          "initiativeId": "I1",
+          "initiative": "Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A3",
+          "objective": "Réduire la dépendance aux couturières expertes (Skill Scarcity)",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K4",
+          "kpi": "% d'opérateurs polyvalents (>60 %), Skill Coverage",
+          "realityKpis": [
+            "training-completion",
+            "training-hours-per-employee"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I3",
+          "initiative": "Réduction de la complexité des opérations de couture",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I4",
+          "initiative": "Équilibrage des lignes selon les compétences disponibles",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I5",
+          "initiative": "Programme Lean Manufacturing & Kaizen",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A7",
+          "objective": "Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service",
+          "initiativeId": "I5",
+          "initiative": "Programme Lean Manufacturing & Kaizen",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A9",
+          "objective": "Intégrer les audits dans les plans d'amélioration",
+          "initiativeId": "I6",
+          "initiative": "Système intégré d'audits",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A8",
+          "objective": "Finaliser la structure organisationnelle et clarifier les rôles",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A10",
+          "objective": "Mettre en œuvre un plan structuré de formation et de développement des compétences",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        },
+        {
+          "axis": "S3",
+          "objectiveId": "A11",
+          "objective": "Améliorer la sécurité, le bien-être et l'engagement des collaborateurs",
+          "initiativeId": "I8",
+          "initiative": "Programme Sécurité, Bien-être et Engagement",
+          "kpiId": "K3",
+          "kpi": "OEE, Productivité, Throughput",
+          "realityKpis": [
+            "operational-efficiency",
+            "productivity",
+            "production-volume"
+          ]
+        }
+      ]
+    },
+    {
+      "process": "DAF",
+      "pilot": "Mohamed Sniha",
+      "theme": "from-fuchsia-600 via-violet-600 to-indigo-600",
+      "rows": [
+        {
+          "axis": "S1",
+          "objectiveId": "A1",
+          "objective": "Développer de nouveaux produits",
+          "initiativeId": "I1",
+          "initiative": "Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)",
+          "kpiId": "K1",
+          "kpi": "MCH, BCR, % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K1",
+          "kpi": "MCH, BCR, % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I3",
+          "initiative": "Réduction de la complexité des opérations de couture",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I4",
+          "initiative": "Équilibrage des lignes selon les compétences disponibles",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I5",
+          "initiative": "Programme Lean Manufacturing & Kaizen",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A9",
+          "objective": "Intégrer les audits dans les plans d'amélioration",
+          "initiativeId": "I6",
+          "initiative": "Système intégré d'audits",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A5",
+          "objective": "Réduire les coûts des bâtiments et des utilités de 5 à 10 %",
+          "initiativeId": "I11",
+          "initiative": "Rationalisation des espaces et réduction des bâtiments",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I12",
+          "initiative": "Réduction des coûts fixes (Overhead Optimization)",
+          "kpiId": "K1",
+          "kpi": "MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)",
+          "realityKpis": [
+            "maintenance-cost-hour",
+            "capex-consumption-rate",
+            "maintenance-cost"
+          ]
+        }
+      ]
+    },
+    {
+      "process": "Logistic Manager",
+      "pilot": "Mohamed Sniha",
+      "theme": "from-cyan-600 via-sky-600 to-blue-600",
+      "rows": [
+        {
+          "axis": "S1",
+          "objectiveId": "A1",
+          "objective": "Développer de nouveaux produits",
+          "initiativeId": "I1",
+          "initiative": "Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I3",
+          "initiative": "Réduction de la complexité des opérations de couture",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I4",
+          "initiative": "Équilibrage des lignes selon les compétences disponibles",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I5",
+          "initiative": "Programme Lean Manufacturing & Kaizen",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A8",
+          "objective": "Finaliser la structure organisationnelle et clarifier les rôles",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S3",
+          "objectiveId": "A11",
+          "objective": "Améliorer la sécurité, le bien-être et l'engagement des collaborateurs",
+          "initiativeId": "I8",
+          "initiative": "Programme Sécurité, Bien-être et Engagement",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A7",
+          "objective": "Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service",
+          "initiativeId": "I9",
+          "initiative": "Optimisation de la planification, des flux et de la logistique",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A5",
+          "objective": "Réduire les coûts des bâtiments et des utilités de 5 à 10 %",
+          "initiativeId": "I11",
+          "initiative": "Rationalisation des espaces et réduction des bâtiments",
+          "kpiId": "K6",
+          "kpi": "OTIF, Lead Time, Service Level, Stabilité du planning",
+          "realityKpis": [
+            "otif",
+            "production-lead-time",
+            "lead-time",
+            "service-level",
+            "delivery-reliability",
+            "shipped-pieces"
+          ]
+        }
+      ]
+    },
+    {
+      "process": "GRH",
+      "pilot": "Sabrine Neffeti",
+      "theme": "from-amber-500 via-orange-500 to-rose-500",
+      "rows": [
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K7",
+          "kpi": "ETCR, Temps moyen de formation (<3 mois)",
+          "realityKpis": [
+            "training-completion",
+            "training-hours-per-employee"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A3",
+          "objective": "Réduire la dépendance aux couturières expertes (Skill Scarcity)",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K8",
+          "kpi": "eNPS, UAR (Absentéisme), OTR (Turnover)",
+          "realityKpis": [
+            "turnover",
+            "absenteeism",
+            "overtime-rate"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I3",
+          "initiative": "Réduction de la complexité des opérations de couture",
+          "kpiId": "K7",
+          "kpi": "ETCR, Temps moyen de formation (<3 mois)",
+          "realityKpis": [
+            "training-completion",
+            "training-hours-per-employee"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I4",
+          "initiative": "Équilibrage des lignes selon les compétences disponibles",
+          "kpiId": "K7",
+          "kpi": "ETCR, Temps moyen de formation (<3 mois)",
+          "realityKpis": [
+            "training-completion",
+            "training-hours-per-employee"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A8",
+          "objective": "Finaliser la structure organisationnelle et clarifier les rôles",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K7",
+          "kpi": "ETCR, Temps moyen de formation (<3 mois)",
+          "realityKpis": [
+            "training-completion",
+            "training-hours-per-employee"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A10",
+          "objective": "Mettre en œuvre un plan structuré de formation et de développement des compétences",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K8",
+          "kpi": "eNPS, UAR (Absentéisme), OTR (Turnover)",
+          "realityKpis": [
+            "turnover",
+            "absenteeism",
+            "overtime-rate"
+          ]
+        },
+        {
+          "axis": "S3",
+          "objectiveId": "A11",
+          "objective": "Améliorer la sécurité, le bien-être et l'engagement des collaborateurs",
+          "initiativeId": "I8",
+          "initiative": "Programme Sécurité, Bien-être et Engagement",
+          "kpiId": "K8",
+          "kpi": "eNPS, UAR (Absentéisme), OTR (Turnover)",
+          "realityKpis": [
+            "turnover",
+            "absenteeism",
+            "overtime-rate"
+          ]
+        }
+      ]
+    },
+    {
+      "process": "QHSE",
+      "pilot": "Zouhour Fathallah",
+      "theme": "from-emerald-600 via-green-600 to-lime-500",
+      "rows": [
+        {
+          "axis": "S1",
+          "objectiveId": "A1",
+          "objective": "Développer de nouveaux produits",
+          "initiativeId": "I1",
+          "initiative": "Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I2",
+          "initiative": "Académie interne de couture (compétences de base)",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I3",
+          "initiative": "Réduction de la complexité des opérations de couture",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S1",
+          "objectiveId": "A2",
+          "objective": "Construire une main-d'œuvre masculine stable formée à la couture",
+          "initiativeId": "I4",
+          "initiative": "Équilibrage des lignes selon les compétences disponibles",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I5",
+          "initiative": "Programme Lean Manufacturing & Kaizen",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A9",
+          "objective": "Intégrer les audits dans les plans d'amélioration",
+          "initiativeId": "I6",
+          "initiative": "Système intégré d'audits",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A8",
+          "objective": "Finaliser la structure organisationnelle et clarifier les rôles",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S5",
+          "objectiveId": "A10",
+          "objective": "Mettre en œuvre un plan structuré de formation et de développement des compétences",
+          "initiativeId": "I7",
+          "initiative": "Plan structuré de formation et de développement des compétences",
+          "kpiId": "K9",
+          "kpi": "FR, SR, NALT, LD",
+          "realityKpis": [
+            "tf1",
+            "accidents",
+            "lost-time-accidents",
+            "lost-days"
+          ]
+        },
+        {
+          "axis": "S3",
+          "objectiveId": "A11",
+          "objective": "Améliorer la sécurité, le bien-être et l'engagement des collaborateurs",
+          "initiativeId": "I8",
+          "initiative": "Programme Sécurité, Bien-être et Engagement",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I10",
+          "initiative": "Energy Kaizen / Green Manufacturing",
+          "kpiId": "K2",
+          "kpi": "EC, IE, CO₂, WC",
+          "realityKpis": [
+            "electricity",
+            "electric-intensity",
+            "co2",
+            "water"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A5",
+          "objective": "Réduire les coûts des bâtiments et des utilités de 5 à 10 %",
+          "initiativeId": "I11",
+          "initiative": "Rationalisation des espaces et réduction des bâtiments",
+          "kpiId": "K2",
+          "kpi": "EC, IE, CO₂, WC",
+          "realityKpis": [
+            "electricity",
+            "electric-intensity",
+            "co2",
+            "water"
+          ]
+        },
+        {
+          "axis": "S2",
+          "objectiveId": "A4",
+          "objective": "Réduire les coûts opérationnels et de maintenance de 10 à 15 %",
+          "initiativeId": "I12",
+          "initiative": "Réduction des coûts fixes (Overhead Optimization)",
+          "kpiId": "K5",
+          "kpi": "DHU, % audits clôturés à temps",
+          "realityKpis": [
+            "fqc",
+            "oqc",
+            "qualipro-completion",
+            "customer-complaints"
+          ]
+        }
+      ]
+    }
+  ],
+  "leaders": [
+    {
+      "id": "kapusi",
+      "avatar": "IK",
+      "color": "from-indigo-600 to-blue-600",
+      "translations": {
+        "fr": {
+          "name": "Imre Kapusi",
+          "role": "Manufacturing Manager",
+          "process": "Production / Manufacturing",
+          "tasks": [
+            "I1 : Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)",
+            "I2 / I3 / I4 : Académie couture, réduction de la complexité et équilibrage des lignes selon les compétences",
+            "I5 / I6 / I7 / I8 : Lean, audits intégrés, formation structurée et programme sécurité / engagement"
+          ],
+          "kpis": [
+            {
+              "name": "K3 - OEE, Productivité, Throughput",
+              "actual": "10 lignes reliées",
+              "target": "Couverture multi-initiatives",
+              "status": "success"
+            },
+            {
+              "name": "K4 - Polyvalence / Skill Coverage",
+              "actual": "1 ligne reliée",
+              "target": "Couvrir la rareté compétences",
+              "status": "normal"
+            },
+            {
+              "name": "A7 sans initiative ni KPI",
+              "actual": "Chaîne complétée",
+              "target": "Chaîne complète",
+              "status": "success"
+            },
+            {
+              "name": "A10 sans initiative ni KPI",
+              "actual": "Chaîne complétée",
+              "target": "Chaîne complète",
+              "status": "success"
+            }
+          ],
+          "gapAnalysis": "Le pilotage Manufacturing est dense et transversal : 11 lignes couvrent 8 initiatives (I1, I2, I3, I4, I5, I6, I7, I8) sur 10 objectifs (A1–A4, A6–A11). Le noyau K3 (OEE, Productivité, Throughput) supporte 10 lignes tandis que K4 (Polyvalence) couvre 1 ligne sur A3. Toutes les chaînes sont désormais complètes, mais la forte concentration sur K3 reste un point de vigilance pour la lisibilité du pilotage.",
+          "priorities": [
+            "Diversifier les KPI en ajoutant des indicateurs RH (K7) et service (K6) pour éviter la surconcentration sur K3.",
+            "Utiliser la matrice détaillée pour piloter séparément les chantiers nouveaux produits, montée en compétences et performance de ligne.",
+            "Maintenir la cohérence des chaînes complétées (A7, A10) lors des revues mensuelles KPI."
+          ]
+        }
+      }
+    },
+    {
+      "id": "sniha-daf",
+      "avatar": "MS",
+      "color": "from-fuchsia-600 to-violet-600",
+      "translations": {
+        "fr": {
+          "name": "Mohamed Sniha",
+          "role": "Directeur Financier (DAF)",
+          "process": "Finance / DAF",
+          "tasks": [
+            "I1 / I2 : Support financier aux nouveaux produits et à l’académie interne de couture",
+            "I5 / I6 : Lean Manufacturing & Kaizen et système intégré d’audits",
+            "I11 / I12 : Rationalisation des espaces et réduction des coûts fixes (Overhead Optimization)"
+          ],
+          "kpis": [
+            {
+              "name": "K1 - MCH, BCR, % CA nouveaux produits",
+              "actual": "8 lignes reliées",
+              "target": "Couverture des axes S1",
+              "status": "success"
+            },
+            {
+              "name": "Initiatives sans KPI",
+              "actual": "0 ligne",
+              "target": "0 ligne",
+              "status": "success"
+            },
+            {
+              "name": "Objectifs couverts",
+              "actual": "A1, A2, A4, A5, A9",
+              "target": "Pilotage complet",
+              "status": "normal"
+            },
+            {
+              "name": "Chaînes complètes",
+              "actual": "8 / 8",
+              "target": "8 / 8",
+              "status": "success"
+            }
+          ],
+          "gapAnalysis": "Le bloc DAF couvre 8 initiatives (I1, I2, I3, I4, I5, I6, I11, I12) sur 8 objectifs (A1, A2, A3, A4, A5, A6, A7, A9). Toutes les chaînes sont désormais reliées à K1 (MCH, BCR, % CA nouveaux produits). La lecture reste agrégée via K1 seul — un découpage par famille (coûts fixes / coûts opérationnels / coûts bâtiment) améliorerait la finesse du pilotage.",
+          "priorities": [
+            "Conserver K1 comme agrégat financier mais ajouter un sous-KPI par initiative (coûts bâtiment, coûts opérationnels, overhead).",
+            "Séparer le pilotage nouveaux produits (I1) du pilotage structurel (I11, I12) pour éviter une lecture trop agrégée.",
+            "Rendre visible la couverture KPI des initiatives I11 et I12 dans la fiche de pilotage DAF."
+          ]
+        }
+      }
+    },
+    {
+      "id": "sniha-log",
+      "avatar": "MS",
+      "color": "from-cyan-600 to-blue-600",
+      "translations": {
+        "fr": {
+          "name": "Mohamed Sniha",
+          "role": "Logistic Manager",
+          "process": "Logistique / Planning & Flux",
+          "tasks": [
+            "I1 : Soutenir les lancements nouveaux produits avec une logistique synchronisée",
+            "I9 : Optimisation de la planification, des flux et de la logistique",
+            "I7 / I8 / I11 : Formation structurée, programme sécurité-engagement et rationalisation des espaces"
+          ],
+          "kpis": [
+            {
+              "name": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning",
+              "actual": "9 lignes reliées",
+              "target": "Pilotage des flux",
+              "status": "success"
+            },
+            {
+              "name": "Initiatives sans KPI",
+              "actual": "0 ligne",
+              "target": "0 ligne",
+              "status": "success"
+            },
+            {
+              "name": "Objectif A7",
+              "actual": "Couvert par I9 + K6",
+              "target": "Chaîne consolidée",
+              "status": "success"
+            },
+            {
+              "name": "Bloc support RH / structure",
+              "actual": "Présent mais non mesuré",
+              "target": "KPI dédiés",
+              "status": "normal"
+            }
+          ],
+          "gapAnalysis": "La logistique couvre 9 initiatives (I1, I2, I3, I4, I5, I7, I8, I9, I11) sur 10 objectifs (A1, A2, A3, A4, A5, A6, A7, A8, A10, A11). A7 (OTIF > 98 %) est la colonne vertébrale avec une chaîne consolidée I9 → K6. Le poste est occupé par interim par Mohamed Sniha — risque de gouvernance sur la continuité du pilotage.",
+          "priorities": [
+            "Conserver A7 comme colonne vertébrale du pilotage logistique et stabiliser le poste Logistic Manager (titulaire dédié).",
+            "Clarifier les responsabilités directes vs contributions transversales (I2, I3, I4, I5, I7, I8, I11).",
+            "Mesurer l'efficacité des initiatives support avec des KPI dédiés quand elles sont réellement pilotées par la logistique."
+          ]
+        }
+      }
+    },
+    {
+      "id": "neffeti",
+      "avatar": "SN",
+      "color": "from-amber-500 to-rose-500",
+      "translations": {
+        "fr": {
+          "name": "Sabrine Neffeti",
+          "role": "GRH / HR Manager",
+          "process": "Ressources Humaines / People",
+          "tasks": [
+            "I2 / I3 / I4 : Académie couture, réduction de la complexité et équilibrage selon les compétences disponibles",
+            "I7 : Plan structuré de formation et développement des compétences",
+            "I8 : Programme sécurité, bien-être et engagement"
+          ],
+          "kpis": [
+            {
+              "name": "K7 - ETCR, Temps moyen de formation",
+              "actual": "4 lignes reliées",
+              "target": "Montée en compétences",
+              "status": "success"
+            },
+            {
+              "name": "K8 - eNPS, UAR, OTR",
+              "actual": "3 lignes reliées",
+              "target": "Stabilité sociale",
+              "status": "success"
+            },
+            {
+              "name": "A3 sans initiative",
+              "actual": "Chaîne complétée",
+              "target": "Chaîne complète",
+              "status": "success"
+            },
+            {
+              "name": "A10 sans initiative",
+              "actual": "Chaîne complétée",
+              "target": "Chaîne complète",
+              "status": "success"
+            }
+          ],
+          "gapAnalysis": "Le bloc GRH est bien structuré avec 5 initiatives (I2, I3, I4, I7, I8) sur 5 objectifs (A2, A3, A8, A10, A11). La répartition est claire : K7 (Formation, 4 lignes) pour la montée en compétences et K8 (Engagement, 3 lignes) pour la stabilité sociale. Toutes les chaînes sont désormais complètes.",
+          "priorities": [
+            "Conserver la séparation entre performance formation (K7) et climat / stabilité sociale (K8).",
+            "Faire apparaître plus clairement le lien entre les initiatives compétences (I2, I3, I4) et la polyvalence atelier (K4).",
+            "Suivre l'impact des initiatives I7 et I8 sur la rétention et l'engagement (K8) en revue mensuelle."
+          ]
+        }
+      }
+    },
+    {
+      "id": "fathallah",
+      "avatar": "ZF",
+      "color": "from-emerald-600 to-lime-500",
+      "translations": {
+        "fr": {
+          "name": "Zouhour Fathallah",
+          "role": "QHSE Leader",
+          "process": "QHSE / Qualité / Sécurité / Environnement",
+          "tasks": [
+            "I1 / I5 / I6 : Nouveaux produits, Lean Manufacturing & Kaizen et système intégré d’audits",
+            "I8 : Programme sécurité, bien-être et engagement",
+            "I10 / I11 / I12 : Energy Kaizen, rationalisation des espaces et optimisation des coûts fixes"
+          ],
+          "kpis": [
+            {
+              "name": "K5 - DHU, % audits clôturés à temps",
+              "actual": "9 lignes reliées",
+              "target": "Qualité & audits",
+              "status": "success"
+            },
+            {
+              "name": "K2 - EC, IE, CO₂, WC",
+              "actual": "2 lignes reliées",
+              "target": "Performance environnementale",
+              "status": "success"
+            },
+            {
+              "name": "K9 - FR, SR, NALT, LD",
+              "actual": "1 ligne reliée",
+              "target": "Santé & sécurité",
+              "status": "normal"
+            },
+            {
+              "name": "Initiatives sans KPI",
+              "actual": "0 ligne",
+              "target": "0 ligne",
+              "status": "success"
+            }
+          ],
+          "gapAnalysis": "Le bloc QHSE est le plus chargé : 12 initiatives (I1, I2, I3, I4, I5, I6, I7, I8, I10, I11, I12) sur 11 objectifs (A1–A11). Trois familles de KPI sont actives : K5 (Qualité/Audits, 9 lignes), K2 (Énergie, 2 lignes) et K9 (Sécurité, 1 ligne). Toutes les chaînes sont désormais complètes.",
+          "priorities": [
+            "Renforcer la couverture K9 (Sécurité) qui n'a qu'une seule ligne — risque de sous-mesure des sujets HSE.",
+            "Maintenir une lecture séparée entre qualité opérationnelle, sécurité des personnes et performance environnementale.",
+            "Mieux distinguer les lignes directement pilotées par QHSE de celles en co-construction avec les autres processus."
+          ]
+        }
+      }
+    }
+  ]
+}

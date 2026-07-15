@@ -1,0 +1,58 @@
+[
+  {
+    "domaine":"Objectif Qualité (Q)",
+    "objectif":"Réduire les réclamations de 16 à 10",
+    "cible":"≤ 10",
+    "realisation":"9",
+    "statut":"✅ Atteint"
+  },
+  {
+    "domaine":"Objectif Qualité (Q)",
+    "objectif":"Améliorer taux de satisfaction clients de 5%",
+    "cible":"88,5% (83,5% + 5%)",
+    "realisation":"-",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif SST",
+    "objectif":"Obtention de l'attestation de prévention",
+    "cible":"-",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif SST",
+    "objectif":"Équipe de sécurité bien formée en SST",
+    "cible":"-",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif SST",
+    "objectif":"Augmenter le taux de conformité réglementaire de 10%",
+    "cible":"86,86% (76,86% + 10%)",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif Environnement (E)",
+    "objectif":"Valorisation des déchets banales",
+    "cible":"Registre bleu ANGED",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif Environnement (E)",
+    "objectif":"Avoir le registre bleu des déchets banales et le registre rouge des déchets dangereux",
+    "cible":"ANGED",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  },
+  {
+    "domaine":"Objectif Environnement (E)",
+    "objectif":"Augmenter le taux de conformité réglementaire de 10%",
+    "cible":"86,86% (76,86% + 10%)",
+    "realisation":"",
+    "statut":"🔄 En cours"
+  }
+]

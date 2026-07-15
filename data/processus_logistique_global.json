@@ -1,0 +1,652 @@
+{
+    "processus": "Planning & Logistics",
+    "description": "Indicateurs clés de performance logistique par Business Unit",
+    "notes": [
+        "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
+        "Les indicateurs exprimés en pourcentage sont convertis en valeurs sur 100, comme dans processus_production_global.json.",
+        "Certaines sections du classeur ne ventilent pas tous les indicateurs par BU ; ces valeurs restent null lorsque la source ne les fournit pas.",
+        "Dans plusieurs feuilles logistiques, MEL-T correspond au consolidé global."
+    ],
+    "sites": {
+        "SAFETY": [
+            {
+                "nom": "OTIF",
+                "code": "OTIF",
+                "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 20.0,
+                    "mai_2026": 89.0,
+                    "juin_2025": 37.5,
+                    "ytd_2026": 58.333333333333336,
+                    "pytd_2025": 73.0,
+                    "cible": 83.0
+                }
+            },
+            {
+                "nom": "Lead Time de production",
+                "code": "LT Production",
+                "formule": "Spedizione - Avvio",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 64.2,
+                    "mai_2026": 54,
+                    "juin_2025": null,
+                    "ytd_2026": 45.520833333333336,
+                    "pytd_2025": null,
+                    "cible": 90
+                }
+            },
+            {
+                "nom": "Lead Time End-to-End",
+                "code": "LT End-to-End",
+                "formule": "Consegna - Partenza materiale",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 114.4,
+                    "mai_2026": 84,
+                    "juin_2025": null,
+                    "ytd_2026": 91.08333333333333,
+                    "pytd_2025": null,
+                    "cible": 120
+                }
+            },
+            {
+                "nom": "Niveau de service",
+                "code": "Service Level",
+                "formule": "Units sold of finished goods / Budgeted units × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 64.76681942465436,
+                    "pytd_2025": 81.08639380315681,
+                    "cible": 95.0
+                }
+            },
+            {
+                "nom": "Fiabilité des livraisons",
+                "code": "POM",
+                "formule": "Error-free orders / Total orders × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 91.66666666666666,
+                    "mai_2026": 100,
+                    "juin_2025": 100,
+                    "ytd_2026": 97.40259740259741,
+                    "pytd_2025": null,
+                    "cible": 98.0
+                }
+            },
+            {
+                "nom": "Précision des stocks",
+                "code": "Inventory Accuracy Rate",
+                "formule": "Correct counted units / Units on record × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique total",
+                "code": "Total Logistic Cost",
+                "formule": "Fees cost + Transport cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique par pièce",
+                "code": "Logistic Cost Unit",
+                "formule": "Total logistic cost / Number of pieces shipped",
+                "unite": "TND / pièce",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Nombre de pièces expédiées",
+                "code": "Shipped Pieces",
+                "formule": "Somme des pièces expédiées",
+                "unite": "pièces",
+                "valeurs": {
+                    "juin_2026": 2300,
+                    "mai_2026": 2300,
+                    "juin_2025": 3170,
+                    "ytd_2026": 17115,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "LEATHER": [
+            {
+                "nom": "OTIF",
+                "code": "OTIF",
+                "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 42.857142857142854,
+                    "mai_2026": 25.0,
+                    "juin_2025": 20.0,
+                    "ytd_2026": 55.10204081632652,
+                    "pytd_2025": 59.0,
+                    "cible": 69.0
+                }
+            },
+            {
+                "nom": "Lead Time de production",
+                "code": "LT Production",
+                "formule": "Spedizione - Avvio",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 31.785714285714285,
+                    "mai_2026": 66,
+                    "juin_2025": null,
+                    "ytd_2026": 57.08163265306123,
+                    "pytd_2025": null,
+                    "cible": 35
+                }
+            },
+            {
+                "nom": "Lead Time End-to-End",
+                "code": "LT End-to-End",
+                "formule": "Consegna - Partenza materiale",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 79.5,
+                    "mai_2026": 155,
+                    "juin_2025": null,
+                    "ytd_2026": 95.79591836734694,
+                    "pytd_2025": null,
+                    "cible": 125
+                }
+            },
+            {
+                "nom": "Niveau de service",
+                "code": "Service Level",
+                "formule": "Units sold of finished goods / Budgeted units × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 84.2883174731727,
+                    "pytd_2025": 97.72774113767518,
+                    "cible": 95.0
+                }
+            },
+            {
+                "nom": "Fiabilité des livraisons",
+                "code": "POM",
+                "formule": "Error-free orders / Total orders × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 98.33333333333333,
+                    "mai_2026": 100,
+                    "juin_2025": 100,
+                    "ytd_2026": 99.53703703703704,
+                    "pytd_2025": null,
+                    "cible": 98.0
+                }
+            },
+            {
+                "nom": "Précision des stocks",
+                "code": "Inventory Accuracy Rate",
+                "formule": "Correct counted units / Units on record × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique total",
+                "code": "Total Logistic Cost",
+                "formule": "Fees cost + Transport cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique par pièce",
+                "code": "Logistic Cost Unit",
+                "formule": "Total logistic cost / Number of pieces shipped",
+                "unite": "TND / pièce",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Nombre de pièces expédiées",
+                "code": "Shipped Pieces",
+                "formule": "Somme des pièces expédiées",
+                "unite": "pièces",
+                "valeurs": {
+                    "juin_2026": 1536,
+                    "mai_2026": 1536,
+                    "juin_2025": 1697,
+                    "ytd_2026": 8156,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "D|AIR": [
+            {
+                "nom": "OTIF",
+                "code": "OTIF",
+                "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 85.71428571428571,
+                    "mai_2026": 100,
+                    "juin_2025": 100,
+                    "ytd_2026": 89.47368421052632,
+                    "pytd_2025": 82.0,
+                    "cible": 92.0
+                }
+            },
+            {
+                "nom": "Lead Time de production",
+                "code": "LT Production",
+                "formule": "Spedizione - Avvio",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 17.571428571428573,
+                    "mai_2026": 30,
+                    "juin_2025": null,
+                    "ytd_2026": 24.31578947368421,
+                    "pytd_2025": null,
+                    "cible": 15
+                }
+            },
+            {
+                "nom": "Lead Time End-to-End",
+                "code": "LT End-to-End",
+                "formule": "Consegna - Partenza materiale",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 57,
+                    "mai_2026": 102,
+                    "juin_2025": null,
+                    "ytd_2026": 76.36842105263158,
+                    "pytd_2025": null,
+                    "cible": 105
+                }
+            },
+            {
+                "nom": "Niveau de service",
+                "code": "Service Level",
+                "formule": "Units sold of finished goods / Budgeted units × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 56.91597906130779,
+                    "pytd_2025": 44.67483729989074,
+                    "cible": 95.0
+                }
+            },
+            {
+                "nom": "Fiabilité des livraisons",
+                "code": "POM",
+                "formule": "Error-free orders / Total orders × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 100,
+                    "mai_2026": 100,
+                    "juin_2025": 100,
+                    "ytd_2026": 100,
+                    "pytd_2025": null,
+                    "cible": 98.0
+                }
+            },
+            {
+                "nom": "Précision des stocks",
+                "code": "Inventory Accuracy Rate",
+                "formule": "Correct counted units / Units on record × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique total",
+                "code": "Total Logistic Cost",
+                "formule": "Fees cost + Transport cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique par pièce",
+                "code": "Logistic Cost Unit",
+                "formule": "Total logistic cost / Number of pieces shipped",
+                "unite": "TND / pièce",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Nombre de pièces expédiées",
+                "code": "Shipped Pieces",
+                "formule": "Somme des pièces expédiées",
+                "unite": "pièces",
+                "valeurs": {
+                    "juin_2026": 868,
+                    "mai_2026": 868,
+                    "juin_2025": 904,
+                    "ytd_2026": 5895,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "HELMET": [
+            {
+                "nom": "OTIF",
+                "code": "OTIF",
+                "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Lead Time de production",
+                "code": "LT Production",
+                "formule": "Spedizione - Avvio",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Lead Time End-to-End",
+                "code": "LT End-to-End",
+                "formule": "Consegna - Partenza materiale",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Niveau de service",
+                "code": "Service Level",
+                "formule": "Units sold of finished goods / Budgeted units × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Fiabilité des livraisons",
+                "code": "POM",
+                "formule": "Error-free orders / Total orders × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Précision des stocks",
+                "code": "Inventory Accuracy Rate",
+                "formule": "Correct counted units / Units on record × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique total",
+                "code": "Total Logistic Cost",
+                "formule": "Fees cost + Transport cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique par pièce",
+                "code": "Logistic Cost Unit",
+                "formule": "Total logistic cost / Number of pieces shipped",
+                "unite": "TND / pièce",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Nombre de pièces expédiées",
+                "code": "Shipped Pieces",
+                "formule": "Somme des pièces expédiées",
+                "unite": "pièces",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "MEL-T": [
+            {
+                "nom": "OTIF",
+                "code": "OTIF",
+                "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 50.0,
+                    "mai_2026": 71.0,
+                    "juin_2025": 50.0,
+                    "ytd_2026": 62.06896551724138,
+                    "pytd_2025": 69.0,
+                    "cible": 79.0
+                }
+            },
+            {
+                "nom": "Lead Time de production",
+                "code": "LT Production",
+                "formule": "Spedizione - Avvio",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 30.73076923076923,
+                    "mai_2026": 38,
+                    "juin_2025": null,
+                    "ytd_2026": 45.293103448275865,
+                    "pytd_2025": null,
+                    "cible": 27
+                }
+            },
+            {
+                "nom": "Lead Time End-to-End",
+                "code": "LT End-to-End",
+                "formule": "Consegna - Partenza materiale",
+                "unite": "jours",
+                "valeurs": {
+                    "juin_2026": 80.15384615384616,
+                    "mai_2026": 106,
+                    "juin_2025": null,
+                    "ytd_2026": 90.66379310344827,
+                    "pytd_2025": null,
+                    "cible": 117
+                }
+            },
+            {
+                "nom": "Niveau de service",
+                "code": "Service Level",
+                "formule": "Units sold of finished goods / Budgeted units × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 66.98149248662875,
+                    "pytd_2025": 70.36787697867854,
+                    "cible": 95.0
+                }
+            },
+            {
+                "nom": "Fiabilité des livraisons",
+                "code": "POM",
+                "formule": "Error-free orders / Total orders × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 98.4375,
+                    "mai_2026": 100,
+                    "juin_2025": 100,
+                    "ytd_2026": 99.44649446494465,
+                    "pytd_2025": null,
+                    "cible": 98.0
+                }
+            },
+            {
+                "nom": "Précision des stocks",
+                "code": "Inventory Accuracy Rate",
+                "formule": "Correct counted units / Units on record × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 43.47826086956522,
+                    "pytd_2025": null,
+                    "cible": 97.0
+                }
+            },
+            {
+                "nom": "Coût logistique total",
+                "code": "Total Logistic Cost",
+                "formule": "Fees cost + Transport cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 58863.793999999994,
+                    "mai_2026": 64973.246,
+                    "juin_2025": 29253.972,
+                    "ytd_2026": 293330.463,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût logistique par pièce",
+                "code": "Logistic Cost Unit",
+                "formule": "Total logistic cost / Number of pieces shipped",
+                "unite": "TND / pièce",
+                "valeurs": {
+                    "juin_2026": 12.513561649659863,
+                    "mai_2026": 13.812339710884354,
+                    "juin_2025": 5.0691339455900195,
+                    "ytd_2026": 9.41187393313226,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Nombre de pièces expédiées",
+                "code": "Shipped Pieces",
+                "formule": "Somme des pièces expédiées",
+                "unite": "pièces",
+                "valeurs": {
+                    "juin_2026": 4704,
+                    "mai_2026": 4704,
+                    "juin_2025": 5771,
+                    "ytd_2026": 31166,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ]
+    }
+}

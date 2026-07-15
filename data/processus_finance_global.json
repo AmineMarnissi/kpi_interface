@@ -1,0 +1,589 @@
+{
+    "processus": "Finance",
+    "description": "Indicateurs clés de performance finance et CAPEX",
+    "notes": [
+        "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
+        "Les indicateurs matière sont ventilés par BU ; les indicateurs maintenance et CAPEX sont disponibles au niveau consolidé.",
+        "Les valeurs CAPEX correspondent au snapshot courant du tableau de suivi et non à une série mensuelle complète par BU."
+    ],
+    "sites": {
+        "SAFETY": [
+            {
+                "nom": "Valeur des rebuts matière",
+                "code": "Scrap Material Value",
+                "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
+                "unite": "EUR",
+                "valeurs": {
+                    "juin_2026": 96,
+                    "mai_2026": 0,
+                    "juin_2025": 483,
+                    "ytd_2026": 975,
+                    "pytd_2025": null,
+                    "cible": 568.35785
+                }
+            },
+            {
+                "nom": "Coût total de maintenance",
+                "code": "Maintenance Total Cost",
+                "formule": "Maintenance labor cost + Spare parts cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût de maintenance par heure directe",
+                "code": "Maintenance Cost/h DL",
+                "formule": "Maintenance total cost / Total direct labour hours worked",
+                "unite": "TND / heure directe",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX réalisé",
+                "code": "CAPEX Done",
+                "formule": "Montant CAPEX réalisé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX approuvé",
+                "code": "CAPEX Approved",
+                "formule": "Montant CAPEX approuvé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX total actuel",
+                "code": "CAPEX Actual",
+                "formule": "Montant CAPEX total actuel",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de consommation du budget CAPEX",
+                "code": "CAPEX Consumption Rate",
+                "formule": "CAPEX total actuel / CAPEX approuvé × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Répartition du CAPEX par catégorie",
+                "code": "CAPEX Category Split",
+                "formule": "Répartition du CAPEX actuel par catégorie",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "LEATHER": [
+            {
+                "nom": "Valeur des rebuts matière",
+                "code": "Scrap Material Value",
+                "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
+                "unite": "EUR",
+                "valeurs": {
+                    "juin_2026": 79,
+                    "mai_2026": 203,
+                    "juin_2025": 0,
+                    "ytd_2026": 1230,
+                    "pytd_2025": null,
+                    "cible": 669.68516
+                }
+            },
+            {
+                "nom": "Coût total de maintenance",
+                "code": "Maintenance Total Cost",
+                "formule": "Maintenance labor cost + Spare parts cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût de maintenance par heure directe",
+                "code": "Maintenance Cost/h DL",
+                "formule": "Maintenance total cost / Total direct labour hours worked",
+                "unite": "TND / heure directe",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX réalisé",
+                "code": "CAPEX Done",
+                "formule": "Montant CAPEX réalisé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX approuvé",
+                "code": "CAPEX Approved",
+                "formule": "Montant CAPEX approuvé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX total actuel",
+                "code": "CAPEX Actual",
+                "formule": "Montant CAPEX total actuel",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de consommation du budget CAPEX",
+                "code": "CAPEX Consumption Rate",
+                "formule": "CAPEX total actuel / CAPEX approuvé × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Répartition du CAPEX par catégorie",
+                "code": "CAPEX Category Split",
+                "formule": "Répartition du CAPEX actuel par catégorie",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "D|AIR": [
+            {
+                "nom": "Valeur des rebuts matière",
+                "code": "Scrap Material Value",
+                "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
+                "unite": "EUR",
+                "valeurs": {
+                    "juin_2026": 12,
+                    "mai_2026": 0,
+                    "juin_2025": 0.11,
+                    "ytd_2026": 12,
+                    "pytd_2025": null,
+                    "cible": 413.04924
+                }
+            },
+            {
+                "nom": "Coût total de maintenance",
+                "code": "Maintenance Total Cost",
+                "formule": "Maintenance labor cost + Spare parts cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût de maintenance par heure directe",
+                "code": "Maintenance Cost/h DL",
+                "formule": "Maintenance total cost / Total direct labour hours worked",
+                "unite": "TND / heure directe",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX réalisé",
+                "code": "CAPEX Done",
+                "formule": "Montant CAPEX réalisé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX approuvé",
+                "code": "CAPEX Approved",
+                "formule": "Montant CAPEX approuvé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX total actuel",
+                "code": "CAPEX Actual",
+                "formule": "Montant CAPEX total actuel",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de consommation du budget CAPEX",
+                "code": "CAPEX Consumption Rate",
+                "formule": "CAPEX total actuel / CAPEX approuvé × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Répartition du CAPEX par catégorie",
+                "code": "CAPEX Category Split",
+                "formule": "Répartition du CAPEX actuel par catégorie",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "HELMET": [
+            {
+                "nom": "Valeur des rebuts matière",
+                "code": "Scrap Material Value",
+                "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
+                "unite": "EUR",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût total de maintenance",
+                "code": "Maintenance Total Cost",
+                "formule": "Maintenance labor cost + Spare parts cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Coût de maintenance par heure directe",
+                "code": "Maintenance Cost/h DL",
+                "formule": "Maintenance total cost / Total direct labour hours worked",
+                "unite": "TND / heure directe",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX réalisé",
+                "code": "CAPEX Done",
+                "formule": "Montant CAPEX réalisé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX approuvé",
+                "code": "CAPEX Approved",
+                "formule": "Montant CAPEX approuvé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX total actuel",
+                "code": "CAPEX Actual",
+                "formule": "Montant CAPEX total actuel",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de consommation du budget CAPEX",
+                "code": "CAPEX Consumption Rate",
+                "formule": "CAPEX total actuel / CAPEX approuvé × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Répartition du CAPEX par catégorie",
+                "code": "CAPEX Category Split",
+                "formule": "Répartition du CAPEX actuel par catégorie",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": null,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": null,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            }
+        ],
+        "MEL-T": [
+            {
+                "nom": "Valeur des rebuts matière",
+                "code": "Scrap Material Value",
+                "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
+                "unite": "EUR",
+                "valeurs": {
+                    "juin_2026": 187,
+                    "mai_2026": 203,
+                    "juin_2025": 483.11,
+                    "ytd_2026": 2217,
+                    "pytd_2025": null,
+                    "cible": 1651.09225
+                }
+            },
+            {
+                "nom": "Coût total de maintenance",
+                "code": "Maintenance Total Cost",
+                "formule": "Maintenance labor cost + Spare parts cost",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 0,
+                    "mai_2026": 12370.127000000002,
+                    "juin_2025": 12449.186,
+                    "ytd_2026": 85416.427,
+                    "pytd_2025": null,
+                    "cible": 102663.82974249999
+                }
+            },
+            {
+                "nom": "Coût de maintenance par heure directe",
+                "code": "Maintenance Cost/h DL",
+                "formule": "Maintenance total cost / Total direct labour hours worked",
+                "unite": "TND / heure directe",
+                "valeurs": {
+                    "juin_2026": 0,
+                    "mai_2026": 0.8033854197109922,
+                    "juin_2025": 0.727831038615569,
+                    "ytd_2026": 1.0191006078827902,
+                    "pytd_2025": 0.8764744493319261,
+                    "cible": 0.6878994237063838
+                }
+            },
+            {
+                "nom": "CAPEX réalisé",
+                "code": "CAPEX Done",
+                "formule": "Montant CAPEX réalisé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 245496.2929,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 245496.2929,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX approuvé",
+                "code": "CAPEX Approved",
+                "formule": "Montant CAPEX approuvé",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 139511.53,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 139511.53,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "CAPEX total actuel",
+                "code": "CAPEX Actual",
+                "formule": "Montant CAPEX total actuel",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 385007.8229000001,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 385007.8229000001,
+                    "pytd_2025": null,
+                    "cible": null
+                }
+            },
+            {
+                "nom": "Taux de consommation du budget CAPEX",
+                "code": "CAPEX Consumption Rate",
+                "formule": "CAPEX total actuel / CAPEX approuvé × 100",
+                "unite": "%",
+                "valeurs": {
+                    "juin_2026": 275.9684614597805,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 275.9684614597805,
+                    "pytd_2025": null,
+                    "cible": 100.0
+                }
+            },
+            {
+                "nom": "Répartition du CAPEX par catégorie",
+                "code": "CAPEX Category Split",
+                "formule": "Répartition du CAPEX actuel par catégorie",
+                "unite": "TND",
+                "valeurs": {
+                    "juin_2026": 385007.8229000001,
+                    "mai_2026": null,
+                    "juin_2025": null,
+                    "ytd_2026": 385007.8229000001,
+                    "pytd_2025": null,
+                    "cible": null
+                },
+                "details": {
+                    "Machinery": 300220,
+                    "Industrial equipments": 45329.96599999999,
+                    "Generic plants": 29900.357,
+                    "IT equipments and software licence": 6398,
+                    "Leasehold Improvements": 1850,
+                    "Shops and Office Furniture and equipments": 1309.4999
+                }
+            }
+        ]
+    }
+}

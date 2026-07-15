@@ -1,0 +1,308 @@
+[
+  {
+    "processus":"SMQ",
+    "acronyme":"CQR",
+    "indicateur":"Customer Quality Rate",
+    "objectif":"Réduire réclamations",
+    "unite":"%",
+    "cible":"≤ 0,5%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"SMQ",
+    "acronyme":"CC",
+    "indicateur":"Customer Claims",
+    "objectif":"Améliorer satisfaction client",
+    "unite":"#",
+    "cible":"≤ 4\/an",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"SMQ",
+    "acronyme":"AC",
+    "indicateur":"Audit Non-Conformités",
+    "objectif":"Efficacité système QSE",
+    "unite":"#",
+    "cible":"0 NC majeur",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"SMQ",
+    "acronyme":"SUR.Q",
+    "indicateur":"QUALIPRO System Usage Rate",
+    "objectif":"Améliorer numérisation",
+    "unite":"%",
+    "cible":"≥ 90%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"SMQ",
+    "acronyme":"CSR",
+    "indicateur":"Customer Satisfaction Rate",
+    "objectif":"Améliorer satisfaction",
+    "unite":"%",
+    "cible":"≥ 90%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"RCR",
+    "indicateur":"Regulatory Compliance Rate",
+    "objectif":"Assurer conformité légale",
+    "unite":"%",
+    "cible":"= 100%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"OH&S ACR",
+    "indicateur":"Occupational Health & Safety Action Completion Rate",
+    "objectif":"Suivi actions SST",
+    "unite":"%",
+    "cible":"≥ 90%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"ENV. ACR",
+    "indicateur":"Environmental Action Completion Rate",
+    "objectif":"Suivi objectifs environnementaux",
+    "unite":"%",
+    "cible":"≥ 90%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"FR",
+    "indicateur":"Frequency Rate",
+    "objectif":"Maîtriser risques professionnels",
+    "unite":"#",
+    "cible":"≤ 12",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"SR",
+    "indicateur":"Severity Rate",
+    "objectif":"Maîtriser risques professionnels",
+    "unite":"#",
+    "cible":"≤ 0,8",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"NALT",
+    "indicateur":"Number of Accidents with Lost Time",
+    "objectif":"Réduire accidents",
+    "unite":"#",
+    "cible":"≤ 3",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"LD",
+    "indicateur":"Lost Days",
+    "objectif":"Réduire jours perdus",
+    "unite":"#",
+    "cible":"≤ 20\/j-P",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"EC",
+    "indicateur":"Total Energy Consumption (TEP)",
+    "objectif":"Réduction consommation énergie",
+    "unite":"TEP",
+    "cible":"< 800 TEP\/an",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"IE",
+    "indicateur":"Global Electrical Intensity",
+    "objectif":"Suivi performance énergétique",
+    "unite":"kWh\/unit",
+    "cible":"≤ 1",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"CO2",
+    "indicateur":"Total CO₂ Emissions",
+    "objectif":"Réduction émissions GES",
+    "unite":"CO2",
+    "cible":"≤ 5%\/an",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HSE",
+    "acronyme":"WC",
+    "indicateur":"Water Consumption",
+    "objectif":"Réduction consommation eau",
+    "unite":"L\/P\/J",
+    "cible":"≤ 60",
+    "frequence":"Trimestriel"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"FQR",
+    "indicateur":"Final Quality Control Rate",
+    "objectif":"Réduire non-conformités",
+    "unite":"%",
+    "cible":"MELT: Safety ≤ 3.5%, Leather ≤ 7.5%, D|AIR ≤ 0.5%",
+    "frequence":"Quotidien"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"OQR",
+    "indicateur":"Outgoing Quality Control Rate",
+    "objectif":"Garantir qualité finale",
+    "unite":"%",
+    "cible":"Safety ≤ 1.5%, Leather ≤ 1.5%, D-AIR ≤ 0.5%",
+    "frequence":"Quotidien"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"OEE",
+    "indicateur":"Operational Efficiency",
+    "objectif":"Optimiser productivité",
+    "unite":"%",
+    "cible":"Safety 80%, Leather 79%, D-AIR 81%",
+    "frequence":"Quotidien"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"TP",
+    "indicateur":"Throughput (pieces\/hour)",
+    "objectif":"Améliorer rendement",
+    "unite":"Nb\/h",
+    "cible":"≥ 20",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"P-FQC",
+    "indicateur":"Productivity – Final Quality Control",
+    "objectif":"Améliorer productivité FQC",
+    "unite":"Nb\/h",
+    "cible":"≥ 20",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Manufacturing",
+    "acronyme":"PROD",
+    "indicateur":"Productivity (pieces\/hour)",
+    "objectif":"Améliorer performance globale",
+    "unite":"Nb\/h",
+    "cible":"≥ 25",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Planning & Logistics",
+    "acronyme":"SL",
+    "indicateur":"Service Level Rate",
+    "objectif":"Assurer niveau de service",
+    "unite":"%",
+    "cible":"≥ 95%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Planning & Logistics",
+    "acronyme":"OTIF",
+    "indicateur":"On Time In Full",
+    "objectif":"Livraison parfaite",
+    "unite":"%",
+    "cible":"+10 point % Vs Année-1",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Planning & Logistics",
+    "acronyme":"POM",
+    "indicateur":"Perfect Order Measurement Rate",
+    "objectif":"Zéro défaut logistique",
+    "unite":"%",
+    "cible":"≥ 98%",
+    "frequence":"Hebdomadaire"
+  },
+  {
+    "processus":"Planning & Logistics",
+    "acronyme":"IAR",
+    "indicateur":"Inventory Accuracy Rate",
+    "objectif":"Fiabilité stock",
+    "unite":"%",
+    "cible":"≥ 97%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Planning & Logistics",
+    "acronyme":"LT",
+    "indicateur":"Lead Time",
+    "objectif":"Réduire délais",
+    "unite":"Jours",
+    "cible":"MELT ≤ 40, Safety ≤ 32, Leather ≤ 45, D|AIR ≤ 39",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HR",
+    "acronyme":"UAR",
+    "indicateur":"Unplanned Absenteeism Rate",
+    "objectif":"Assurer continuité opérationnelle",
+    "unite":"%",
+    "cible":"≤ 7,5%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HR",
+    "acronyme":"OTR",
+    "indicateur":"Overall Turnover Rate",
+    "objectif":"Fidéliser compétences",
+    "unite":"%",
+    "cible":"-10 point % Vs Année-1",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HR",
+    "acronyme":"HBRR",
+    "indicateur":"Hire Budget Realization Rate",
+    "objectif":"Assurer disponibilité RH",
+    "unite":"%",
+    "cible":"≥ 95%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"HR",
+    "acronyme":"ETCR",
+    "indicateur":"Employee Training Completion Rate",
+    "objectif":"Développer compétences",
+    "unite":"%",
+    "cible":"≥ 90%",
+    "frequence":"Annuel"
+  },
+  {
+    "processus":"HR",
+    "acronyme":"eNPS",
+    "indicateur":"Employee Satisfaction Index",
+    "objectif":"Améliorer climat social",
+    "unite":"Score",
+    "cible":"50+",
+    "frequence":"Annuel"
+  },
+  {
+    "processus":"Maintenance",
+    "acronyme":"BCR",
+    "indicateur":"Budget Compliance Rate",
+    "objectif":"Maîtrise coûts",
+    "unite":"%",
+    "cible":"≤ 100%",
+    "frequence":"Mensuel"
+  },
+  {
+    "processus":"Maintenance",
+    "acronyme":"MCH",
+    "indicateur":"Maintenance Cost per Hour",
+    "objectif":"Maîtriser coûts maintenance",
+    "unite":"Dt\/H",
+    "cible":"≤ 90 Dt\/H",
+    "frequence":"Mensuel"
+  }
+]

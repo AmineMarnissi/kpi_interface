@@ -1,0 +1,83 @@
+[
+  {
+    "site":"leather",
+    "accidente":"Radhia HARADH",
+    "poste":"Ouvrier confection",
+    "date_accident":"2024-02-20",
+    "jours_perdus":8.0,
+    "cloture":"✅",
+    "annee":"2024"
+  },
+  {
+    "site":"leather",
+    "accidente":"Chadia HICHRI",
+    "poste":"Ouvrier prémontage à table",
+    "date_accident":"2024-02-26",
+    "jours_perdus":24.0,
+    "cloture":"✅",
+    "annee":"2024"
+  },
+  {
+    "site":"leather",
+    "accidente":"Faouzia TOUMI",
+    "poste":"Coupeur PRO",
+    "date_accident":"2024-05-17",
+    "jours_perdus":11.0,
+    "cloture":"✅",
+    "annee":"2024"
+  },
+  {
+    "site":"leather",
+    "accidente":"Houria THIMECH",
+    "poste":"Ouvrier confection",
+    "date_accident":"2025-03-15",
+    "jours_perdus":0.0,
+    "cloture":"✅",
+    "annee":"2025"
+  },
+  {
+    "site":"leather",
+    "accidente":"Nawres AMRI",
+    "poste":"Ouvrier prémontage à table",
+    "date_accident":"2025-04-14",
+    "jours_perdus":20.0,
+    "cloture":"✅",
+    "annee":"2025"
+  },
+  {
+    "site":"safety",
+    "accidente":"Leila MILED",
+    "poste":"Fabric Cutting Supervisor",
+    "date_accident":"2025-04-25",
+    "jours_perdus":9.0,
+    "cloture":"✅",
+    "annee":"2025"
+  },
+  {
+    "site":"leather",
+    "accidente":"Nawres LAZREG",
+    "poste":"Ouvrier d'assemblage à table",
+    "date_accident":"2025-06-19",
+    "jours_perdus":5.0,
+    "cloture":"✅",
+    "annee":"2025"
+  },
+  {
+    "site":"leather",
+    "accidente":"Aida EL HICHRI",
+    "poste":"Ouvrier confection",
+    "date_accident":"2025-09-09",
+    "jours_perdus":0.0,
+    "cloture":"✅",
+    "annee":"2025"
+  },
+  {
+    "site":"safety",
+    "accidente":"Houcine Hammali",
+    "poste":"Agent de maintenance",
+    "date_accident":"2026-06-17",
+    "jours_perdus":0.0,
+    "cloture":"✅",
+    "annee":"2026"
+  }
+]

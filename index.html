@@ -101,7 +101,17 @@
     .grad-text { background: linear-gradient(90deg,#4d77ff,#a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
     /* Table sticky */
-    .table-sticky th { position: sticky; top: 0; z-index: 5; }
+    .table-sticky {
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: auto;
+    }
+    .table-sticky th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: inherit;
+    }
 
     /* Animated gradient border */
     .gradient-border { position:relative; }
@@ -1420,11 +1430,14 @@
   window.hoshin_process_blueprint = [];
   window.qualipro_usage_details = null;
 
+  const DATA_VERSION = '2026-07-16-1';
+  const withDataVersion = (path) => `${path}?v=${encodeURIComponent(DATA_VERSION)}`;
+
   async function loadDataFromDataFolder() {
     try {
       // 1. Fetch targets
       try {
-        const resTargets = await fetch('data/smi_targets.json');
+        const resTargets = await fetch(withDataVersion('data/smi_targets.json'));
         if (resTargets.ok) {
           const targetsData = await resTargets.json();
           targetsData.forEach(t => {
@@ -1463,7 +1476,7 @@
 
       // 2. Fetch metrics
       try {
-        const resMetrics = await fetch('data/kpi_metrics.json');
+        const resMetrics = await fetch(withDataVersion('data/kpi_metrics.json'));
         if (resMetrics.ok) {
           const metricsData = await resMetrics.json();
           const siteMap = {
@@ -1513,7 +1526,7 @@
 
       // 2.5 Fetch Production JSON
       try {
-        const resProd = await fetch('data/processus_production_global.json');
+        const resProd = await fetch(withDataVersion('data/processus_production_global.json'));
         if (resProd.ok) {
           const prodData = await resProd.json();
           const periodMap = {
@@ -1578,7 +1591,7 @@
 
       // 2.6 Fetch Logistics JSON
       try {
-        const resLog = await fetch('data/processus_logistique_global.json');
+        const resLog = await fetch(withDataVersion('data/processus_logistique_global.json'));
         if (resLog.ok) {
           const logData = await resLog.json();
           const kpiMap = {
@@ -1629,7 +1642,7 @@
 
       // 2.7 Fetch RH JSON
       try {
-        const resRh = await fetch('data/processus_rh_global.json');
+        const resRh = await fetch(withDataVersion('data/processus_rh_global.json'));
         if (resRh.ok) {
           const rhData = await resRh.json();
           const kpiMap = {
@@ -1681,7 +1694,7 @@
 
       // 2.8 Fetch Finance JSON
       try {
-        const resFin = await fetch('data/processus_finance_global.json');
+        const resFin = await fetch(withDataVersion('data/processus_finance_global.json'));
         if (resFin.ok) {
           const finData = await resFin.json();
           const kpiMap = {
@@ -1740,7 +1753,7 @@
 
       // 3. Fetch safety register
       try {
-        const resSafety = await fetch('data/safety_register.json');
+        const resSafety = await fetch(withDataVersion('data/safety_register.json'));
         if (resSafety.ok) {
           window.safety_register = await resSafety.json();
         }
@@ -1750,7 +1763,7 @@
 
       // 4. Fetch Hoshin content
       try {
-        const resHoshin = await fetch('data/hoshin_content.json');
+        const resHoshin = await fetch(withDataVersion('data/hoshin_content.json'));
         if (resHoshin.ok) {
           const hoshinContent = await resHoshin.json();
           window.hoshin_database = hoshinContent.leaders || [];
@@ -1764,7 +1777,7 @@
 
       // 5. Fetch Objectives
       try {
-        const resObj = await fetch('data/qhse_objectifs.json');
+        const resObj = await fetch(withDataVersion('data/qhse_objectifs.json'));
         if (resObj.ok) {
           window.qhse_objectifs = await resObj.json();
         }
@@ -1774,7 +1787,7 @@
 
       // 6. Fetch Qualipro user details from Excel extraction
       try {
-        const resQualipro = await fetch('data/qualipro_usage_details.json');
+        const resQualipro = await fetch(withDataVersion('data/qualipro_usage_details.json'));
         if (resQualipro.ok) {
           window.qualipro_usage_details = await resQualipro.json();
           const totalRates = window.qualipro_usage_details?.totals?.rates || {};
@@ -3000,7 +3013,7 @@ function renderTree(){
   }
 
   function processTable(kpis){
-    return `<div class="overflow-auto max-h-[610px]"><table class="w-full text-xs table-sticky"><thead class="bg-slate-50 dark:bg-[#06081a]"><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">KPI</th><th class="p-3">Site</th>${PERIODS.map(p=>`<th class="p-3 whitespace-nowrap">${p.label}</th>`).join('')}<th class="p-3">Target</th><th class="p-3">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${kpis.map(k=>{const s=resolveSite(k);return `<tr class="hover:bg-slate-50 dark:hover:bg-[#141d35]/60 cursor-pointer" data-kpi-id="${k.id}"><td class="p-3"><b>${esc(k.name)}</b><div class="text-[10px] text-slate-500 mt-1">${esc(k.unit)}</div></td><td class="p-3">${s}</td>${PERIODS.map(p=>`<td class="p-3 whitespace-nowrap">${displayValue(getValue(k,s,p.key),k.unit)}</td>`).join('')}<td class="p-3 whitespace-nowrap">${displayValue(getTarget(k,s,state.period),k.unit)}</td><td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass(statusOf(k,s,state.period))}">${statusLabel(statusOf(k,s,state.period))}</span></td></tr>`;}).join('')}</tbody></table></div>`;
+    return `<div class="overflow-auto max-h-[610px]"><table class="w-full min-w-[1100px] text-xs table-sticky"><thead class="bg-slate-50 dark:bg-[#06081a]"><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">KPI</th><th class="p-3">Site</th>${PERIODS.map(p=>`<th class="p-3 whitespace-nowrap">${p.label}</th>`).join('')}<th class="p-3 whitespace-nowrap">Target</th><th class="p-3 whitespace-nowrap">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${kpis.map(k=>{const s=resolveSite(k);return `<tr class="hover:bg-slate-50 dark:hover:bg-[#141d35]/60 cursor-pointer" data-kpi-id="${k.id}"><td class="p-3 min-w-[220px]"><b>${esc(k.name)}</b><div class="text-[10px] text-slate-500 mt-1">${esc(k.unit)}</div></td><td class="p-3 whitespace-nowrap">${s}</td>${PERIODS.map(p=>`<td class="p-3 whitespace-nowrap">${displayValue(getValue(k,s,p.key),k.unit)}</td>`).join('')}<td class="p-3 whitespace-nowrap">${displayValue(getTarget(k,s,state.period),k.unit)}</td><td class="p-3 whitespace-nowrap"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass(statusOf(k,s,state.period))}">${statusLabel(statusOf(k,s,state.period))}</span></td></tr>`;}).join('')}</tbody></table></div>`;
   }
 
   function renderHeatmap(kpis){

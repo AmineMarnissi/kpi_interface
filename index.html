@@ -1604,7 +1604,6 @@
               if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
               if (!STATIC_DATA[staticKey].values) STATIC_DATA[staticKey].values = {};
               if (!STATIC_DATA[staticKey].values[siteLabel]) STATIC_DATA[staticKey].values[siteLabel] = {};
-              
               Object.entries(kpiObj.valeurs || {}).forEach(([rawPeriod, val]) => {
                 if (val === null) return;
                 if (rawPeriod === 'cible') {
@@ -1707,6 +1706,13 @@
               if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
               if (!STATIC_DATA[staticKey].values) STATIC_DATA[staticKey].values = {};
               if (!STATIC_DATA[staticKey].values[siteLabel]) STATIC_DATA[staticKey].values[siteLabel] = {};
+              if (kpiObj.details) {
+                STATIC_DATA[staticKey].details = STATIC_DATA[staticKey].details || {};
+                STATIC_DATA[staticKey].details[siteLabel] = kpiObj.details;
+              }
+              if (staticKey.startsWith('capex')) {
+                STATIC_DATA[staticKey].source = '202606_Factory_Meeting_KPIs -RECAP_v2.xlsx · Capex';
+              }
               
               Object.entries(kpiObj.valeurs || {}).forEach(([rawPeriod, val]) => {
                 if (val === null) return;
@@ -2289,6 +2295,18 @@ function applyStaticData(){
     return [...new Map(candidates.map(id => [id, state.kpis.find(k => k.id === id)])).values()].filter(Boolean);
   }
 
+  function stripLeadingCode(text, code) {
+    const raw = String(text || '').trim();
+    const normalizedCode = String(code || '').trim();
+    if (!raw || !normalizedCode) return raw;
+    const escaped = normalizedCode.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return raw.replace(new RegExp('^' + escaped + '\\s*[-:.]?\\s*', 'i'), '').trim();
+  }
+  function formatHoshinLabel(code, text, fallback) {
+    const cleanText = stripLeadingCode(text, code);
+    if (code && cleanText) return `${code} - ${cleanText}`;
+    return code || cleanText || fallback || '—';
+  }
   function worstStatus(statuses) {
     if (statuses.includes('red')) return 'red';
     if (statuses.includes('orange')) return 'orange';
@@ -2320,7 +2338,7 @@ function applyStaticData(){
       const value = item.value !== null ? displayValue(item.value, item.kpi.unit) : 'N/A';
       const target = item.target !== null ? displayValue(item.target, item.kpi.unit) : 'N/A';
       const gap = item.gap !== null ? signed(item.gap, item.kpi.unit) : 'N/A';
-      return `<div class="rounded-xl border border-slate-200/80 dark:border-slate-800 px-3 py-2 ${compact ? 'text-[11px]' : 'text-xs'}"><div class="flex items-center justify-between gap-2"><span class="font-bold text-slate-800 dark:text-slate-200">${item.kpi.name}</span><span class="px-2 py-1 rounded-full text-[9px] font-black ${statusClass(item.status)}">${item.label}</span></div><div class="mt-1 text-slate-500 dark:text-slate-400">Réalisé ${value} · Cible ${target} · Écart ${gap}</div></div>`;
+      return `<div class="rounded-xl border border-slate-200/80 dark:border-slate-800 px-3 py-2 ${compact ? 'text-[11px]' : 'text-xs'}"><div class="flex items-center justify-between gap-2"><span class="font-bold text-slate-800 dark:text-slate-200">${item.kpi.name}</span><span class="px-2 py-1 rounded-full text-[9px] font-black ${statusClass(item.status)}">${item.label}</span></div><div class="mt-1 text-slate-500 dark:text-slate-400">Terrain ${value} · Cible ${target} · Ecart ${gap}</div></div>`;
     }).join('')}</div>`;
   }
 
@@ -2373,8 +2391,8 @@ function applyStaticData(){
     const coverage = selectedRows.length ? Math.round(complete/selectedRows.length*100) : 0;
     $('#hoshin-process-spotlight').innerHTML = `<div class="rounded-[28px] overflow-hidden border border-slate-200/80 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] shadow-sm"><div class="p-6 bg-gradient-to-br ${current ? current.theme : 'from-slate-900 via-indigo-900 to-violet-800'} text-white"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5"><div><div class="text-[10px] uppercase tracking-[.22em] font-black text-white/65">${current ? 'Pilote · '+current.pilot : 'Vue consolidée MEL-T'}</div><h3 class="mt-2 text-2xl font-black">${current ? current.process : 'Tous les processus'}</h3><p class="mt-2 text-sm text-white/75 max-w-3xl">${current ? 'Pilotage de bout en bout des chaînes stratégiques affectées à ce processus.' : 'Consolidation des chaînes Hoshin de tous les processus et de leur traduction dans les indicateurs opérationnels.'}</p></div><div class="min-w-[280px]"><div class="flex justify-between text-xs font-bold"><span>Couverture des chaînes</span><span>${coverage}%</span></div><div class="mt-2 h-3 rounded-full bg-white/15 overflow-hidden"><div class="h-full rounded-full bg-white transition-all" style="width:${coverage}%"></div></div><div class="mt-3 grid grid-cols-3 gap-2 text-center"><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${complete}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Complètes</div></div><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${selectedRows.filter(r=>!r.initiativeId).length}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Sans initiative</div></div><div class="rounded-xl bg-white/10 p-2"><div class="text-xl font-black">${selectedRows.filter(r=>r.initiativeId&&!r.kpiId).length}</div><div class="text-[9px] uppercase tracking-wider text-white/65">Sans KPI</div></div></div></div></div></div></div>`;
 
-    const rowsHtml = selectedRows.map(r=>{const real=hoshinReality(r,r.process); return `<tr onclick="openHoshinRowModal('${r.rowKey.replace(/'/g,"'")}')" class="align-top cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-900/40"><td class="p-3"><div class="font-black">${r.process}</div><div class="text-[10px] text-slate-400">${r.pilot}</div></td><td class="p-3 font-black text-[#2952ff] dark:text-[#93b8ff]">${r.axis||'—'}</td><td class="p-3"><div class="font-black">${r.objectiveId||'—'}</div><div class="mt-1 text-slate-500 max-w-[260px]">${r.objective||'Non renseigné'}</div></td><td class="p-3"><div class="font-black">${r.initiativeId||'—'}</div><div class="mt-1 text-slate-500 max-w-[280px]">${r.initiative||'Non renseignée'}</div></td><td class="p-3"><div class="font-black">${r.kpiId||'—'}</div><div class="mt-1 text-slate-500 max-w-[230px]">${r.kpi||'Non renseigné'}</div></td><td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-black ${statusClass(real.status)}">${real.label}</span></td></tr>`;}).join('');
-    $('#hoshin-process-table').innerHTML = `<table class="w-full text-xs table-sticky min-w-[1100px]"><thead class="bg-slate-100/95 dark:bg-slate-950/95"><tr class="text-[9px] uppercase tracking-[.16em] text-slate-500"><th class="p-3 text-left">Processus</th><th class="p-3 text-left">Axe</th><th class="p-3 text-left">Objectif annuel</th><th class="p-3 text-left">Initiative</th><th class="p-3 text-left">KPI Hoshin</th><th class="p-3 text-left">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${rowsHtml}</tbody></table>`;
+    const rowsHtml = selectedRows.map(r=>{const real=hoshinReality(r,r.process); return `<tr onclick="openHoshinRowModal('${r.rowKey.replace(/'/g,"'")}')" class="align-top cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-900/40"><td class="p-3"><div class="font-black">${r.process}</div><div class="text-[10px] text-slate-400">${r.pilot}</div></td><td class="p-3 font-black text-[#2952ff] dark:text-[#93b8ff]">${r.axis||'—'}</td><td class="p-3"><div class="font-black">${r.objectiveId||'—'}</div><div class="mt-1 text-slate-500 max-w-[260px]">${stripLeadingCode(r.objective, r.objectiveId) || 'Non renseigne'}</div></td><td class="p-3"><div class="font-black">${r.initiativeId||'—'}</div><div class="mt-1 text-slate-500 max-w-[280px]">${stripLeadingCode(r.initiative, r.initiativeId) || 'Non renseignee'}</div></td><td class="p-3"><div class="font-black">${r.kpiId||'—'}</div><div class="mt-1 text-slate-500 max-w-[230px]">${stripLeadingCode(r.kpi, r.kpiId) || 'Non renseigne'}</div></td><td class="p-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-black ${statusClass(real.status)}">${real.label}</span></td></tr>`;}).join('');
+    $('#hoshin-process-table').innerHTML = `<table class="w-full text-xs min-w-[1100px]"><thead class="bg-slate-100/95 dark:bg-slate-950/95"><tr class="text-[9px] uppercase tracking-[.16em] text-slate-500"><th class="p-3 text-left">Processus</th><th class="p-3 text-left">Axe</th><th class="p-3 text-left">Objectif annuel</th><th class="p-3 text-left">Initiative</th><th class="p-3 text-left">KPI Hoshin</th><th class="p-3 text-left">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${rowsHtml}</tbody></table>`;
 
     const reals=selectedRows.map(r=>({r,real:hoshinReality(r,r.process)}));
     const counts={green:0,orange:0,red:0,gray:0};reals.forEach(x=>counts[x.real.status]++);
@@ -2403,21 +2421,21 @@ function applyStaticData(){
     const row = allRows.find(r => r.rowKey === rowKey);
     if (!row) return;
     const real = hoshinReality(row, row.process);
-    $('#modal-eyebrow').textContent = `${row.process} · ${row.objectiveId || '—'}`;
-    $('#modal-title').textContent = `${row.axis || 'Sans axe'} · ${row.objective || 'Chaîne Hoshin'}`;
+    $('#modal-eyebrow').textContent = `${row.process} · ${row.axis || 'Sans axe'} · ${row.objectiveId || '—'}`;
+    $('#modal-title').textContent = `${formatHoshinLabel(row.initiativeId, row.initiative, 'Initiative non renseignee')}`;
     $('#modal-body').innerHTML = `
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
           <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">Objectif annuel</div>
-          <div class="mt-2 font-black text-sm">${row.objectiveId || '—'} · ${row.objective || 'Non renseigné'}</div>
+          <div class="mt-2 font-black text-sm">${formatHoshinLabel(row.objectiveId, row.objective, 'Non renseigne')}</div>
         </div>
         <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
           <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">Initiative</div>
-          <div class="mt-2 font-black text-sm">${row.initiativeId || '—'} · ${row.initiative || 'Non renseignée'}</div>
+          <div class="mt-2 font-black text-sm">${formatHoshinLabel(row.initiativeId, row.initiative, 'Non renseignee')}</div>
         </div>
         <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
           <div class="text-[10px] uppercase tracking-[.16em] text-slate-400 font-black">KPI Hoshin</div>
-          <div class="mt-2 font-black text-sm">${row.kpiId || '—'} · ${row.kpi || 'Non renseigné'}</div>
+          <div class="mt-2 font-black text-sm">${formatHoshinLabel(row.kpiId, row.kpi, 'Non renseigne')}</div>
         </div>
       </div>
       <div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4">
@@ -3066,10 +3084,10 @@ function renderTree(){
   function openKpi(id){
     const k=state.kpis.find(x=>x.id===id); if(!k)return;
     state.selectedKpi=id;
-    const s=resolveSite(k),st=statusOf(k,s,state.period),v=getValue(k,s,state.period),t=getTarget(k,s,state.period);
+    const s=resolveSite(k),st=statusOf(k,s,state.period),v=getValue(k,s,state.period),target=getTarget(k,s,state.period);
     $('#modal-eyebrow').textContent=`${PROCESS_LIST.find(p=>p.id===k.process)?.label} · ${s}`;
     $('#modal-title').textContent=k.name;
-    $('#modal-body').innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'),displayValue(v,k.unit),'activity',st,periodLabel(state.period))}${summaryCard(t('modal_target'),displayValue(t,k.unit),'target',t===null?'gray':'green',t('modal_target_available'))}${summaryCard(t('modal_gap'),v!==null&&t!==null?signed(v-t,k.unit):t('na_label'),'git-compare',st,'Reel - Target')}${summaryCard(t('modal_status'),statusLabel(st),'badge-check',st,qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
+    $('#modal-body').innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'),displayValue(v,k.unit),'activity',st,periodLabel(state.period))}${summaryCard(t('modal_target'),displayValue(target,k.unit),'target',target===null?'gray':'green',t('modal_target_available'))}${summaryCard(t('modal_gap'),v!==null&&target!==null?signed(v-target,k.unit):t('na_label'),'git-compare',st,'Reel - Target')}${summaryCard(t('modal_status'),statusLabel(st),'badge-check',st,qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
     $('#detail-modal').showModal(); lucide.createIcons(); requestAnimationFrame(()=>{createPeriodChart('modal-period-chart',k);createSiteChart('modal-site-chart',k);});
   }
 

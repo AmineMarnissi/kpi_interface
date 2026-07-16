@@ -126,7 +126,7 @@
       <!-- Ligne 1: Logos et Titre -->
       <div class="flex items-center justify-between gap-4">
         <div class="flex items-center gap-4 min-w-0">
-          <div class="flex items-center justify-center h-12 shrink-0">
+          <div class="flex items-center justify-center h-8 shrink-0">
             <img src="light_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain dark:hidden" />
             <img src="dark_logo.png" alt="MEL-T Logo" class="h-full w-auto object-contain hidden dark:block" />
           </div>
@@ -138,7 +138,7 @@
             <h1 class="text-lg lg:text-xl font-black tracking-tight truncate dark:text-white">Factory Meeting Dashboard</h1>
           </div>
         </div>
-        <img src="melt_logo.jpeg" alt="MEL-T Icon" class="h-10 w-auto rounded border border-slate-200 dark:border-[#2d3f6e] shadow-sm object-contain hidden sm:block" />
+        <img src="melt_logo.png" alt="MEL-T Icon" class="h-6 w-auto rounded border border-slate-200 dark:border-[#2d3f6e] shadow-sm object-contain hidden sm:block" />
       </div>
       
       <!-- Ligne 2: Boutons -->
@@ -161,11 +161,11 @@
       <nav id="sidebar-nav" class="space-y-1.5"></nav>
       <div class="mt-auto pt-6">
         <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] p-4">
-          <div class="flex items-center gap-2 text-xs font-black text-[#2952ff] dark:text-[#7aa3ff]"><i data-lucide="database" class="w-4 h-4"></i>Qualité des données</div>
+          <div id="side-data-quality" class="flex items-center gap-2 text-xs font-black text-[#2952ff] dark:text-[#7aa3ff]"><i data-lucide="database" class="w-4 h-4"></i>Qualité des données</div>
           <div class="mt-3 space-y-2 text-[11px]">
-            <div class="flex justify-between"><span class="text-slate-500">KPI alimentés</span><strong id="side-loaded">0</strong></div>
-            <div class="flex justify-between"><span class="text-slate-500">KPI N/A</span><strong id="side-missing">0</strong></div>
-            <div class="flex justify-between"><span class="text-slate-500">Source</span><strong id="side-source" class="truncate max-w-[125px]">Aucune</strong></div>
+            <div class="flex justify-between"><span id="side-loaded-label" class="text-slate-500">KPI alimentés</span><strong id="side-loaded">0</strong></div>
+            <div class="flex justify-between"><span id="side-missing-label" class="text-slate-500">KPI N/A</span><strong id="side-missing">0</strong></div>
+            <div class="flex justify-between"><span id="side-source-label" class="text-slate-500">Source</span><strong id="side-source" class="truncate max-w-[125px]">Aucune</strong></div>
           </div>
         </div>
       </div>
@@ -180,27 +180,19 @@
 
       <section id="filter-bar" class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-4 shadow-sm">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
-          <label class="text-xs font-bold text-slate-500">Périmètre / site
-            <select id="site-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100">
-              <option value="Safety">Safety</option><option value="Leather">Leather</option><option value="D|AIR">D|AIR</option><option value="MEL-T">MEL-T global</option>
-            </select>
+          <label id="filter-site-label" class="text-xs font-bold text-slate-500">Périmètre / site
+            <select id="site-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100"></select>
           </label>
-          <label class="text-xs font-bold text-slate-500">Période principale
-            <select id="period-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100">
-              <option value="2026-06">Juin 2026</option><option value="2026-05">Mai 2026</option><option value="2026-04">Avril 2026</option><option value="2026-03">Mars 2026</option><option value="2026-02">Fév 2026</option><option value="2026-01">Jan 2026</option><option value="2025">2025</option><option value="2024">2024</option>
-            </select>
+          <label id="filter-period-label" class="text-xs font-bold text-slate-500">Période principale
+            <select id="period-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100"></select>
           </label>
-          <label class="text-xs font-bold text-slate-500">Comparaison
-            <select id="compare-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100">
-              <option value="ALL">Toutes</option><option value="2026-05">Mai 2026</option><option value="2026-04">Avril 2026</option><option value="2026-03">Mars 2026</option><option value="2026-02">Fév 2026</option><option value="2026-01">Jan 2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="TARGET">Target</option>
-            </select>
+          <label id="filter-compare-label" class="text-xs font-bold text-slate-500">Comparaison
+            <select id="compare-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100"></select>
           </label>
-          <label class="text-xs font-bold text-slate-500">Statut
-            <select id="status-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100">
-              <option value="ALL">Tous</option><option value="green">Atteint</option><option value="orange">À surveiller</option><option value="red">Critique</option><option value="gray">N/A</option>
-            </select>
+          <label id="filter-status-label" class="text-xs font-bold text-slate-500">Statut
+            <select id="status-filter" class="mt-1.5 w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] px-3 py-2.5 text-sm text-slate-800 dark:text-slate-100"></select>
           </label>
-          <label class="text-xs font-bold text-slate-500">Recherche KPI
+          <label id="filter-search-label" class="text-xs font-bold text-slate-500">Recherche KPI
             <div class="relative mt-1.5"><i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i><input id="kpi-search" placeholder="Nom, définition..." class="w-full rounded-xl border border-slate-200/70 dark:border-[#1e2a4a] bg-slate-50 dark:bg-[#06081a] pl-9 pr-3 py-2.5 text-sm" /></div>
           </label>
         </div>
@@ -211,8 +203,8 @@
   </div>
 
   <footer class="border-t border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] px-6 py-4 text-[11px] text-slate-500 flex flex-col md:flex-row gap-2 justify-between">
-    <span>© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard</span>
-    <span>HTML/JavaScript pur · Chart.js · Données statiques intégrées</span>
+    <span id="footer-credits">© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard</span>
+    <span id="footer-stack">HTML/JavaScript pur · Chart.js · Données statiques intégrées</span>
   </footer>
 
   <dialog id="detail-modal" class="backdrop:bg-slate-950/70 rounded-3xl p-0 w-[min(1100px,94vw)] max-h-[92vh] bg-white dark:bg-[#0d1326] text-slate-900 dark:text-slate-100 border border-slate-200/70 dark:border-[#1e2a4a] shadow-2xl">
@@ -228,16 +220,22 @@
   'use strict';
 
   const PERIODS = [
-    { key:'2024', label:"2024" },
-    { key:'2025', label:"2025" },
-    { key:'2025-06', label:'Juin 2025' },
-    { key:'2026-01', label:'Jan 2026' },
-    { key:'2026-02', label:'Fév 2026' },
-    { key:'2026-03', label:'Mar 2026' },
-    { key:'2026-04', label:'Avr 2026' },
-    { key:'2026-05', label:'Mai 2026' },
-    { key:'2026-06', label:'Juin 2026' }
+    { key:'2024' },
+    { key:'2025' },
+    { key:'2025-06' },
+    { key:'2026-01' },
+    { key:'2026-02' },
+    { key:'2026-03' },
+    { key:'2026-04' },
+    { key:'2026-05' },
+    { key:'2026-06' }
   ];
+  const PERIOD_LABELS = {
+    fr: { '2024':'2024', '2025':'2025', '2025-06':'Juin 2025', '2026-01':'Jan 2026', '2026-02':'Fev 2026', '2026-03':'Mar 2026', '2026-04':'Avr 2026', '2026-05':'Mai 2026', '2026-06':'Juin 2026' },
+    en: { '2024':'2024', '2025':'2025', '2025-06':'June 2025', '2026-01':'Jan 2026', '2026-02':'Feb 2026', '2026-03':'Mar 2026', '2026-04':'Apr 2026', '2026-05':'May 2026', '2026-06':'June 2026' },
+    ar: { '2024':'2024', '2025':'2025', '2025-06':'يونيو 2025', '2026-01':'يناير 2026', '2026-02':'فبراير 2026', '2026-03':'مارس 2026', '2026-04':'أبريل 2026', '2026-05':'مايو 2026', '2026-06':'يونيو 2026' },
+    it: { '2024':'2024', '2025':'2025', '2025-06':'Giugno 2025', '2026-01':'Gen 2026', '2026-02':'Feb 2026', '2026-03':'Mar 2026', '2026-04':'Apr 2026', '2026-05':'Mag 2026', '2026-06':'Giugno 2026' }
+  };
   const SITES = ['Safety','Leather','D|AIR','MEL-T'];
   const PROCESS_LIST = [
     { id:'strategy', get label(){ return t('p_strategy'); }, get short(){ return t('ps_strategy'); }, icon:'compass', color:'violet', get description(){ return t('pd_strategy'); } },
@@ -277,10 +275,10 @@
     kpi('shipped-pieces','planning','Nombre de pièces expédiées','Volume total de pièces livrées ou expédiées.','pcs','higher',['pieces expediees','shipped pieces'],['Logistics','Volume'],SITES),
 
     // QHSE
-    kpi('customer-quality','qhse','Customer Quality','Taux de conformité qualité côté client.','%','higher',['customer quality','qualite client','qualité client'],['Quality'],SITES),
-    kpi('customer-complaints','qhse','Réclamations clients','Nombre de réclamations enregistrées.','réclamations','lower',['customer complaints','reclamations clients','réclamations clients','complaints'],['Quality','QHSE'],SITES),
-    kpi('pnc','qhse','PNC','Nombre de produits ou processus non conformes.','PNC','lower',['pnc','non conformity','non conformite','non-conformité'],['Quality','QHSE'],SITES),
+    kpi('customer-quality','planning','Customer Quality','Taux de conformité qualité côté client.','%','higher',['customer quality','qualite client','qualité client'],['Delivery','Quality'],SITES),
     kpi('qualipro-completion','qhse','Taux d’exploitation Qualipro','Taux global d’utilisation de la plateforme Qualipro par les utilisateurs suivis.','%','higher',['qualipro','completion rate','taux achevement'],['QHSE','Quality'],['MEL-T']),
+    kpi('pnc','qhse','PNC','Nombre de produits ou processus non conformes.','PNC','lower',['pnc','non conformity','non conformite','non-conformité'],['Quality','QHSE'],SITES),
+    kpi('customer-complaints','qhse','Réclamations clients','Nombre de réclamations enregistrées.','réclamations','lower',['customer complaints','reclamations clients','réclamations clients','complaints'],['Quality','QHSE'],SITES),
     kpi('accidents','qhse','Accidents','Nombre total d’accidents enregistrés.','accidents','lower',['accidents','accident'],['Safety','QHSE'],SITES),
     kpi('tf1','qhse','TF1','Taux de fréquence des accidents avec arrêt.','TF','lower',['tf1','frequency rate'],['Safety','QHSE'],SITES),
     kpi('tg','qhse','TG','Taux de gravité des accidents.','TG','lower',['tg','severity rate'],['Safety','QHSE'],SITES),
@@ -313,7 +311,7 @@
     kpi('capex-approved','finance','CAPEX approuvé','Montant total des investissements approuvés.','TND','context',['capex approved','capex approuve'],['CAPEX','Finance'],SITES),
     kpi('capex-total','finance','CAPEX total actuel','Montant total du CAPEX à ce jour.','TND','context',['capex total','total capex'],['CAPEX','Finance'],SITES),
     kpi('capex-consumption-rate','finance','Taux de consommation du budget CAPEX','Part du budget CAPEX consommée.','%','higher',['capex consumption','taux consommation capex'],['CAPEX','Finance'],SITES),
-    kpi('capex-breakdown','finance','Répartition du CAPEX par catégorie','Ventilation des investissements par type.','%','context',['capex breakdown','repartition capex'],['CAPEX','Finance'],SITES)
+    kpi('capex-breakdown','finance','Répartition du CAPEX par catégorie','Ventilation des investissements par type.','TND','context',['capex breakdown','repartition capex'],['CAPEX','Finance'],SITES)
   ];
 
   function kpi(id, process, name, definition, unit, direction, aliases, sheetHints, sites) {
@@ -1345,14 +1343,14 @@
   "qualipro-completion": {
     "values": {
       "MEL-T": {
-        "2026-01": 31.06,
-        "2026-02": 30.72,
+        "2026-01": 30.72,
+        "2026-02": 31.06,
         "2026-03": 28.41,
-        "2026-04": 23.08,
-        "2026-05": 29.1,
+        "2026-04": 33.71,
+        "2026-05": 23.08,
         "2024": 0.0,
         "2025": 0.0,
-        "2026-06": 0.0
+        "2026-06": 29.1
       },
       "Safety": {
         "2024": 0.0,
@@ -1420,6 +1418,7 @@
   window.qhse_objectifs = [];
   window.hoshin_database = [];
   window.hoshin_process_blueprint = [];
+  window.qualipro_usage_details = null;
 
   async function loadDataFromDataFolder() {
     try {
@@ -1438,11 +1437,19 @@
               'Water': 'water'
             };
             const kid = kpiIdMap[t.acronyme];
-            if (kid && STATIC_DATA[kid]) {
+            if (kid) {
+              if (!STATIC_DATA[kid]) {
+                STATIC_DATA[kid] = { values: {}, targets: {}, source: 'data/smi_targets.json' };
+              }
+              if (!STATIC_DATA[kid].targets) STATIC_DATA[kid].targets = {};
+
               // Populate targets for all sites
               let val = 0.0;
-              const match = String(t.cible).match(/[\d.]+/);
-              if (match) val = parseFloat(match[0]);
+              if (kid === 'customer-quality') val = 99.5;
+              else {
+                const match = String(t.cible).match(/[\d.]+/);
+                if (match) val = parseFloat(match[0]);
+              }
               
               ['Safety', 'Leather', 'D|AIR', 'Warehouse', 'MEL-T'].forEach(s => {
                 STATIC_DATA[kid].targets[s] = { "default": val };
@@ -1488,8 +1495,14 @@
             else if (indicator === "produits_non_conformes") key = 'pnc';
             else if (indicator === "taux_exploitation_qualipro") key = 'qualipro-completion';
             else if (indicator === "Customer Claims" || indicator === "reclamations_client") key = 'customer-complaints';
+            else if (indicator === "Customer Quality Rate" || indicator === "customer_quality_rate") key = 'customer-quality';
             
-            if (key && STATIC_DATA[key]) {
+            if (key) {
+              if (!STATIC_DATA[key]) {
+                STATIC_DATA[key] = { values: {}, targets: {}, source: 'data/kpi_metrics.json' };
+              }
+              if (!STATIC_DATA[key].values) STATIC_DATA[key].values = {};
+              if (!STATIC_DATA[key].values[mappedSite]) STATIC_DATA[key].values[mappedSite] = {};
               STATIC_DATA[key].values[mappedSite][periode] = Number(val);
             }
           });
@@ -1528,6 +1541,13 @@
               if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
               if (!STATIC_DATA[staticKey].values) STATIC_DATA[staticKey].values = {};
               if (!STATIC_DATA[staticKey].values[siteLabel]) STATIC_DATA[staticKey].values[siteLabel] = {};
+              if (kpiObj.details) {
+                STATIC_DATA[staticKey].details = STATIC_DATA[staticKey].details || {};
+                STATIC_DATA[staticKey].details[siteLabel] = kpiObj.details;
+              }
+              if (staticKey.startsWith('capex')) {
+                STATIC_DATA[staticKey].source = '202606_Factory_Meeting_KPIs -RECAP_v2.xlsx · Capex';
+              }
               
               Object.entries(kpiObj.valeurs || {}).forEach(([rawPeriod, val]) => {
                 if (val === null) return;
@@ -1746,6 +1766,25 @@
         console.warn("Could not load objectives:", err);
       }
 
+      // 6. Fetch Qualipro user details from Excel extraction
+      try {
+        const resQualipro = await fetch('data/qualipro_usage_details.json');
+        if (resQualipro.ok) {
+          window.qualipro_usage_details = await resQualipro.json();
+          const totalRates = window.qualipro_usage_details?.totals?.rates || {};
+          if (STATIC_DATA['qualipro-completion']) {
+            STATIC_DATA['qualipro-completion'].source = 'QHSE KPI 2026.xlsx · KPI Qualipro';
+            STATIC_DATA['qualipro-completion'].values = STATIC_DATA['qualipro-completion'].values || {};
+            STATIC_DATA['qualipro-completion'].values['MEL-T'] = STATIC_DATA['qualipro-completion'].values['MEL-T'] || {};
+            Object.entries(totalRates).forEach(([period, value]) => {
+              STATIC_DATA['qualipro-completion'].values['MEL-T'][period] = Number(value);
+            });
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load Qualipro user details:", err);
+      }
+
       toast("🟢 Données JSON chargées en direct de data/");
       return true;
     } catch (e) {
@@ -1761,7 +1800,8 @@ function applyStaticData(){
       if(!d) return;
       k.values=d.values||{};
       k.targets=d.targets||{};
-      k.source={sheet:d.source,row:0};
+      k.details=d.details||{};
+      k.source={sheet:d.source,row:null};
       k.quality='mapped';
     });
   }
@@ -1877,7 +1917,7 @@ function applyStaticData(){
 
   function render(){
     updateNav(); updateDataMeta(); destroyCharts();
-    const showHeader = state.page !== 'overview' && state.page !== 'hoshin';
+    const showHeader = state.page !== 'overview' && state.page !== 'hoshin' && !(state.page === 'process' && state.activeProcess === 'strategy');
 
     document.getElementById('filter-bar').style.display = showHeader ? '' : 'none';
     if(state.page==='overview') renderOverview();
@@ -1895,9 +1935,10 @@ function applyStaticData(){
 
   function updateDataMeta(){
     const loaded=state.kpis.filter(k=>k.quality!=='missing').length, missing=state.kpis.length-loaded;
-    $('#side-loaded').textContent=loaded; $('#side-missing').textContent=missing; $('#side-source').textContent='RECAP + GRH/QHSE';
+    $('#side-loaded').textContent=loaded; $('#side-missing').textContent=missing; $('#side-source').textContent=t('source_recap');
 
     $('#period-badge').textContent=periodLabel(state.period);
+    refreshStaticTexts();
   }
 
   function renderOverview(){
@@ -1908,13 +1949,13 @@ function applyStaticData(){
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
               <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-[#7aa3ff]">📊 ${t("legend_title")}</h3>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-indigo-600 font-bold text-base">●</span><span class="text-slate-800 dark:text-slate-200 font-medium">Forte</span></div>
-                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-indigo-400 dark:text-[#4d77ff] font-bold text-base">○</span><span class="text-slate-800 dark:text-slate-200 font-medium">Moyenne</span></div>
-                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-slate-400 font-bold text-xs">✕</span><span class="text-slate-800 dark:text-slate-200 font-medium">Faible</span></div>
-                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-amber-500 font-bold text-xs">★</span><span class="text-slate-800 dark:text-slate-200 font-medium">Autre</span></div>
+                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-indigo-600 font-bold text-base">●</span><span class="text-slate-800 dark:text-slate-200 font-medium">${t('legend_strong')}</span></div>
+                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-indigo-400 dark:text-[#4d77ff] font-bold text-base">○</span><span class="text-slate-800 dark:text-slate-200 font-medium">${t('legend_medium')}</span></div>
+                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-slate-400 font-bold text-xs">✕</span><span class="text-slate-800 dark:text-slate-200 font-medium">${t('legend_weak')}</span></div>
+                  <div class="flex items-center gap-2 p-2 bg-slate-50 dark:bg-[#0f1729] rounded-lg border border-slate-100 dark:border-[#1e2a4a]"><span class="text-amber-500 font-bold text-xs">★</span><span class="text-slate-800 dark:text-slate-200 font-medium">${t('legend_other')}</span></div>
               </div>
               <div class="flex items-center gap-2">
-                  <button onclick="toggleLanguage()" class="px-3 py-2 bg-slate-100 dark:bg-[#0f1729] hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/70 dark:border-[#1e2a4a] transition-colors rounded-lg text-xs font-bold text-slate-800 dark:text-slate-200">🌐 FR/EN</button>
+                  <button onclick="toggleLanguage()" class="px-3 py-2 bg-slate-100 dark:bg-[#0f1729] hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/70 dark:border-[#1e2a4a] transition-colors rounded-lg text-xs font-bold text-slate-800 dark:text-slate-200">${t('btn_lang')}</button>
                   <button onclick="resetToDefaults()" class="px-3 py-2 bg-slate-100 dark:bg-[#0f1729] hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/70 dark:border-[#1e2a4a] transition-colors rounded-lg text-xs font-bold text-slate-800 dark:text-slate-200">${t("btn_reset")}</button>
               </div>
           </div>
@@ -2402,13 +2443,126 @@ function applyStaticData(){
       const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
       function codeOf(s){const m=String(s).match(/^([A-Z]+\d+)\s*-/);return m?m[1]:''}
       function countData(d){let axes=new Set(),objs=new Set(),inis=new Set(),kpis=new Set(),links=0;Object.values(d).forEach(p=>Object.entries(p.axes).forEach(([a,av])=>{axes.add(a);Object.entries(av.objectives).forEach(([o,ov])=>{objs.add(o);Object.entries(ov.initiatives).forEach(([i,iv])=>{inis.add(i);Object.values(iv.owners).forEach(list=>list.forEach(k=>{kpis.add(k);links++}))})})}));return{processes:Object.keys(d).length,axes:axes.size,objectives:objs.size,initiatives:inis.size,kpis:kpis.size,links}}
-      function renderStats(d){const c=countData(d);document.querySelector('#st-stats').innerHTML=[['Processus',c.processes],['Axes',c.axes],['Objectifs',c.objectives],['Initiatives',c.initiatives],['KPI distincts',c.kpis]].map(x=>`<div class="st-stat"><b>${x[1]}</b><span class="text-xs text-slate-500">${x[0]}</span></div>`).join('')}
+
       function node(cls,label,count,children,extra=''){return `<details class="${cls}"><summary><span class="st-toggle"></span><span>${label}</span>${extra}<span class="st-badge">${count}</span></summary><div class="st-children">${children}</div></details>`}
       
       const p=PROCESS_LIST.find(x=>x.id===processId) || PROCESS_LIST[0];
       
       $('#page-content').innerHTML = `
         ${pageHeader(p.label,p.description,p.icon)}
+        <!-- NEW V2 TABLE -->
+        <style>
+          
+.v2-container {
+  --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#64748b; --line:#dbe3ef;
+  --blue:#2457d6; --blue2:#eaf0ff; --green:#0f9f6e; --green2:#e8f8f1;
+  --amber:#c47b00; --amber2:#fff5d8; --violet:#7c3aed; --violet2:#f1eafe;
+}
+*{box-sizing:border-box}
+.v2-container{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.v2-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);padding:18px 24px;backdrop-filter:blur(8px)}
+.v2-header h1{margin:0;font-size:24px}
+.v2-subtitle{margin-top:5px;color:var(--muted);font-size:13px}
+.v2-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.v2-container button, .v2-container .v2-container input{font:inherit}
+.v2-container button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:700}
+.v2-container button:hover{border-color:var(--blue);color:var(--blue)}
+.v2-container input{min-width:290px;border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:#fff;color:var(--text)}
+.v2-main{max-width:1450px;margin:0 auto;padding:24px}
+.v2-summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.v2-stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.v2-stat strong{display:block;font-size:24px;color:var(--blue)}
+.v2-stat span{font-size:12px;color:var(--muted)}
+.v2-tree{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.v2-node{border-bottom:1px solid var(--line)}
+.v2-node:last-child{border-bottom:none}
+.v2-row{display:grid;grid-template-columns:40px minmax(0,1fr) 95px;align-items:center;min-height:46px;padding:5px 12px}
+.v2-row:hover{background:#f8fafc}
+.v2-toggle{width:27px;height:27px;padding:0;border-radius:6px;font-size:0;line-height:1;position:relative;color:var(--blue);text-indent:-9999px;overflow:hidden}
+.v2-toggle::before,.v2-toggle::after{content:'';position:absolute;left:50%;top:50%;background:currentColor;border-radius:999px;transform:translate(-50%,-50%)}
+.v2-toggle::before{width:12px;height:2px}
+.v2-toggle::after{width:2px;height:12px}
+.v2-node.v2-open>.v2-row .v2-toggle::after{display:none}
+.v2-toggle:disabled{visibility:hidden}
+.v2-label{font-size:14px;line-height:1.35}
+.v2-count{justify-self:end;font-size:12px;color:var(--muted);background:#f1f5f9;padding:5px 8px;border-radius:999px}
+.v2-children{display:none}
+.v2-node.v2-open>.v2-children{display:block}
+.v2-level-axis>.v2-row{background:#eaf0ff;font-weight:800;border-left:5px solid var(--blue)}
+.v2-level-objective>.v2-row{background:#f8fbff;font-weight:700;padding-left:36px}
+.v2-level-initiative>.v2-row{background:#fffaf0;font-weight:700;padding-left:68px;border-left:4px solid #f59e0b}
+.v2-level-actor>.v2-row{background:#fafafa;padding-left:100px;border-left:4px solid var(--violet)}
+.v2-level-kpi>.v2-row{padding-left:132px;background:#fff}
+.v2-level-kpi .v2-label{color:#075985}
+.v2-level-kpi .v2-toggle{visibility:hidden}
+.v2-actor-badge{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:var(--violet2);color:var(--violet);font-size:11px;font-weight:700}
+.v2-kpi-badge{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:var(--green2);color:var(--green);font-size:11px;font-weight:700}
+.v2-hidden-search{display:none!important}
+.v2-note{margin:0 0 16px;padding:12px 14px;border:1px solid #b9d4ff;background:#eef5ff;border-radius:10px;font-size:13px;color:#24436b}
+@media(max-width:800px){
+  .v2-summary{grid-template-columns:repeat(2,1fr)}
+  .v2-container input{min-width:100%;width:100%}
+  .v2-row{grid-template-columns:36px minmax(0,1fr) 70px}
+  .v2-level-objective>.v2-row{padding-left:18px}
+  .v2-level-initiative>.v2-row{padding-left:34px}
+  .v2-level-actor>.v2-row{padding-left:50px}
+  .v2-level-kpi>.v2-row{padding-left:66px}
+}
+@media print{
+  .v2-header{position:static}
+  .v2-toolbar{display:none}
+  .v2-children{display:block!important}
+  .v2-main{max-width:none;padding:0}
+  .v2-tree{border:none}
+}
+
+          .v2-modal-backdrop { position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:none;align-items:center;justify-content:center;padding:15px;backdrop-filter:blur(3px) }
+          .v2-modal-backdrop.v2-open { display:flex }
+          .v2-modal { background:#fff;border-radius:14px;width:100%;max-width:700px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,.2);border:1px solid var(--line) }
+          .v2-modal-head { padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start }
+          .v2-modal-head h2 { margin:0 0 5px;font-size:20px;color:var(--text) }
+          .v2-modal-head p { margin:0;font-size:13px;color:var(--muted);line-height:1.4 }
+          .v2-modal-close { width:32px;height:32px;border:none;background:#f1f5f9;border-radius:8px;font-size:20px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 }
+          .v2-modal-close:hover { background:#e2e8f0;color:var(--text) }
+          .v2-modal-body { padding:20px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:15px }
+          .v2-modal-search { width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:14px;outline:none }
+          .v2-modal-search:focus { border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2) }
+          .v2-detail-list { display:flex;flex-direction:column;gap:8px }
+          .v2-detail-item { padding:12px;border:1px solid var(--line);border-radius:8px;background:#f8fafc;font-size:14px }
+          .v2-detail-item strong { display:block;color:var(--text);margin-bottom:6px }
+          .v2-detail-item span { color:var(--muted);font-size:13px }
+          .v2-path-grid { display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:12.5px;margin-top:6px }
+          .v2-path-grid b { color:#475569;font-weight:600 }
+          .v2-path-grid div { color:#0f172a }
+        </style>
+        <div class="v2-container">
+           
+
+  <section class="v2-summary" id="v2-summary"></section>
+  <section class="v2-tree" id="v2-tree"></section>
+
+
+           <div id="v2-stats-modal" class="v2-modal-backdrop" onclick="if(event.target===this) closeStatsModalV2()">
+  <div class="v2-modal" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title">
+    <div class="v2-modal-head">
+      <div>
+        <h2 id="v2-stats-modal-title">Détail</h2>
+        <p id="v2-stats-modal-subtitle"></p>
+      </div>
+      <button class="v2-modal-close" onclick="closeStatsModalV2()" aria-label="Fermer">×</button>
+    </div>
+    <div class="v2-modal-body">
+      <div class="v2-modal-tools">
+        <input id="v2-modal-search" class="v2-modal-search" type="search" placeholder="Filtrer le contenu affiché…">
+      </div>
+      <div id="v2-stats-modal-content"></div>
+    </div>
+  </div>
+</div>
+
+
+        </div>
+
         <style>
           .st-container { --bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#d8e0ec;--blue:#2457d6;--blue2:#eaf0ff;--green:#157347;--shadow:0 8px 28px rgba(30,50,90,.08); color:var(--text); margin-top: 24px; }
           .st-stats { display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin-bottom:18px }
@@ -2421,9 +2575,11 @@ function applyStaticData(){
           .st-tree summary { list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;border-radius:9px;padding:9px 10px }
           .st-tree summary::-webkit-details-marker { display:none }
           .st-tree summary:hover { background:#f4f7ff }
-          .st-toggle { width:22px;height:22px;border-radius:6px;background:var(--blue2);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 22px }
-          .st-tree details[open]>summary>.st-toggle::before { content:'−' }
-          .st-tree details:not([open])>summary>.st-toggle::before { content:'+' }
+          .st-toggle { width:22px;height:22px;border-radius:6px;background:var(--blue2);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 22px;position:relative }
+          .st-toggle::before, .st-toggle::after { content:''; position:absolute; left:50%; top:50%; background:currentColor; border-radius:999px; transform:translate(-50%,-50%) }
+          .st-toggle::before { width:10px; height:2px }
+          .st-toggle::after { width:2px; height:10px }
+          .st-tree details[open]>summary>.st-toggle::after { display:none }
           .st-level-process>summary { font-size:17px;font-weight:900;background:#edf3ff;border-left:5px solid var(--blue) }
           .st-level-axis>summary { font-weight:800;background:#f7f9fd }
           .st-level-objective>summary { font-weight:700 }
@@ -2463,7 +2619,7 @@ function applyStaticData(){
             <button id="st-collapseAll">Tout fermer</button>
           </div>
           
-          <section class="st-stats" id="st-stats"></section>
+
           
           <section class="st-panel">
             <div class="st-panel-head">
@@ -2475,11 +2631,288 @@ function applyStaticData(){
         </div>
       `;
 
-      function renderTree(){
+      
+      const DATA_V2 = {"S1 - Innovation et nouveaux produits": {"count": 41, "objectives": {"A1 - Développer de nouveaux produits": {"count": 4, "initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S4 - Performance de service & Satisfaction client": {"count": 42, "objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"count": 5, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"count": 1, "actors": {"Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"count": 54, "objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"count": 4, "initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"count": 4, "initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K9 - FR, SR, NALT, LD", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"count": 5, "initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K9 - FR, SR, NALT, LD", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"count": 28, "objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"count": 5, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"count": 1, "actors": {"Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"count": 5, "initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"count": 3, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"count": 21, "objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"count": 5, "initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"count": 5, "initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"count": 3, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}}
+      function collectStatsV2() {
+  const axes = [];
+  const objectives = [];
+  const initiatives = [];
+  const actorRelations = [];
+  const kpiRelations = [];
+
+  Object.entries(DATA_V2).forEach(([axisLabel, axis]) => {
+    axes.push({ label: axisLabel, count: axis.count });
+
+    Object.entries(axis.objectives).forEach(([objectiveLabel, objective]) => {
+      objectives.push({
+        label: objectiveLabel,
+        axis: axisLabel,
+        count: objective.count
+      });
+
+      Object.entries(objective.initiatives).forEach(([initiativeLabel, initiative]) => {
+        initiatives.push({
+          label: initiativeLabel,
+          axis: axisLabel,
+          objective: objectiveLabel,
+          count: initiative.count
+        });
+
+        Object.entries(initiative.actors).forEach(([actorLabel, actor]) => {
+          actorRelations.push({
+            actor: actorLabel,
+            axis: axisLabel,
+            objective: objectiveLabel,
+            initiative: initiativeLabel,
+            count: actor.count
+          });
+
+          actor.kpis.forEach(kpi => {
+            kpiRelations.push({
+              kpi: kpi.label,
+              actor: actorLabel,
+              axis: axisLabel,
+              objective: objectiveLabel,
+              initiative: initiativeLabel,
+              count: kpi.count
+            });
+          });
+        });
+      });
+    });
+  });
+
+  return { axes, objectives, initiatives, actorRelations, kpiRelations };
+}
+
+function totalsV2() {
+  const s = collectStatsV2();
+  return {
+    axes: new Set(s.axes.map(x=>x.label)).size,
+    objectives: new Set(s.objectives.map(x=>x.label)).size,
+    initiatives: new Set(s.initiatives.map(x=>x.label)).size,
+    actors: new Set(s.actorRelations.map(x=>x.actor)).size,
+    kpis: new Set(s.kpiRelations.map(x=>x.kpi)).size
+  };
+}
+
+function nodeV2(level,label,count,childrenHtml='') {
+  const hasChildren = !!childrenHtml;
+  return `<div class="v2-node v2-level-${level}" data-text="${escapeAttrV2(label.toLowerCase())}">
+    <div class="v2-row">
+      <button class="v2-toggle" type="button" ${hasChildren ? 'aria-expanded="false"' : 'disabled aria-hidden="true"'} onclick="toggleNodeV2(this)"></button>
+      <div class="v2-label">${escapeHtmlV2(label)}${level==='actor' ? '<span class="v2-actor-badge">Acteur</span>' : ''}${level==='kpi' ? '<span class="v2-kpi-badge">KPI</span>' : ''}</div>
+      <div class="v2-count">${count ?? ''}</div>
+    </div>
+    ${hasChildren ? `<div class="v2-children">${childrenHtml}</div>` : ''}
+  </div>`;
+}
+
+function buildTreeV2() {
+  let out='';
+  Object.entries(DATA_V2).forEach(([axis,a])=>{
+    let objectives='';
+    Object.entries(a.objectives).forEach(([obj,o])=>{
+      let initiatives='';
+      Object.entries(o.initiatives).forEach(([init,i])=>{
+        let actors='';
+        Object.entries(i.actors).forEach(([actor,ac])=>{
+          const kpis = ac.kpis.map(k=>nodeV2('kpi',k.label,k.count)).join('');
+          actors += nodeV2('actor',actor,ac.count,kpis);
+        });
+        initiatives += nodeV2('initiative',init,i.count,actors);
+      });
+      objectives += nodeV2('objective',obj,o.count,initiatives);
+    });
+    out += nodeV2('axis',axis,a.count,objectives);
+  });
+  document.getElementById('v2-tree').innerHTML = out;
+}
+
+function toggleNodeV2(btn) {
+  const n=btn.closest('.v2-node');
+  n.classList.toggle('v2-open');
+  btn.setAttribute('aria-expanded', n.classList.contains('v2-open') ? 'true' : 'false');
+}
+function openAllV2() {
+  document.querySelectorAll('.v2-node:has(.v2-children)').forEach(n=>n.classList.add('v2-open'));
+  document.querySelectorAll('.v2-toggle:not(:disabled)').forEach(b=>b.setAttribute('aria-expanded','true'));
+}
+function closeAllV2() {
+  document.querySelectorAll('.v2-node').forEach(n=>n.classList.remove('v2-open'));
+  document.querySelectorAll('.v2-toggle:not(:disabled)').forEach(b=>b.setAttribute('aria-expanded','false'));
+}
+function escapeHtmlV2(s) {
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function escapeAttrV2(s) { return escapeHtmlV2(s); }
+
+function applySearchV2(q) {
+  q=q.trim().toLowerCase();
+  const nodes=[...document.querySelectorAll('.v2-node')];
+  if(!q) {
+    nodes.forEach(n=>n.classList.remove('v2-hidden-search'));
+    return;
+  }
+  nodes.forEach(n=>n.classList.add('v2-hidden-search'));
+  nodes.forEach(n=>{
+    if((n.dataset.text||'').includes(q)) {
+      n.classList.remove('v2-hidden-search');
+      let p=n.parentElement?.closest('.v2-node');
+      while(p) {
+        p.classList.remove('v2-hidden-search');
+        p.classList.add('v2-open');
+        const b=p.querySelector(':scope > .v2-row > .v2-toggle');
+        if(b) b.setAttribute('aria-expanded','true');
+        p=p.parentElement?.closest('.v2-node');
+      }
+      n.querySelectorAll('.v2-node').forEach(c=>c.classList.remove('v2-hidden-search'));
+    }
+  });
+}
+
+const t=totalsV2();
+const summaryCards = [
+  { key:'axes', label:'Axes stratégiques', value:t.axes },
+  { key:'objectives', label:'Objectifs annuels', value:t.objectives },
+  { key:'initiatives', label:'Initiatives', value:t.initiatives },
+  { key:'actorRelations', label:'Acteurs uniques', value:t.actors },
+  { key:'kpiRelations', label:'KPI uniques', value:t.kpis }
+];
+document.getElementById('v2-summary').innerHTML = summaryCards.map(c =>
+  `<button type="button" class="v2-stat" onclick="openStatsModalV2('${c.key}')">
+    <strong>${c.value}</strong>
+    <span>${c.label}</span>
+    <small>Voir le contenu →</small>
+  </button>`
+).join('');
+
+
+const statsCache = collectStatsV2();
+
+function escapePathV2(value) {
+  return escapeHtmlV2(value ?? '');
+}
+
+function renderDetailItemV2(title, metaHtml='') {
+  return `<div class="v2-detail-item"><strong>${escapeHtmlV2(title)}</strong>${metaHtml ? `<span>${metaHtml}</span>` : ''}</div>`;
+}
+
+function openStatsModalV2(type) {
+  const modal = document.getElementById('v2-stats-modal');
+  const title = document.getElementById('v2-stats-modal-title');
+  const subtitle = document.getElementById('v2-stats-modal-subtitle');
+  const content = document.getElementById('v2-stats-modal-content');
+  const search = document.getElementById('v2-modal-search');
+
+  let items = [];
+  let label = '';
+
+  if (type === 'axes') {
+    label = 'Axes stratégiques uniques';
+    const uniqueAxes = [...new Set(statsCache.axes.map(x => x.label))];
+    items = uniqueAxes.map(axLabel => {
+      const allMatches = statsCache.axes.filter(x => x.label === axLabel);
+      const totalCount = allMatches.reduce((acc, curr) => acc + (curr.count || 0), 0);
+      return {
+        search: axLabel,
+        html: renderDetailItemV2(axLabel, `Nombre total de KPI associés : ${totalCount}`)
+      };
+    });
+  } else if (type === 'objectives') {
+    label = 'Objectifs annuels uniques';
+    const uniqueObjs = [...new Set(statsCache.objectives.map(x => x.label))];
+    items = uniqueObjs.map(objLabel => {
+      const match = statsCache.objectives.find(x => x.label === objLabel);
+      return {
+        search: `${objLabel} ${match.axis}`,
+        html: renderDetailItemV2(objLabel,
+          `<div class="v2-path-grid"><b>Axe</b><div>${escapePathV2(match.axis)}</div></div>`)
+      };
+    });
+  } else if (type === 'initiatives') {
+    label = 'Initiatives uniques';
+    const uniqueInits = [...new Set(statsCache.initiatives.map(x => x.label))];
+    items = uniqueInits.map(initLabel => {
+      const match = statsCache.initiatives.find(x => x.label === initLabel);
+      return {
+        search: `${initLabel} ${match.axis} ${match.objective}`,
+        html: renderDetailItemV2(initLabel,
+          `<div class="v2-path-grid"><b>Axe</b><div>${escapePathV2(match.axis)}</div><b>Objectif</b><div>${escapePathV2(match.objective)}</div></div>`)
+      };
+    });
+  } else if (type === 'actorRelations') {
+    label = 'Acteurs uniques';
+    const uniqueActors = [...new Set(statsCache.actorRelations.map(x => x.actor))];
+    items = uniqueActors.map(actorName => {
+      const relations = statsCache.actorRelations.filter(r => r.actor === actorName);
+      const inits = [...new Set(relations.map(r => r.initiative))].join(' / ');
+      return {
+        search: `${actorName} ${inits}`,
+        html: renderDetailItemV2(actorName,
+          `<div class="v2-path-grid"><b>Initiatives</b><div>${escapePathV2(inits)}</div></div>`)
+      };
+    });
+  } else {
+    label = 'KPI uniques';
+    const uniqueKPIs = [...new Set(statsCache.kpiRelations.map(x => x.kpi))];
+    items = uniqueKPIs.map(kpiName => {
+      const relations = statsCache.kpiRelations.filter(r => r.kpi === kpiName);
+      const actors = [...new Set(relations.map(r => r.actor))].join(' / ');
+      return {
+        search: `${kpiName} ${actors}`,
+        html: renderDetailItemV2(kpiName,
+          `<div class="v2-path-grid"><b>Acteurs liés</b><div>${escapePathV2(actors)}</div></div>`)
+      };
+    });
+  }
+
+  title.textContent = `${items.length} — ${label}`;
+  subtitle.textContent =
+    type === 'actorRelations'
+      ? 'Liste des acteurs uniques identifiés dans la hiérarchie PVT et les initiatives associées.'
+      : type === 'kpiRelations'
+      ? 'Liste des KPI uniques identifiés dans la hiérarchie PVT et les acteurs liés.'
+      : `Liste des ${label.toLowerCase()} présents dans la hiérarchie PVT.`;
+
+  function draw(filter='') {
+    const q = filter.trim().toLowerCase();
+    const filtered = q ? items.filter(i => i.search.toLowerCase().includes(q)) : items;
+    content.innerHTML = `<div class="v2-detail-list">${filtered.map(i => i.html).join('')}</div>`;
+  }
+
+  search.value = '';
+  search.oninput = e => draw(e.target.value);
+  draw();
+  modal.classList.add('v2-open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => search.focus(), 0);
+}
+
+function closeStatsModalV2() {
+  document.getElementById('v2-stats-modal').classList.remove('v2-open');
+  document.body.style.overflow = '';
+}
+
+window.openAllV2 = openAllV2;
+window.closeAllV2 = closeAllV2;
+window.toggleNodeV2 = toggleNodeV2;
+window.openStatsModalV2 = openStatsModalV2;
+window.closeStatsModalV2 = closeStatsModalV2;
+
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeStatsModalV2();
+});
+
+
+buildTreeV2();
+
+
+function renderTree(){
         const pf=document.querySelector('#st-processFilter').value,q=document.querySelector('#st-search').value.trim().toLowerCase();
         let filtered={};
         Object.entries(DATA).forEach(([pn,p])=>{if(pf!=='ALL'&&pn!==pf)return; filtered[pn]=p});
-        renderStats(filtered);
         let out='';
         Object.entries(filtered).forEach(([pn,p])=>{let axesHtml='';Object.entries(p.axes).forEach(([an,a])=>{let objsHtml='';Object.entries(a.objectives).forEach(([on,o])=>{let inisHtml='';Object.entries(o.initiatives).forEach(([iin,i])=>{let ownersHtml='';Object.entries(i.owners).forEach(([owner,kpis])=>{let khtml=kpis.map(k=>`<div class="st-kpi"><span class="st-kcode">${esc(codeOf(k))}</span><span>${esc(k)}</span></div>`).join(''); ownersHtml+=node('st-level-owner',esc(owner),kpis.length,`<div class="st-kpis">${khtml}</div>`);});inisHtml+=node('st-level-initiative',esc(iin),Object.values(i.owners).reduce((s,x)=>s+x.length,0),ownersHtml)});objsHtml+=node('st-level-objective',esc(on),Object.keys(o.initiatives).length,inisHtml)});axesHtml+=node('st-level-axis',esc(an),Object.keys(a.objectives).length,objsHtml)});out+=node('st-level-process',esc(pn),Object.keys(p.axes).length,axesHtml,`<span class="st-pilot">Pilote : ${esc(p.pilote)}</span>`)});
         document.querySelector('#st-tree').innerHTML=out||'<div class="st-empty">Aucun résultat.</div>'; 
@@ -2541,10 +2974,10 @@ function applyStaticData(){
   function renderKpiCard(k){
     const site=resolveSite(k), val=getValue(k,site,state.period), target=getTarget(k,site,state.period), status=statusOf(k,site,state.period), delta=compareDelta(k,site);
     return `<button data-kpi-id="${k.id}" class="card text-left rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-4 shadow-sm ${state.selectedKpi===k.id?'kpi-card-selected':''}">
-      <div class="flex items-start justify-between gap-2"><div class="min-w-0"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold truncate">${esc(site)}</div><h3 class="font-black mt-1 leading-tight">${esc(k.name)}</h3></div><span class="px-2 py-1 rounded-full text-[10px] font-black ${statusClass(status)}">${statusLabel(status)}</span></div>
-      <div class="flex items-end justify-between gap-2 mt-4"><div><div class="text-3xl font-black">${displayValue(val,k.unit)}</div><div class="text-[11px] text-slate-500 mt-1">Target : <strong>${displayValue(target,k.unit)}</strong></div></div>${trendBadge(delta,k.direction)}</div>
+      <div class="flex items-start justify-between gap-2"><div class="min-w-0"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold truncate">${esc(site)}</div><h3 class="font-black mt-1 leading-tight">${esc(k.name)}</h3></div><span class="px-2.5 py-1 rounded-full text-xs font-black ${statusClass(status)}">${statusLabel(status)}</span></div>
+      <div class="flex items-end justify-between gap-2 mt-4"><div><div class="text-3xl font-black">${displayValue(val,k.unit)}</div><div class="text-[13px] text-slate-500 mt-1">Target : <strong>${displayValue(target,k.unit)}</strong></div></div>${trendBadge(delta,k.direction)}</div>
       <div class="sparkline mt-3"><canvas id="spark-${k.id}"></canvas></div>
-      <div class="mt-3 pt-3 border-t border-slate-100 dark:border-[#1e2a4a] flex justify-between text-[10px] text-slate-500"><span>${k.source?esc(k.source.sheet):'Source non trouvée'}</span><span>${qualityLabel(k.quality)}</span></div>
+      <div class="mt-3 pt-3 border-t border-slate-100 dark:border-[#1e2a4a] flex justify-between text-[10px] text-slate-500"><span>${(()=>{const s=typeof k.source==='string'?k.source:k.source?.sheet||'';return s.includes('QHSE_KPI_')?'':(s?esc(s):'Source non trouvée')})()}</span><span>${qualityLabel(k.quality)}</span></div>
     </button>`;
   }
 
@@ -2571,7 +3004,7 @@ function applyStaticData(){
   function priorityItem(x,rank){return `<button data-kpi-id="${x.k.id}" class="w-full text-left flex gap-3 p-3 rounded-xl bg-rose-500/5 border border-rose-500/15"><span class="h-7 w-7 rounded-lg bg-rose-500/10 text-rose-600 grid place-items-center font-black text-xs">${rank}</span><div><b class="text-sm">${x.k.name}</b><div class="text-[11px] text-slate-500 mt-1">${x.site} · écart défavorable ${fmt.format(x.score)}%</div></div></button>`;}
   function actionTable(){return `<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">Action</th><th class="p-3">KPI</th><th class="p-3">Responsable</th><th class="p-3">Échéance</th><th class="p-3">Statut</th></tr></thead><tbody><tr class="border-t border-slate-100 dark:border-[#1e2a4a]"><td colspan="5" class="p-8 text-center text-slate-500">Aucune action structurée importée. Prévoir une feuille « Actions » avec Action, KPI, Responsable, Échéance et Statut.</td></tr></tbody></table></div>`;}
 
-  function kpiMeta(k){return `<dl class="space-y-3 text-sm"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Définition</dt><dd class="mt-1">${k.definition}</dd></div><div class="grid grid-cols-2 gap-3"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Unité</dt><dd class="mt-1 font-bold">${k.unit}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sens</dt><dd class="mt-1 font-bold">${directionLabel(k.direction)}</dd></div></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Source</dt><dd class="mt-1">${k.source?`${esc(k.source.sheet)} · ligne ${k.source.row+1}`:'Non identifiée'}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Qualité de donnée</dt><dd class="mt-1">${qualityLabel(k.quality)}</dd></div></dl>`;}
+  function kpiMeta(k){const sStr=typeof k.source==='string'?k.source:k.source?.sheet||'';const sourceLabel=k.source?(k.source.row!=null?`${esc(sStr)} · ligne ${k.source.row+1}`:(sStr.includes('QHSE_KPI_')?'Système QHSE':(sStr?esc(sStr):'Non identifiée'))):'Non identifiée';return `<dl class="space-y-3 text-sm"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Définition</dt><dd class="mt-1">${k.definition}</dd></div><div class="grid grid-cols-2 gap-3"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Unité</dt><dd class="mt-1 font-bold">${k.unit}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sens</dt><dd class="mt-1 font-bold">${directionLabel(k.direction)}</dd></div></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Source</dt><dd class="mt-1">${sourceLabel}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Qualité de donnée</dt><dd class="mt-1">${qualityLabel(k.quality)}</dd></div></dl>`;}
   function autoAnalysis(k){
     const s=resolveSite(k),v=getValue(k,s,state.period),t=getTarget(k,s,state.period),prev=getValue(k,s,'2026-05'),yoy=getValue(k,s,'2025');
     if(v===null) return `<p>La valeur de <strong>${k.name}</strong> pour ${periodLabel(state.period)} et le périmètre ${s} n’a pas été identifiée dans le fichier source.</p><p class="mt-3">Vérifier le libellé du KPI, la feuille attendue et les en-têtes de période dans le rapport d’import.</p>`;
@@ -2583,13 +3016,60 @@ function applyStaticData(){
     return txt;
   }
 
+  function renderQualiproUserDetails(k){
+    if(k.id !== 'qualipro-completion') return '';
+    const detail = window.qualipro_usage_details;
+    if(!detail || !Array.isArray(detail.users) || !detail.users.length) return '';
+
+    const periods = detail.periods || [];
+    const selectedPeriod = periods.some(p => p.key === state.period) ? state.period : (periods[0]?.key || null);
+    if(!selectedPeriod) return '';
+
+    const selectedMeta = periods.find(p => p.key === selectedPeriod) || { key: selectedPeriod, label: periodLabel(selectedPeriod) };
+    const rows = detail.users.map(user => ({
+      user: user.user,
+      rates: user.rates || {},
+      counts: user.counts || {},
+      averageRate: toNumber(user.average_rate),
+      currentRate: toNumber(user.rates?.[selectedPeriod]),
+      currentCount: toNumber(user.counts?.[selectedPeriod])
+    })).sort((a,b) => ((b.currentRate ?? -1) - (a.currentRate ?? -1)) || a.user.localeCompare(b.user));
+
+    const ranked = rows.filter(row => row.currentRate !== null);
+    const topUser = ranked[0] || null;
+    const totalRate = toNumber(detail.totals?.rates?.[selectedPeriod]);
+    const totalCount = toNumber(detail.totals?.counts?.[selectedPeriod]);
+    const lowUsageCount = ranked.filter(row => row.currentRate < 20).length;
+    const averageOfAverages = ranked.length ? ranked.reduce((sum, row) => sum + (row.averageRate || 0), 0) / ranked.length : null;
+
+    return `<div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2"><div><h3 class="font-black">Détail utilisateurs Qualipro</h3><p class="text-xs text-slate-500 dark:text-slate-400">Données extraites depuis l’Excel source pour ${selectedMeta.label}.</p></div><div class="text-xs font-bold text-[#2952ff] dark:text-[#93b8ff]">${detail.meta?.source || 'Source Excel'} · ${detail.meta?.sheet || 'KPI Qualipro'}</div></div><div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mt-4"><div class="rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/70 dark:border-slate-800 p-3"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">Taux global</div><div class="mt-2 text-2xl font-black">${displayValue(totalRate, '%')}</div><div class="mt-1 text-[11px] text-slate-500">${totalCount !== null ? `${fmt.format(totalCount)} jours consultés` : 'N/A'}</div></div><div class="rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/70 dark:border-slate-800 p-3"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">Meilleur taux</div><div class="mt-2 text-base font-black">${topUser ? esc(topUser.user) : 'N/A'}</div><div class="mt-1 text-[11px] text-slate-500">${topUser ? displayValue(topUser.currentRate, '%') : 'Aucune donnée'}</div></div><div class="rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/70 dark:border-slate-800 p-3"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">Utilisateurs &lt; 20%</div><div class="mt-2 text-2xl font-black">${fmt.format(lowUsageCount)}</div><div class="mt-1 text-[11px] text-slate-500">sur ${fmt.format(ranked.length)} suivis</div></div><div class="rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200/70 dark:border-slate-800 p-3"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">Moyenne utilisateurs</div><div class="mt-2 text-2xl font-black">${displayValue(averageOfAverages, '%')}</div><div class="mt-1 text-[11px] text-slate-500">moyenne des taux moyens individuels</div></div></div><div class="overflow-auto mt-4"><table class="w-full text-xs"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200/70 dark:border-[#1e2a4a]"><th class="p-3 min-w-[180px]">Utilisateur</th>${periods.map(period => `<th class="p-3 whitespace-nowrap ${period.key === selectedPeriod ? 'text-[#2952ff] dark:text-[#93b8ff]' : ''}">${period.label}</th>`).join('')}<th class="p-3 whitespace-nowrap">Moyenne</th><th class="p-3 whitespace-nowrap">Jours ${selectedMeta.label}</th></tr></thead><tbody>${rows.map(row => `<tr class="border-b border-slate-100 dark:border-[#1e2a4a] hover:bg-slate-50/50 dark:hover:bg-slate-900/50"><td class="p-3 font-semibold text-slate-800 dark:text-slate-200">${esc(row.user)}</td>${periods.map(period => `<td class="p-3 whitespace-nowrap ${period.key === selectedPeriod ? 'font-black text-[#2952ff] dark:text-[#93b8ff]' : 'text-slate-700 dark:text-slate-300'}">${displayValue(toNumber(row.rates?.[period.key]), '%')}</td>`).join('')}<td class="p-3 whitespace-nowrap font-bold text-slate-800 dark:text-slate-200">${displayValue(row.averageRate, '%')}</td><td class="p-3 whitespace-nowrap text-slate-600 dark:text-slate-400">${row.currentCount !== null ? fmt.format(row.currentCount) : 'N/A'}</td></tr>`).join('')}</tbody></table></div></div>`;
+  }
+
+  function renderAccidentRegisterDetails(k){
+    if(k.id !== 'accidents') return '';
+    const rows = (window.safety_register || []).filter(row => String(row.date_accident || '').startsWith('2026-06'));
+    if(!rows.length) return '';
+    return `<div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2"><div><h3 class="font-black">${t('detail_accidents_title')}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${t('detail_accidents_desc')}</p></div><div class="text-xs font-bold text-[#2952ff] dark:text-[#93b8ff]">safety_register.json</div></div><div class="overflow-auto mt-4"><table class="w-full text-xs"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200/70 dark:border-[#1e2a4a]"><th class="p-3">Site</th><th class="p-3">${t('detail_accidents_employee')}</th><th class="p-3">${t('detail_accidents_role')}</th><th class="p-3">Date</th><th class="p-3">${t('detail_accidents_days')}</th><th class="p-3">${t('detail_accidents_close')}</th></tr></thead><tbody>${rows.map(row => { const isClosed = row.cloture === '✅' || row.cloture === true || row.cloture === 'Oui'; return `<tr class="border-b border-slate-100 dark:border-[#1e2a4a] hover:bg-slate-50/50 dark:hover:bg-slate-900/50"><td class="p-3 uppercase font-bold text-[#2952ff] dark:text-[#93b8ff]">${esc(row.site || t('na_label'))}</td><td class="p-3 font-semibold text-slate-800 dark:text-slate-200">${esc(row.accidente || t('na_label'))}</td><td class="p-3 text-slate-700 dark:text-slate-300">${esc(row.poste || t('na_label'))}</td><td class="p-3 whitespace-nowrap text-slate-700 dark:text-slate-300">${esc(row.date_accident || t('na_label'))}</td><td class="p-3 text-slate-700 dark:text-slate-300">${fmt.format(toNumber(row.jours_perdus) || 0)} j</td><td class="p-3"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${isClosed ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-amber-500/10 text-amber-700 dark:text-amber-300'}">${isClosed ? t('detail_closed') : esc(String(row.cloture || t('detail_in_progress')))}</span></td></tr>`; }).join('')}</tbody></table></div></div>`;
+  }
+
+
+  function renderCapexBreakdownDetails(k){
+    if(k.id !== 'capex-breakdown') return '';
+    const site = resolveSite(k);
+    const details = k.details?.[site];
+    if(!details || !Object.keys(details).length) return '';
+    const rows = Object.entries(details).sort((a,b) => (b[1] ?? 0) - (a[1] ?? 0));
+    const total = rows.reduce((sum, [, value]) => sum + (toNumber(value) || 0), 0);
+    return `<div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2"><div><h3 class="font-black">${t('detail_capex_title')}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${t('detail_capex_desc')} ${site}.</p></div><div class="text-xs font-bold text-[#2952ff] dark:text-[#93b8ff]">202606_Factory_Meeting_KPIs -RECAP_v2.xlsx · Capex</div></div><div class="overflow-auto mt-4"><table class="w-full text-xs"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200/70 dark:border-[#1e2a4a]"><th class="p-3">${t('detail_category')}</th><th class="p-3 whitespace-nowrap">${t('detail_amount')}</th><th class="p-3 whitespace-nowrap">${t('detail_share')}</th></tr></thead><tbody>${rows.map(([label, value]) => { const amount = toNumber(value) || 0; const share = total ? (amount / total) * 100 : null; return `<tr class="border-b border-slate-100 dark:border-[#1e2a4a] hover:bg-slate-50/50 dark:hover:bg-slate-900/50"><td class="p-3 font-semibold text-slate-800 dark:text-slate-200">${esc(label)}</td><td class="p-3 whitespace-nowrap text-slate-700 dark:text-slate-300">${displayValue(amount, 'TND')}</td><td class="p-3 whitespace-nowrap text-slate-700 dark:text-slate-300">${displayValue(share, '%')}</td></tr>`; }).join('')}</tbody><tfoot><tr class="bg-slate-50 dark:bg-slate-950/40 font-black"><td class="p-3">${t('detail_total')}</td><td class="p-3 whitespace-nowrap">${displayValue(total, 'TND')}</td><td class="p-3 whitespace-nowrap">${displayValue(total ? 100 : null, '%')}</td></tr></tfoot></table></div></div>`;
+  }
+
   function openKpi(id){
     const k=state.kpis.find(x=>x.id===id); if(!k)return;
     state.selectedKpi=id;
     const s=resolveSite(k),st=statusOf(k,s,state.period),v=getValue(k,s,state.period),t=getTarget(k,s,state.period);
     $('#modal-eyebrow').textContent=`${PROCESS_LIST.find(p=>p.id===k.process)?.label} · ${s}`;
     $('#modal-title').textContent=k.name;
-    $('#modal-body').innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard('Valeur',displayValue(v,k.unit),'activity',st,periodLabel(state.period))}${summaryCard('Target',displayValue(t,k.unit),'target',t===null?'gray':'green','Objectif disponible')}${summaryCard('Écart',v!==null&&t!==null?signed(v-t,k.unit):'N/A','git-compare',st,'Réel - Target')}${summaryCard('Statut',statusLabel(st),'badge-check',st,qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Comparaison des périodes</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Comparaison des sites</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Analyse</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Métadonnées</h3>${kpiMeta(k)}</div></div>`;
+    $('#modal-body').innerHTML=`<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'),displayValue(v,k.unit),'activity',st,periodLabel(state.period))}${summaryCard(t('modal_target'),displayValue(t,k.unit),'target',t===null?'gray':'green',t('modal_target_available'))}${summaryCard(t('modal_gap'),v!==null&&t!==null?signed(v-t,k.unit):t('na_label'),'git-compare',st,'Reel - Target')}${summaryCard(t('modal_status'),statusLabel(st),'badge-check',st,qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
     $('#detail-modal').showModal(); lucide.createIcons(); requestAnimationFrame(()=>{createPeriodChart('modal-period-chart',k);createSiteChart('modal-site-chart',k);});
   }
 
@@ -2606,14 +3086,14 @@ function applyStaticData(){
     const data=PROCESS_LIST.map(p=>processScore(p.id));
     chart('process-health-chart',{type:'bar',data:{labels:PROCESS_LIST.map(p=>p.short),datasets:[{label:t('process_health'),data,backgroundColor:data.map(v=>v===null?'#94a3b8':v>=90?'#00c896':v>=75?'#f97316':'#ff2d6f'),borderRadius:8}]},options:baseOptions({max:100,unit:'%'})});
   }
-  function createStatusChart(){const s=getSummary(filteredKpis(state.kpis));chart('status-chart',{type:'doughnut',data:{labels:['Atteint','À surveiller','Critique','N/A'],datasets:[{data:[s.green,s.orange,s.red,s.gray],backgroundColor:['#00c896','#f97316','#ff2d6f','#475569'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{enabled:true}}}});}
+  function createStatusChart(){const s=getSummary(filteredKpis(state.kpis));chart('status-chart',{type:'doughnut',data:{labels:[t('atteint'),t('status_watch'),t('critique'),t('status_gray')],datasets:[{data:[s.green,s.orange,s.red,s.gray],backgroundColor:['#00c896','#f97316','#ff2d6f','#475569'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{enabled:true}}}});}
   function createPeriodChart(id,k){
-    const s=resolveSite(k), labels=PERIODS.map(p=>p.label).concat(['Target']), vals=PERIODS.map(p=>getValue(k,s,p.key)).concat([getTarget(k,s,state.period)]);
-    const colors = labels.map((lbl, i) => {
-      if (i === labels.length - 1) return '#64748b';
-      if (lbl === '2024') return '#94a3b8';
-      if (lbl === '2025') return '#38bdf8';
-      if (lbl === 'Juin 2025') return '#0284c7';
+    const s=resolveSite(k), periodKeys=PERIODS.map(p=>p.key), labels=periodKeys.map(periodLabel).concat([t('compare_target')]), vals=periodKeys.map(key=>getValue(k,s,key)).concat([getTarget(k,s,state.period)]);
+    const colors = periodKeys.concat(['TARGET']).map((key, i) => {
+      if (i === periodKeys.length) return '#64748b';
+      if (key === '2024') return '#94a3b8';
+      if (key === '2025') return '#38bdf8';
+      if (key === '2025-06') return '#0284c7';
       return '#6366f1';
     });
     chart(id,{type:'bar',data:{labels,datasets:[{label:k.name,data:vals,backgroundColor:colors,borderRadius:8}]},options:baseOptions({unit:k.unit})});
@@ -2624,7 +3104,7 @@ function applyStaticData(){
   }
   function createSparkline(k){
     const id='spark-'+k.id;if(!document.getElementById(id))return;const s=resolveSite(k),vals=PERIODS.map(p=>getValue(k,s,p.key));
-    chart(id,{type:'line',data:{labels:PERIODS.map(p=>p.label),datasets:[{data:vals,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.12)',fill:true,tension:.35,pointRadius:0,borderWidth:2,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},layout:{padding:1}}});
+    chart(id,{type:'line',data:{labels:PERIODS.map(p=>periodLabel(p.key)),datasets:[{data:vals,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.12)',fill:true,tension:.35,pointRadius:0,borderWidth:2,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},layout:{padding:1}}});
   }
   function chart(id,config){const el=document.getElementById(id);if(!el)return;if(state.charts[id])state.charts[id].destroy();state.charts[id]=new Chart(el,config);}
   function destroyCharts(){Object.values(state.charts).forEach(c=>{try{c.destroy()}catch{}});state.charts={};}
@@ -2654,19 +3134,19 @@ function applyStaticData(){
   function getCriticalKpis(kpis){const out=[];kpis.forEach(k=>{k.sites.forEach(s=>{const v=getValue(k,s,state.period),t=getTarget(k,s,state.period);if(v===null||t===null||k.direction==='context')return;let score=k.direction==='higher'?(t-v)/Math.abs(t||1)*100:(v-t)/Math.abs(t||1)*100;if(score>0)out.push({k,site:s,score});});});return out.sort((a,b)=>b.score-a.score);}
   function getImprovements(kpis){const out=[];const key=state.compare==='ALL'?'2026-05':state.compare==='TARGET'?'2026-05':state.compare;kpis.forEach(k=>k.sites.forEach(s=>{const v=getValue(k,s,state.period),old=getValue(k,s,key);if(v===null||old===null||old===0||k.direction==='context')return;let score=(v-old)/Math.abs(old)*100;if(k.direction==='lower')score=-score;if(score>0)out.push({k,site:s,score});}));return out.sort((a,b)=>b.score-a.score);}
 
-  function displayValue(v,unit){if(v===null||v===undefined)return'N/A';const n=fmt.format(v);if(unit==='%')return n+' %';if(unit==='score')return n;return `${n} ${unit}`.trim();}
-  function signed(v,unit){if(v===null)return'N/A';return `${v>0?'+':''}${displayValue(v,unit)}`;}
-  function periodLabel(key){return PERIODS.find(p=>p.key===key)?.label||key;}
-  function statusLabel(s){return({green:'Atteint',orange:'À surveiller',red:'Critique',gray:'N/A'})[s];}
-  function qualityLabel(q){return({mapped:'Donnée identifiée',derived:'Calculée',missing:'Donnée non disponible'})[q]||q;}
-  function directionLabel(d){return d==='higher'?'Valeur élevée favorable':d==='lower'?'Valeur faible favorable':'Valeur de contexte';}
+  function displayValue(v,unit){if(v===null||v===undefined)return t('na_label');const n=fmt.format(v);if(unit==='%')return n+' %';if(unit==='score')return n;return `${n} ${unit}`.trim();}
+  function signed(v,unit){if(v===null)return t('na_label');return `${v>0?'+':''}${displayValue(v,unit)}`;}
+  function periodLabel(key){const lang=siteLang==='it'?'it':siteLang;return PERIOD_LABELS[lang]?.[key] || PERIOD_LABELS.fr[key] || key;}
+  function statusLabel(s){return({green:t('atteint'),orange:t('status_watch'),red:t('critique'),gray:t('status_gray')})[s];}
+  function qualityLabel(q){return({mapped:t('quality_mapped'),derived:t('quality_derived'),missing:t('quality_missing')})[q]||q;}
+  function directionLabel(d){return d==='higher'?t('direction_higher'):d==='lower'?t('direction_lower'):t('direction_context');}
   function trendWord(k,v,old){if(v===old)return'stable';const good=k.direction==='lower'?v<old:v>old;return good?'amélioration':'dégradation';}
   function statusClass(s){return({green:'bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/20',orange:'bg-amber-500/10 text-amber-700 dark:text-amber-500 dark:text-amber-300 border border-amber-500/20',red:'bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/20',gray:'bg-slate-500/10 text-slate-800 dark:text-slate-200 dark:text-slate-300 border border-slate-500/20'})[s];}
   function statusBg(s){return statusClass(s);}
   function dotBg(s){return({green:'bg-[#00c896]',orange:'bg-[#f97316]',red:'bg-[#ff2d6f]',gray:'bg-slate-500'})[s];}
   function statusText(s){return({green:'text-emerald-600',orange:'text-amber-600',red:'text-rose-600',gray:'text-slate-500'})[s];}
   function statusCell(s){return({green:'bg-emerald-500/12 text-emerald-600 dark:text-[#34d399]',orange:'bg-amber-500/12 text-amber-700 dark:text-amber-500 dark:text-amber-300',red:'bg-rose-500/12 text-rose-700 dark:text-rose-300',gray:'bg-slate-500/10 text-slate-500'})[s];}
-  function trendBadge(delta,direction){if(delta===null)return`<span class="text-[10px] text-slate-400">Comparaison N/A</span>`;let good=direction==='lower'?delta<0:direction==='higher'?delta>0:null;let cls=good===null?'text-slate-500 bg-slate-500/10':good?'text-emerald-600 bg-emerald-500/10':'text-rose-600 bg-rose-500/10';let icon=delta>0?'trending-up':delta<0?'trending-down':'minus';return`<span class="px-2 py-1 rounded-lg text-[10px] font-black ${cls} flex items-center gap-1"><i data-lucide="${icon}" class="w-3 h-3"></i>${delta>0?'+':''}${fmt.format(delta)}</span>`;}
+  function trendBadge(delta,direction){if(delta===null)return`<span class="text-[10px] text-slate-400">${t('compare_na')}</span>`;let good=direction==='lower'?delta<0:direction==='higher'?delta>0:null;let cls=good===null?'text-slate-500 bg-slate-500/10':good?'text-emerald-600 bg-emerald-500/10':'text-rose-600 bg-rose-500/10';let icon=delta>0?'trending-up':delta<0?'trending-down':'minus';return`<span class="px-2 py-1 rounded-lg text-[10px] font-black ${cls} flex items-center gap-1"><i data-lucide="${icon}" class="w-3 h-3"></i>${delta>0?'+':''}${fmt.format(delta)}</span>`;}
   function quickSite(s){const active=state.site===s;return`<button data-site-quick="${s}" class="px-3 py-2 rounded-xl text-xs font-bold border ${active?'bg-[#2952ff] text-white border-indigo-600':'bg-white dark:bg-[#0d1326] border-slate-200/70 dark:border-[#1e2a4a]'}">${s}</button>`;}
   function emptyState(msg){return`<div class="col-span-full rounded-2xl border border-dashed border-slate-300 dark:border-[#1e2a4a] p-8 text-center text-sm text-slate-500"><i data-lucide="database-zap" class="w-8 h-8 mx-auto mb-3 opacity-60"></i>${msg}</div>`;}
   function toast(message,type='info'){const colors={success:'bg-[#059669]',error:'bg-rose-600',info:'bg-slate-800'};const el=document.createElement('div');el.className=`${colors[type]} text-white px-4 py-3 rounded-xl shadow-xl text-sm font-semibold max-w-sm`;el.textContent=message;$('#toast-container').append(el);setTimeout(()=>el.remove(),4200);}
@@ -2773,6 +3253,7 @@ function applyStaticData(){
 
         // Initialisation de la matrice
         function initMatrix() {
+            matrixData.lang = siteLang === 'it' ? 'it_en' : siteLang;
             // Charger les corrélations depuis le cache ou utiliser celles par défaut
             const savedCorrelations = localStorage.getItem('hoshin_correlations');
             if (savedCorrelations) {
@@ -2788,70 +3269,71 @@ function applyStaticData(){
         // Données multilingues arabes et anglaises pour la matrice
         const matrixTranslations = {
             strategic: {
-                S1: { ar: "زيادة الإنتاجية وخفض التكاليف وتعزيز التنافسية", en: "Increase productivity, reduce costs & boost competitiveness" },
-                S2: { ar: "التميز التشغيلي ونشر منهجية اللين", en: "Operational excellence & Lean deployment" },
-                S3: { ar: "هيكلة المنظمة وثقافة الجودة", en: "Structured organization & quality culture" },
-                S4: { ar: "أداء الخدمة ورضا العملاء", en: "Service performance & customer satisfaction" },
-                S5: { ar: "النمو والابتكار", en: "Growth & Innovation" }
+                S1: { fr: "Innovation et nouveaux produits\nAugmentation de la productivite et croissance du customer work", ar: "زيادة الإنتاجية وخفض التكاليف وتعزيز التنافسية", en: "Innovation and new products\nProductivity increase and customer work growth" },
+                S2: { fr: "Excellence operationnelle & Lean\nReduction structurelle des couts et hausse de l'efficience end-to-end", ar: "التميز التشغيلي ونشر منهجية اللين", en: "Operational excellence & Lean\nStructural cost reduction and end-to-end efficiency increase" },
+                S3: { fr: "Qualite, securite, durabilite\nZero non-conformites critiques, zero accident grave, reduction des impacts environnementaux", ar: "هيكلة المنظمة وثقافة الجودة", en: "Quality, safety, sustainability\nZero critical non-conformities, zero serious accidents, reduced environmental impacts" },
+                S4: { fr: "Performance de service et satisfaction client\nFiabilite de livraison et satisfaction client elevee", ar: "أداء الخدمة ورضا العملاء", en: "Service performance and customer satisfaction\nHigh delivery reliability and customer satisfaction" },
+                S5: { fr: "Organisation, culture et personnes\nOrganisation claire, competences developpees, engagement eleve", ar: "النمو والابتكار", en: "Organization, culture and people\nClear organization, developed skills, high engagement" }
             },
             annual: {
-                O1: { ar: "زيادة الإنتاجية وخفض التكاليف التشغيلية", en: "Increase productivity & reduce operational costs" },
-                O2: { ar: "تطبيق اللين في جميع الأقسام", en: "Implement Lean in all departments" },
-                O3: { ar: "هيكلة المنظمة ونظام الجودة", en: "Organizational structuring & quality system" },
-                O4: { ar: "تحسين الخدمة (مهلة التسليم + OTIF)", en: "Service improvement (lead time + OTIF)" },
-                O5: { ar: "تطوير منتجات جديدة وخدمة العملاء", en: "New products development & customer work" }
+                A1: { fr: "Nouveaux produits", ar: "منتجات جديدة", en: "New products" },
+                A2: { fr: "Construire une main-d'oeuvre masculine stable formee a la couture", ar: "بناء قوة عمل رجالية مستقرة ومدربة على الخياطة", en: "Build a stable male workforce trained in sewing" },
+                A3: { fr: "Reduire la dependance aux couturieres expertes", ar: "تقليل الاعتماد على الخياطات الخبيرات", en: "Reduce dependency on expert sewers" },
+                A4: { fr: "Reduire les couts operationnels et de maintenance de 10 a 15 %", ar: "خفض تكاليف التشغيل والصيانة بنسبة 10 إلى 15٪", en: "Reduce operating and maintenance costs by 10 to 15%" },
+                A5: { fr: "Reduire les couts des batiments et utilites de 5 a 10 %", ar: "خفض تكاليف المباني والمرافق بنسبة 5 إلى 10٪", en: "Reduce building and utility costs by 5 to 10%" },
+                A6: { fr: "Etendre le Lean Thinking a tous les departements", ar: "توسيع التفكير اللين إلى جميع الأقسام", en: "Extend Lean Thinking to all departments" },
+                A7: { fr: "Atteindre une ponctualite > 98 % et ameliorer le niveau de service", ar: "تحقيق OTIF أكبر من 98٪ وتحسين مستوى الخدمة", en: "Reach OTIF above 98% and improve service level" },
+                A8: { fr: "Finaliser la structure organisationnelle et clarifier les roles", ar: "استكمال الهيكل التنظيمي وتوضيح الأدوار", en: "Complete the organizational structure and clarify roles" },
+                A9: { fr: "Integrer les audits dans les plans d'amelioration", ar: "دمج التدقيق في خطط التحسين", en: "Integrate audits into improvement plans" },
+                A10: { fr: "Mettre en oeuvre des plans de formation structures", ar: "تنفيذ خطط تدريب منظمة", en: "Implement structured training plans" },
+                A11: { fr: "Ameliorer la securite, le bien-etre et l'engagement", ar: "تحسين السلامة والرفاه والالتزام", en: "Improve safety, wellbeing and engagement" }
             },
             initiatives: {
-                I5: { ar: "نظام تدقيق متكامل", en: "Integrated audit system (process governance)" },
-                I6: { ar: "خطة تدريب منظمة", en: "Structured training plan (critical skills)" },
-                I7: { ar: "برنامج اللين في جميع الأقسام", en: "Lean program across all departments" },
-                I8: { ar: "تقليل التكاليف الثابتة والتشغيلية", en: "Fixed & operational costs reduction" },
-                I9: { ar: "تحسين تدفق الطلب إلى التسليم", en: "Order → Production → Delivery flow optimization" },
-                I4: { ar: "تحديد الهيكل التنظيمي الجديد", en: "New organizational structure definition" },
-                I1: { ar: "إطلاق خطوط SMART GO, DEMON, LEGGENDA", en: "Launch SMART GO, DEMON, LEGGENDA, SUPER SPEED 5" },
-                I2: { ar: "تطوير خدمة التخصيص للعملاء", en: "Customer Work development (customization)" },
-                I3: { ar: "رقمنة وأتمتة غرفة القطع", en: "Digitalization & automation of cutting room" }
+                I1: { fr: "Lancer au moins 5 nouveaux produits", ar: "إطلاق خطوط SMART GO, DEMON, LEGGENDA", en: "Launch at least 5 new products" },
+                I2: { fr: "Academie interne couture (competences de base)", ar: "تطوير خدمة التخصيص للعملاء", en: "Internal sewing academy (basic skills)" },
+                I3: { fr: "Reduction de la complexite des operations de couture", ar: "رقمنة وأتمتة غرفة القطع", en: "Reduce sewing operation complexity" },
+                I4: { fr: "Equilibrage de ligne oriente par les competences disponibles", ar: "تحديد الهيكل التنظيمي الجديد", en: "Line balancing based on available skills" },
+                I5: { fr: "Programme Lean Manufacturing & Kaizen", ar: "نظام تدقيق متكامل", en: "Lean Manufacturing & Kaizen program" },
+                I6: { fr: "Systeme integre d'audits", ar: "خطة تدريب منظمة", en: "Integrated audit system" },
+                I7: { fr: "Plan structure de formation et developpement des competences", ar: "برنامج اللين في جميع الأقسام", en: "Structured training and skills development plan" },
+                I8: { fr: "Programme securite, bien-etre et engagement", ar: "تقليل التكاليف الثابتة والتشغيلية", en: "Safety, wellbeing and engagement program" },
+                I9: { fr: "Optimisation de la planification, des flux et de la logistique", ar: "تحسين تدفق الطلب إلى التسليم", en: "Planning, flow and logistics optimization" },
+                I10: { fr: "Energy Kaizen / Green Manufacturing", ar: "كايزن الطاقة / التصنيع الأخضر", en: "Energy Kaizen / Green Manufacturing" },
+                I11: { fr: "Rationalisation des espaces et reduction des batiments", ar: "ترشيد المساحات وخفض المباني", en: "Space rationalization and building reduction" },
+                I12: { fr: "Reduction des couts fixes", ar: "خفض التكاليف الثابتة", en: "Fixed cost reduction" }
             },
             kpis: {
-                K1: { ar: "التكلفة الوحدوية (€ / قطعة)", en: "Unit cost (€ / piece)" },
-                K2: { ar: "هامش التشغيل (%)", en: "Operating margin (%)" },
-                K3: { ar: "التكاليف الثابتة الشهرية", en: "Monthly fixed costs" },
-                K4: { ar: "% أقسام اللين النشطة", en: "% active Lean departments" },
-                K5: { ar: "معدل الأداء الشامل OEE (%)", en: "Overall Equipment Effectiveness OEE (%)" },
-                K6: { ar: "تخفيض الهدر (%)", en: "Waste reduction rate (%)" },
-                K7: { ar: "% عمليات التدقيق المنجزة", en: "% completed audits" },
-                K8: { ar: "عدد حالات عدم المطابقة", en: "Number of non-conformities" },
-                K9: { ar: "إجمالي وقت التسليم (أيام)", en: "Total lead time (days)" },
-                K10: { ar: "معدل OTIF (%)", en: "OTIF service rate (%)" },
-                K11: { ar: "% مبيعات المنتجات الجديدة", en: "% revenue from new products" },
-                K12: { ar: "عدد الإطلاقات", en: "Number of launches" },
-                K13: { ar: "ساعات التدريب", en: "Training hours" },
-                K14: { ar: "إنتاجية المشغل", en: "Operator productivity ratio" }
+                K1: { fr: "MCH, BCR, pourcentage du chiffre d'affaires provenant des nouveaux produits", ar: "التكلفة الوحدوية (€ / قطعة)", en: "MCH, BCR, percentage of revenue from new products" },
+                K2: { fr: "Consommation energie, intensite energie, CO2, consommation d'eau", ar: "هامش التشغيل (%)", en: "Energy consumption, energy intensity, CO2, water consumption" },
+                K3: { fr: "OEE, productivite, throughput", ar: "التكاليف الثابتة الشهرية", en: "OEE, productivity, throughput" },
+                K4: { fr: "Pourcentage d'operateurs polyvalents > 60 %, couverture des competences", ar: "% أقسام اللين النشطة", en: "Polyvalent operators > 60%, skill coverage" },
+                K5: { fr: "Defauts par unite / DHU, pourcentage d'audits clos a temps", ar: "معدل الأداء الشامل OEE (%)", en: "Defects per unit / DHU, on-time closed audits" },
+                K6: { fr: "OTIF, lead time, service level, stabilite du plan", ar: "تخفيض الهدر (%)", en: "OTIF, lead time, service level, plan stability" },
+                K7: { fr: "ETCR, temps moyen de formation operateur < 3 mois", ar: "% عمليات التدقيق المنجزة", en: "ETCR, average operator training time under 3 months" },
+                K8: { fr: "eNPS, taux d'absenteisme non planifie, turnover global", ar: "عدد حالات عدم المطابقة", en: "eNPS, unplanned absenteeism rate, overall turnover rate" },
+                K9: { fr: "FR, SR, nombre d'accidents avec perte de temps, jours perdus", ar: "إجمالي وقت التسليم (أيام)", en: "FR, SR, lost-time accidents, lost days" }
             },
             owners: {
-                OW1: { ar: "مدير التصنيع", en: "Manufacturing Manager" },
-                OW2: { ar: "المدير المالي", en: "CFO" },
-                OW3: { ar: "مدير اللوجستيك", en: "Logistics Manager" },
-                OW4: { ar: "مدير الموارد البشرية", en: "HR Manager" },
-                OW5: { ar: "مسؤول QHSE", en: "QHSE Leader" },
-                OW6: { ar: "المدير العام", en: "CEO" }
+                OW1: { fr: "Responsable manufacturing", ar: "مدير التصنيع", en: "Manufacturing Manager" },
+                OW2: { fr: "Directeur administratif et financier", ar: "المدير المالي", en: "CFO" },
+                OW3: { fr: "Responsable logistique par interim", ar: "مدير اللوجستيك", en: "Interim Logistics Manager" },
+                OW4: { fr: "Responsable RH", ar: "مدير الموارد البشرية", en: "HR Manager" },
+                OW5: { fr: "Responsable QHSE", ar: "مسؤول QHSE", en: "QHSE Leader" },
+                OW6: { fr: "Directeur general", ar: "المدير العام", en: "CEO" }
             }
         };
 
         // Bascule linguistique multi-langue
         function toggleLanguage() {
             const langs = ['fr', 'it_en', 'en', 'ar'];
-            const idx = langs.indexOf(matrixData.lang);
-            matrixData.lang = langs[(idx + 1) % langs.length];
-            updateLangButtons();
-            renderMatrix();
+            const currentLang = (typeof siteLang !== 'undefined' && siteLang === 'it') ? 'it_en' : (typeof siteLang !== 'undefined' ? siteLang : matrixData.lang);
+            const idx = langs.indexOf(currentLang);
+            setSiteLang(langs[(idx + 1) % langs.length]);
             if (selectedItem) selectItem(selectedItem.type, selectedItem.id);
         }
 
         function setMatrixLang(lang) {
-            matrixData.lang = lang;
-            updateLangButtons();
-            renderMatrix();
+            setSiteLang(lang);
             if (selectedItem) selectItem(selectedItem.type, selectedItem.id);
         }
 
@@ -2871,20 +3353,12 @@ function applyStaticData(){
         // Override getItemText to support ar/en
         function getItemText(item, type) {
             const lang = matrixData.lang;
-            // For ar/en: use translation table first
-            if (lang === 'ar' || lang === 'en') {
-                const trans = matrixTranslations[type]?.[item.id]?.[lang];
-                if (trans) return trans;
-            }
-            // Special case: owners have .name field (not language key)
+            const trans = matrixTranslations[type]?.[item.id]?.[lang];
+            if (trans) return trans;
             if (type === 'owners') {
-                if (lang === 'ar' || lang === 'en') {
-                    return matrixTranslations['owners']?.[item.id]?.[lang] || item.name || '';
-                }
-                return item[lang] || item.name || '';
+                return item[lang] || matrixTranslations['owners']?.[item.id]?.fr || item.name || '';
             }
-            // General fallback: requested lang -> fr -> it_en -> ''
-            return item[lang] || item['fr'] || item['it_en'] || '';
+            return item[lang] || matrixTranslations[type]?.[item.id]?.fr || item['fr'] || item['it_en'] || '';
         }
 
         // Réinitialisation globale
@@ -2987,7 +3461,7 @@ function applyStaticData(){
                 td.onclick = () => selectItem('annual', o.id);
                 td.innerHTML = `<div class="vertical-text">
                     <span class="font-mono font-bold text-amber-700 dark:text-amber-500 mr-2">${o.id}</span>
-                    <span class="text-slate-900 dark:text-slate-100">${o[matrixData.lang]}</span>
+                    <span class="text-slate-900 dark:text-slate-100">${getItemText(o,'annual')}</span>
                 </div>`;
                 centerTr.appendChild(td);
             }
@@ -3006,20 +3480,20 @@ function applyStaticData(){
                 </svg>
                 <!-- Textes du Cadran -->
                 <div class="absolute top-2 left-1/2 -translate-x-1/2 text-center w-full px-2">
-                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">INIZIATIVE / PROGETTI CHIAVE 2026</p>
-                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Operation</p>
+                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">${t('matrix_top')}</p>
+                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">${t('matrix_operation')}</p>
                 </div>
                 <div class="absolute left-1.5 top-1/2 -translate-y-1/2 w-[90px] text-left">
-                    <p class="font-black text-[10px] text-amber-950 dark:text-amber-400 leading-tight">Annual Objectives 2026</p>
-                    <p class="text-[8px] text-amber-900/80 dark:text-amber-300/80">Tactics</p>
+                    <p class="font-black text-[10px] text-amber-950 dark:text-amber-400 leading-tight">${t('matrix_left')}</p>
+                    <p class="text-[8px] text-amber-900/80 dark:text-amber-300/80">${t('matrix_tactics')}</p>
                 </div>
                 <div class="absolute right-1.5 top-1/2 -translate-y-1/2 w-[90px] text-right">
-                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400 leading-tight">KPIs</p>
-                    <p class="text-[8px] text-amber-900/80 dark:text-amber-300/80">Performance</p>
+                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400 leading-tight">${t('matrix_right')}</p>
+                    <p class="text-[8px] text-amber-900/80 dark:text-amber-300/80">${t('matrix_performance')}</p>
                 </div>
                 <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-center w-full px-2">
-                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">OBIETTIVI STRATEGICI (3 anni)</p>
-                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">Results</p>
+                    <p class="font-black text-[10px] uppercase text-amber-950 dark:text-amber-400">${t('matrix_bottom')}</p>
+                    <p class="text-[9px] text-amber-900/80 dark:text-amber-300/80 italic">${t('matrix_results')}</p>
                 </div>
             `;
             centerTr.appendChild(xCell);
@@ -3033,7 +3507,7 @@ function applyStaticData(){
                 td.onclick = () => selectItem('kpi', k.id);
                 td.innerHTML = `<div class="vertical-text">
                     <span class="font-mono font-bold text-slate-800 dark:text-slate-200 mr-2">${k.id}</span>
-                    <span class="text-slate-900 dark:text-slate-100">${k[matrixData.lang]}</span>
+                    <span class="text-slate-900 dark:text-slate-100">${getItemText(k,'kpis')}</span>
                 </div>`;
                 centerTr.appendChild(td);
             }
@@ -3047,7 +3521,7 @@ function applyStaticData(){
                 td.onclick = () => selectItem('owner', ow.id);
                 td.innerHTML = `<div class="vertical-text">
                     <span class="font-bold text-emerald-800 dark:text-emerald-400 leading-none">${ow.name}</span>
-                    <span class="text-[9px] text-emerald-600 dark:text-emerald-300 font-medium">${ow[matrixData.lang]}</span>
+                    <span class="text-[9px] text-emerald-600 dark:text-emerald-300 font-medium">${getItemText(ow,'owners')}</span>
                 </div>`;
                 centerTr.appendChild(td);
             }
@@ -3076,7 +3550,7 @@ function applyStaticData(){
                 labelCell.onclick = () => selectItem('strategic', strat.id);
                 labelCell.innerHTML = `<div class="flex items-center gap-1.5">
                     <span class="font-mono text-amber-700 dark:text-amber-500 font-bold">${strat.id}</span>
-                    <span class="text-slate-900 dark:text-slate-100">${strat[matrixData.lang]}</span>
+                    <span class="text-slate-900 dark:text-slate-100">${getItemText(strat,'strategic')}</span>
                 </div>`;
                 tr.appendChild(labelCell);
 
@@ -3154,7 +3628,7 @@ function applyStaticData(){
             document.getElementById('editor-item-code').innerText = id;
             
             const textarea = document.getElementById('editor-input');
-            textarea.value = item[matrixData.lang] || item.name || '';
+            textarea.value = type === 'owner' ? (item.name || '') : getItemText(item, type === 'initiative' ? 'initiatives' : type + (type === 'kpi' ? 's' : ''));
 
             // Gestion de la catégorie pour les initiatives
             const catContainer = document.getElementById('editor-category-container');
@@ -3871,8 +4345,17 @@ function applyStaticData(){
       surveiller: "À surveiller", critiques: "Critiques", na: "Données N/A",
       filter_site: "Périmètre / site", filter_period: "Période principale",
       filter_compare: "Comparaison", filter_status: "Statut", filter_search: "Recherche KPI",
-      atteint: "Atteint", na_label: "N/A", critique: "Critique",
-      kpi_unit: "Unité", kpi_target: "Cible", kpi_value: "Valeur",
+      filter_search_placeholder: "Nom, définition...", compare_all: "Toutes", compare_target: "Cible", status_all: "Tous",
+      atteint: "Atteint", status_watch: "À surveiller", na_label: "N/A", critique: "Critique", status_gray: "N/A",
+      data_quality: "Qualité des données", kpi_loaded: "KPI alimentés", kpi_na: "KPI N/A", source_label: "Source", source_none: "Aucune", source_recap: "RECAP + GRH/QHSE",
+      footer_credits: "© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard", footer_stack: "HTML/JavaScript pur · Chart.js · Données statiques intégrées",
+      legend_strong: "Forte", legend_medium: "Moyenne", legend_weak: "Faible", legend_other: "Autre",
+      kpi_unit: "Unité", kpi_target: "Cible", kpi_value: "Valeur", modal_value: "Valeur", modal_target: "Cible", modal_gap: "Écart", modal_status: "Statut",
+      modal_target_available: "Objectif disponible", modal_period_compare: "Comparaison des périodes", modal_site_compare: "Comparaison des sites", modal_analysis: "Analyse", modal_metadata: "Métadonnées",
+      quality_mapped: "Donnée identifiée", quality_derived: "Calculée", quality_missing: "Donnée non disponible", direction_higher: "Valeur élevée favorable", direction_lower: "Valeur faible favorable", direction_context: "Valeur de contexte",
+      compare_na: "Comparaison N/A", detail_accidents_title: "Détail des accidents de juin 2026", detail_accidents_desc: "Extrait de safety_register.json pour le mois de juin 2026.", detail_accidents_employee: "Accidenté", detail_accidents_role: "Poste", detail_accidents_days: "Jours perdus", detail_accidents_close: "Clôture", detail_closed: "Clôturé", detail_in_progress: "En cours",
+      detail_capex_title: "Détail CAPEX par catégorie", detail_capex_desc: "Extrait de la feuille Capex pour", detail_category: "Catégorie", detail_amount: "Montant", detail_share: "Part", detail_total: "Total",
+      matrix_top: "Initiatives / projets clés 2026", matrix_left: "Objectifs annuels 2026", matrix_right: "KPI", matrix_bottom: "Objectifs stratégiques (3 ans)", matrix_operation: "Opération", matrix_tactics: "Tactiques", matrix_performance: "Performance", matrix_results: "Résultats",
       process_health: "Score processus",
       // Process labels
       p_strategy: "Direction Générale / Stratégie", p_production: "Production / Manufacturing",
@@ -3909,8 +4392,17 @@ function applyStaticData(){
       surveiller: "To watch", critiques: "Critical", na: "N/A Data",
       filter_site: "Scope / site", filter_period: "Main period",
       filter_compare: "Comparison", filter_status: "Status", filter_search: "Search KPI",
-      atteint: "Achieved", na_label: "N/A", critique: "Critical",
-      kpi_unit: "Unit", kpi_target: "Target", kpi_value: "Value",
+      filter_search_placeholder: "Name, definition...", compare_all: "All", compare_target: "Target", status_all: "All",
+      atteint: "Achieved", status_watch: "To watch", na_label: "N/A", critique: "Critical", status_gray: "N/A",
+      data_quality: "Data quality", kpi_loaded: "Loaded KPIs", kpi_na: "N/A KPIs", source_label: "Source", source_none: "None", source_recap: "RECAP + HR/QHSE",
+      footer_credits: "© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard", footer_stack: "Pure HTML/JavaScript · Chart.js · Embedded static data",
+      legend_strong: "Strong", legend_medium: "Medium", legend_weak: "Weak", legend_other: "Other",
+      kpi_unit: "Unit", kpi_target: "Target", kpi_value: "Value", modal_value: "Value", modal_target: "Target", modal_gap: "Gap", modal_status: "Status",
+      modal_target_available: "Target available", modal_period_compare: "Period comparison", modal_site_compare: "Site comparison", modal_analysis: "Analysis", modal_metadata: "Metadata",
+      quality_mapped: "Data identified", quality_derived: "Calculated", quality_missing: "Data unavailable", direction_higher: "Higher value is favorable", direction_lower: "Lower value is favorable", direction_context: "Context value",
+      compare_na: "Comparison N/A", detail_accidents_title: "June 2026 accident details", detail_accidents_desc: "Extract from safety_register.json for June 2026.", detail_accidents_employee: "Employee", detail_accidents_role: "Role", detail_accidents_days: "Lost days", detail_accidents_close: "Closure", detail_closed: "Closed", detail_in_progress: "In progress",
+      detail_capex_title: "CAPEX breakdown by category", detail_capex_desc: "Extract from the Capex sheet for", detail_category: "Category", detail_amount: "Amount", detail_share: "Share", detail_total: "Total",
+      matrix_top: "Key initiatives / projects 2026", matrix_left: "Annual objectives 2026", matrix_right: "KPIs", matrix_bottom: "Strategic objectives (3 years)", matrix_operation: "Operation", matrix_tactics: "Tactics", matrix_performance: "Performance", matrix_results: "Results",
       process_health: "Process score",
       p_strategy: "General Management / Strategy", p_production: "Production / Manufacturing",
       p_planning: "Planning & Logistics", p_qhse: "QHSE / Quality / System",
@@ -3946,8 +4438,17 @@ function applyStaticData(){
       surveiller: "تحت المراقبة", critiques: "حرجة", na: "بيانات غير متاحة",
       filter_site: "النطاق / الموقع", filter_period: "الفترة الرئيسية",
       filter_compare: "المقارنة", filter_status: "الحالة", filter_search: "بحث في المؤشرات",
-      atteint: "محقق", na_label: "غ/م", critique: "حرج",
-      kpi_unit: "الوحدة", kpi_target: "الهدف", kpi_value: "القيمة",
+      filter_search_placeholder: "الاسم، التعريف...", compare_all: "الكل", compare_target: "الهدف", status_all: "الكل",
+      atteint: "محقق", status_watch: "تحت المراقبة", na_label: "غ/م", critique: "حرج", status_gray: "غ/م",
+      data_quality: "جودة البيانات", kpi_loaded: "المؤشرات المحملة", kpi_na: "مؤشرات غير متاحة", source_label: "المصدر", source_none: "لا يوجد", source_recap: "RECAP + GRH/QHSE",
+      footer_credits: "© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard", footer_stack: "HTML/JavaScript خالص · Chart.js · بيانات ثابتة مدمجة",
+      legend_strong: "قوية", legend_medium: "متوسطة", legend_weak: "ضعيفة", legend_other: "أخرى",
+      kpi_unit: "الوحدة", kpi_target: "الهدف", kpi_value: "القيمة", modal_value: "القيمة", modal_target: "الهدف", modal_gap: "الفجوة", modal_status: "الحالة",
+      modal_target_available: "الهدف متاح", modal_period_compare: "مقارنة الفترات", modal_site_compare: "مقارنة المواقع", modal_analysis: "تحليل", modal_metadata: "البيانات الوصفية",
+      quality_mapped: "تم تحديد البيانات", quality_derived: "محسوبة", quality_missing: "البيانات غير متاحة", direction_higher: "القيمة الأعلى أفضل", direction_lower: "القيمة الأقل أفضل", direction_context: "قيمة سياقية",
+      compare_na: "المقارنة غير متاحة", detail_accidents_title: "تفاصيل الحوادث لشهر يونيو 2026", detail_accidents_desc: "مقتطف من safety_register.json لشهر يونيو 2026.", detail_accidents_employee: "المصاب", detail_accidents_role: "المنصب", detail_accidents_days: "أيام ضائعة", detail_accidents_close: "الإغلاق", detail_closed: "مغلق", detail_in_progress: "قيد المتابعة",
+      detail_capex_title: "تفصيل CAPEX حسب الفئة", detail_capex_desc: "مقتطف من ورقة Capex لـ", detail_category: "الفئة", detail_amount: "المبلغ", detail_share: "الحصة", detail_total: "الإجمالي",
+      matrix_top: "المبادرات / المشاريع الرئيسية 2026", matrix_left: "الأهداف السنوية 2026", matrix_right: "مؤشرات الأداء", matrix_bottom: "الأهداف الاستراتيجية (3 سنوات)", matrix_operation: "العمليات", matrix_tactics: "التكتيكات", matrix_performance: "الأداء", matrix_results: "النتائج",
       process_health: "نتيجة العملية",
       p_strategy: "الإدارة العامة / الاستراتيجية", p_production: "الإنتاج / التصنيع",
       p_planning: "التخطيط واللوجستيك", p_qhse: "QHSE / الجودة / النظام",
@@ -3983,7 +4484,17 @@ function applyStaticData(){
       surveiller: "Da monitorare", critiques: "Critici", na: "Dati N/D",
       filter_site: "Perimetro / sito", filter_period: "Periodo principale",
       filter_compare: "Confronto", filter_status: "Stato", filter_search: "Cerca KPI",
-      atteint: "Raggiunto", na_label: "N/D", critique: "Critico",
+      filter_search_placeholder: "Nome, definizione...", compare_all: "Tutte", compare_target: "Obiettivo", status_all: "Tutti",
+      atteint: "Raggiunto", status_watch: "Da monitorare", na_label: "N/D", critique: "Critico", status_gray: "N/D",
+      data_quality: "Qualità dati", kpi_loaded: "KPI caricati", kpi_na: "KPI N/D", source_label: "Fonte", source_none: "Nessuna", source_recap: "RECAP + GRH/QHSE",
+      footer_credits: "© 2026 MEL-T Components & Manufacturing — Factory Meeting Dashboard", footer_stack: "HTML/JavaScript puro · Chart.js · Dati statici integrati",
+      legend_strong: "Forte", legend_medium: "Media", legend_weak: "Debole", legend_other: "Altro",
+      kpi_unit: "Unità", kpi_target: "Obiettivo", kpi_value: "Valore", modal_value: "Valore", modal_target: "Obiettivo", modal_gap: "Scostamento", modal_status: "Stato",
+      modal_target_available: "Obiettivo disponibile", modal_period_compare: "Confronto periodi", modal_site_compare: "Confronto siti", modal_analysis: "Analisi", modal_metadata: "Metadati",
+      quality_mapped: "Dato identificato", quality_derived: "Calcolato", quality_missing: "Dato non disponibile", direction_higher: "Valore alto favorevole", direction_lower: "Valore basso favorevole", direction_context: "Valore di contesto",
+      compare_na: "Confronto N/D", detail_accidents_title: "Dettaglio infortuni di giugno 2026", detail_accidents_desc: "Estratto da safety_register.json per giugno 2026.", detail_accidents_employee: "Infortunato", detail_accidents_role: "Ruolo", detail_accidents_days: "Giorni persi", detail_accidents_close: "Chiusura", detail_closed: "Chiuso", detail_in_progress: "In corso",
+      detail_capex_title: "Dettaglio CAPEX per categoria", detail_capex_desc: "Estratto dal foglio Capex per", detail_category: "Categoria", detail_amount: "Importo", detail_share: "Quota", detail_total: "Totale",
+      matrix_top: "Iniziative / progetti chiave 2026", matrix_left: "Obiettivi annuali 2026", matrix_right: "KPI", matrix_bottom: "Obiettivi strategici (3 anni)", matrix_operation: "Operazione", matrix_tactics: "Tattiche", matrix_performance: "Performance", matrix_results: "Risultati",
       kpi_unit: "Unità", kpi_target: "Obiettivo", kpi_value: "Valore",
       process_health: "Punteggio processo",
       p_strategy: "Direzione Generale / Strategia", p_production: "Produzione / Manufacturing",
@@ -4015,6 +4526,57 @@ function applyStaticData(){
     return key;
   }
 
+  function getFilterSiteOptions() {
+    return [
+      ['Safety', 'Safety'],
+      ['Leather', 'Leather'],
+      ['D|AIR', 'D|AIR'],
+      ['MEL-T', 'MEL-T global']
+    ].map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+  }
+
+  function getPeriodOptionsHtml(includeAll=false, includeTarget=false) {
+    const options = [];
+    if (includeAll) options.push(`<option value="ALL">${t('compare_all')}</option>`);
+    PERIODS.slice().reverse().forEach(period => options.push(`<option value="${period.key}">${periodLabel(period.key)}</option>`));
+    if (includeTarget) options.push(`<option value="TARGET">${t('compare_target')}</option>`);
+    return options.join('');
+  }
+
+  function getStatusOptionsHtml() {
+    return [
+      ['ALL', t('status_all')],
+      ['green', t('atteint')],
+      ['orange', t('status_watch')],
+      ['red', t('critique')],
+      ['gray', t('status_gray')]
+    ].map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+  }
+
+  function refreshStaticTexts() {
+    const setText = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+    setText('side-data-quality', t('data_quality'));
+    setText('side-loaded-label', t('kpi_loaded'));
+    setText('side-missing-label', t('kpi_na'));
+    setText('side-source-label', t('source_label'));
+    setText('footer-credits', t('footer_credits'));
+    setText('footer-stack', t('footer_stack'));
+    [['filter-site-label', t('filter_site')], ['filter-period-label', t('filter_period')], ['filter-compare-label', t('filter_compare')], ['filter-status-label', t('filter_status')], ['filter-search-label', t('filter_search')]].forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el && el.firstChild) el.firstChild.nodeValue = value;
+    });
+    const search = document.getElementById('kpi-search');
+    if (search) search.placeholder = t('filter_search_placeholder');
+    const siteFilter = document.getElementById('site-filter');
+    if (siteFilter) { const current = siteFilter.value || state.site; siteFilter.innerHTML = getFilterSiteOptions(); siteFilter.value = current; }
+    const periodFilter = document.getElementById('period-filter');
+    if (periodFilter) { const current = periodFilter.value || state.period; periodFilter.innerHTML = getPeriodOptionsHtml(); periodFilter.value = current; }
+    const compareFilter = document.getElementById('compare-filter');
+    if (compareFilter) { const current = compareFilter.value || state.compare; compareFilter.innerHTML = getPeriodOptionsHtml(true, true); compareFilter.value = current; }
+    const statusFilter = document.getElementById('status-filter');
+    if (statusFilter) { const current = statusFilter.value || state.status; statusFilter.innerHTML = getStatusOptionsHtml(); statusFilter.value = current; }
+  }
+
   // Processus multilingues
   function getProcessList() {
     const pk = { strategy:'strategy', production:'production', planning:'planning', qhse:'qhse', people:'people', finance:'finance' };
@@ -4031,15 +4593,18 @@ function applyStaticData(){
   function setSiteLang(lang) {
     // Map IT button to 'it', AR to 'ar', EN to 'en', FR to 'fr'
     const map = { it_en: 'it', it: 'it', fr: 'fr', en: 'en', ar: 'ar' };
-    siteLang = map[lang] || lang;
+    const normalizedLang = map[lang] || lang;
+    const matrixLang = normalizedLang === 'it' ? 'it_en' : normalizedLang;
+    siteLang = normalizedLang;
     // Sync matrix lang
     if (typeof matrixData !== 'undefined') {
-      matrixData.lang = (lang === 'it') ? 'it_en' : lang;
+      matrixData.lang = matrixLang;
       if (typeof updateLangButtons === 'function') updateLangButtons();
-      if (typeof renderMatrix === 'function') renderMatrix();
+      if (typeof renderMatrix === 'function' && document.getElementById('matrix-table-body')) renderMatrix();
     }
-    // Apply RTL for Arabic
-    document.documentElement.dir = siteLang === 'ar' ? 'rtl' : 'ltr';
+    // Apply document language and direction
+    document.documentElement.lang = normalizedLang;
+    document.documentElement.dir = normalizedLang === 'ar' ? 'rtl' : 'ltr';
     // Re-render current page
     render();
     // Update lang button styles
@@ -4056,6 +4621,7 @@ function applyStaticData(){
     const dBadge = document.getElementById('hdr-data');
     if (pBtn) pBtn.textContent = t('btn_print');
     if (dBadge) dBadge.textContent = t('btn_data');
+    refreshStaticTexts();
     lucide.createIcons();
   }
   window.setSiteLang = setSiteLang;
@@ -4063,6 +4629,7 @@ function applyStaticData(){
   // ===================== FIN I18N =====================
 
 
+  refreshStaticTexts();
   init();
 })();
 </script>

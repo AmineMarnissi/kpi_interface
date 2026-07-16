@@ -2,7 +2,7 @@
     "processus": "Finance",
     "description": "Indicateurs clés de performance finance et CAPEX",
     "notes": [
-        "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
+        "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP_v2.xlsx.",
         "Les indicateurs matière sont ventilés par BU ; les indicateurs maintenance et CAPEX sont disponibles au niveau consolidé.",
         "Les valeurs CAPEX correspondent au snapshot courant du tableau de suivi et non à une série mensuelle complète par BU."
     ],
@@ -512,10 +512,10 @@
                 "formule": "Montant CAPEX réalisé",
                 "unite": "TND",
                 "valeurs": {
-                    "juin_2026": 245496.2929,
+                    "juin_2026": 297566.6085627,
                     "mai_2026": null,
                     "juin_2025": null,
-                    "ytd_2026": 245496.2929,
+                    "ytd_2026": 297566.6085627,
                     "pytd_2025": null,
                     "cible": null
                 }
@@ -526,10 +526,10 @@
                 "formule": "Montant CAPEX approuvé",
                 "unite": "TND",
                 "valeurs": {
-                    "juin_2026": 139511.53,
+                    "juin_2026": 144852.02800000002,
                     "mai_2026": null,
                     "juin_2025": null,
-                    "ytd_2026": 139511.53,
+                    "ytd_2026": 144852.02800000002,
                     "pytd_2025": null,
                     "cible": null
                 }
@@ -540,10 +540,10 @@
                 "formule": "Montant CAPEX total actuel",
                 "unite": "TND",
                 "valeurs": {
-                    "juin_2026": 385007.8229000001,
+                    "juin_2026": 442418.63656270015,
                     "mai_2026": null,
                     "juin_2025": null,
-                    "ytd_2026": 385007.8229000001,
+                    "ytd_2026": 442418.63656270015,
                     "pytd_2025": null,
                     "cible": null
                 }
@@ -554,10 +554,10 @@
                 "formule": "CAPEX total actuel / CAPEX approuvé × 100",
                 "unite": "%",
                 "valeurs": {
-                    "juin_2026": 275.9684614597805,
+                    "juin_2026": 305.42798928759225,
                     "mai_2026": null,
                     "juin_2025": null,
-                    "ytd_2026": 275.9684614597805,
+                    "ytd_2026": 305.42798928759225,
                     "pytd_2025": null,
                     "cible": 100.0
                 }
@@ -568,20 +568,19 @@
                 "formule": "Répartition du CAPEX actuel par catégorie",
                 "unite": "TND",
                 "valeurs": {
-                    "juin_2026": 385007.8229000001,
+                    "juin_2026": 442418.63656270015,
                     "mai_2026": null,
                     "juin_2025": null,
-                    "ytd_2026": 385007.8229000001,
+                    "ytd_2026": 442418.63656270015,
                     "pytd_2025": null,
                     "cible": null
                 },
                 "details": {
                     "Machinery": 300220,
-                    "Industrial equipments": 45329.96599999999,
-                    "Generic plants": 29900.357,
+                    "Industrial equipments": 46539.10984999999,
+                    "Generic plants": 83302.00681270001,
                     "IT equipments and software licence": 6398,
-                    "Leasehold Improvements": 1850,
-                    "Shops and Office Furniture and equipments": 1309.4999
+                    "Shops and Office Furniture and equipments": 5959.519899999999
                 }
             }
         ]

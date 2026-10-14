@@ -1,0 +1,265 @@
+    /* ── MODERN PALETTE ────────────────────────────── */
+    :root {
+      color-scheme: light dark;
+      --p-50: #f0f4ff;
+      --p-100: #dce6ff;
+      --p-200: #b9cdff;
+      --p-400: #4d77ff;
+      --p-500: #2952ff;
+      --p-600: #1432e0;
+      --p-700: #0e25b8;
+      --p-800: #0c1f95;
+      --p-900: #0b1875;
+      --neon-cyan: #00d4ff;
+      --neon-violet: #a855f7;
+      --neon-rose: #ff2d6f;
+      --neon-amber: #fbbf24;
+      --bg-dark: #03050f;
+      --surface-dark: #080c1a;
+      --card-dark: #0d1326;
+      --border-dark: #1e2a4a;
+      --text-muted-dark: #6b7fa3;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #1e2a4a transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Prevent grid and flex children from forcing the page beyond the viewport. */
+    #page-content,
+    #page-content > *,
+    #modal-body,
+    #modal-body > * {
+      min-width: 0;
+    }
+
+    /* The KPI detail dialog has a fixed visual frame and one reliable scroll area. */
+    #detail-modal[open] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #detail-modal > :first-child {
+      flex: 0 0 auto;
+    }
+
+    #modal-body {
+      flex: 1 1 auto;
+    }
+
+    /* Dark mode base */
+    .dark body {
+      background: var(--bg-dark);
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(8, 12, 26, .75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(78, 110, 255, .12);
+    }
+
+    /* Cards */
+    .card {
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(41, 82, 255, .18);
+    }
+
+    /* Glow effects */
+    .glow-blue {
+      box-shadow: 0 0 24px rgba(41, 82, 255, .25);
+    }
+
+    .glow-cyan {
+      box-shadow: 0 0 24px rgba(0, 212, 255, .2);
+    }
+
+    .glow-violet {
+      box-shadow: 0 0 24px rgba(168, 85, 247, .2);
+    }
+
+    /* Nav active */
+    .nav-active {
+      background: linear-gradient(90deg, rgba(41, 82, 255, .18), rgba(168, 85, 247, .08));
+      color: #7aa3ff;
+      border-left: 3px solid #4d77ff;
+      box-shadow: inset 0 0 20px rgba(41, 82, 255, .06);
+    }
+
+    .dark .nav-active {
+      background: linear-gradient(90deg, rgba(41, 82, 255, .2), rgba(168, 85, 247, .1));
+    }
+
+    /* KPI card selected */
+    .kpi-card-selected {
+      outline: 2px solid rgba(77, 119, 255, .7);
+      box-shadow: 0 0 16px rgba(41, 82, 255, .2);
+    }
+
+    /* Drag drop */
+    .drop-active {
+      border-color: #4d77ff !important;
+      background: rgba(41, 82, 255, .08) !important;
+    }
+
+    /* Status dots */
+    .status-dot {
+      width: .55rem;
+      height: .55rem;
+      border-radius: 9999px;
+      display: inline-block;
+    }
+
+    /* Charts */
+    .chart-box {
+      position: relative;
+      min-height: 300px;
+      height: 320px;
+    }
+
+    .chart-box-sm {
+      position: relative;
+      min-height: 240px;
+      height: 260px;
+    }
+
+    .sparkline {
+      position: relative;
+      height: 48px;
+    }
+
+    /* Scrollbars */
+    .scrollbar-hidden::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hidden {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #1e2a4a;
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #2d3f6e;
+    }
+
+    /* Matrix */
+    .vertical-text-cell {
+      height: 240px;
+      vertical-align: bottom;
+      padding-bottom: 12px;
+    }
+
+    .vertical-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.1;
+      margin: 0 auto;
+    }
+
+    .central-x-bg {
+      background: linear-gradient(135deg, #fef9c3, #fde68a);
+      position: relative;
+    }
+
+    /* Gradient text utility */
+    .grad-text {
+      background: linear-gradient(90deg, #4d77ff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Table sticky */
+    .table-sticky {
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: auto;
+    }
+
+    .table-sticky th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: inherit;
+    }
+
+    @media (max-width: 640px) {
+      #detail-modal {
+        width: calc(100vw - 1rem);
+        height: calc(100vh - 1rem);
+        max-height: calc(100vh - 1rem);
+        border-radius: 1.25rem;
+      }
+
+      #modal-body {
+        padding: 1rem;
+      }
+
+      .chart-box {
+        min-height: 240px;
+        height: 260px;
+      }
+    }
+
+    /* Animated gradient border */
+    .gradient-border {
+      position: relative;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      z-index: -1;
+      background: linear-gradient(135deg, #4d77ff33, #a855f733, #4d77ff33);
+    }
+
+    @media print {
+
+      aside,
+      #top-actions,
+      #filter-bar,
+      footer {
+        display: none !important;
+      }
+
+      main {
+        padding: 0 !important;
+      }
+
+      .print-break {
+        break-before: page;
+      }
+
+      body {
+        background: white !important;
+        color: black !important;
+      }
+    }

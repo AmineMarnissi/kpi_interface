@@ -1,651 +1,757 @@
 {
-    "processus": "Human Resources",
-    "description": "Indicateurs clés de performance RH par Business Unit",
-    "notes": [
-        "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
-        "Les indicateurs exprimés en pourcentage sont convertis en valeurs sur 100.",
-        "Certaines métriques RH ne sont disponibles qu'au niveau consolidé MEL-T ; elles restent null pour les autres BU lorsque la feuille source ne les ventile pas."
+  "processus": "Human Resources",
+  "description": "Indicateurs clés de performance RH par Business Unit",
+  "notes": [
+    "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
+    "Les indicateurs exprimés en pourcentage sont convertis en valeurs sur 100.",
+    "Certaines métriques RH ne sont disponibles qu'au niveau consolidé MEL-T ; elles restent null pour les autres BU lorsque la feuille source ne les ventile pas.",
+    "MEL-T — absentéisme mensuel : le classeur source ne fournit la série mensuelle qu’au périmètre personnel direct. Le taux global consolidé de septembre est conservé comme référence dans le détail source.",
+    "MEL-T — réalisation du budget d’effectif : effectif total de fin de mois rapporté au budget 2026 de 178 personnes.",
+    "MEL-T — formation : le taux de réalisation est consolidé (4 actions réalisées sur 8 renseignées dans le plan), sans ventilation mensuelle dans le classeur source."
+  ],
+  "sites": {
+    "SAFETY": [
+      {
+        "nom": "Effectif total",
+        "code": "Total Headcount",
+        "formule": "Nombre total de salariés",
+        "unite": "salariés",
+        "valeurs": {
+          "juin_2026": 28,
+          "mai_2026": 29,
+          "juin_2025": 36,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 50,
+          "juillet_2026": 32,
+          "aout_2026": 41,
+          "septembre_2026": 43,
+          "janvier_2026": 34,
+          "fevrier_2026": 27,
+          "mars_2026": 30,
+          "avril_2026": 27,
+          "septembre_2025": 34
+        }
+      },
+      {
+        "nom": "Taux de turnover",
+        "code": "Overall Turnover Rate",
+        "formule": "Terminations during period / Employees at period start × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 0,
+          "mai_2026": 3.4483,
+          "juin_2025": 2.7777777777777777,
+          "ytd_2026": 60.6296,
+          "pytd_2025": null,
+          "cible": null,
+          "juillet_2026": 3.125,
+          "aout_2026": 2.439,
+          "septembre_2026": 6.9767,
+          "janvier_2026": 23.5294,
+          "fevrier_2026": 7.4074,
+          "mars_2026": 10,
+          "avril_2026": 3.7037,
+          "septembre_2025": 5.88235294117647
+        }
+      },
+      {
+        "nom": "Taux d’absentéisme",
+        "code": "Absenteeism Rate",
+        "formule": "Unplanned Lost Hours / Available Hours × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": 22.051802945657695,
+          "juin_2025": null,
+          "ytd_2026": 19.714748312685334,
+          "pytd_2025": 10.604720928396622,
+          "cible": 7.5
+        }
+      },
+      {
+        "nom": "Réalisation du budget d’effectif",
+        "code": "Hire Budget Realization",
+        "formule": "Actual HC / Budget HC × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 80,
+          "mai_2026": 70,
+          "juin_2025": 90,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 100
+        }
+      },
+      {
+        "nom": "Ratio employés directs/indirects",
+        "code": "Direct/Indirect Ratio",
+        "formule": "Headcount direct / Headcount indirect",
+        "unite": "ratio",
+        "valeurs": {
+          "juin_2026": 4.333333333333333,
+          "mai_2026": 4.6,
+          "juin_2025": 5,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures travaillées",
+        "code": "Total Hours Worked",
+        "formule": "Somme des heures travaillées",
+        "unite": "heures",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux d’heures supplémentaires",
+        "code": "OT Rate",
+        "formule": "Overtime Hours / Total Hours Worked × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux de réalisation du plan de formation",
+        "code": "Training Completion Rate",
+        "formule": "Completed Trainings / Approved Trainings × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures de formation par salarié",
+        "code": "Training Hours per Employee",
+        "formule": "Total Training Hours / Total Headcount",
+        "unite": "heures / salarié",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      }
     ],
-    "sites": {
-        "SAFETY": [
-            {
-                "nom": "Effectif total",
-                "code": "Total Headcount",
-                "formule": "Nombre total de salariés",
-                "unite": "salariés",
-                "valeurs": {
-                    "juin_2026": 32,
-                    "mai_2026": 28,
-                    "juin_2025": 36,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 50
-                }
-            },
-            {
-                "nom": "Taux de turnover",
-                "code": "Overall Turnover Rate",
-                "formule": "Terminations during period / Employees at period start × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 0.0,
-                    "mai_2026": 3.4482758620689653,
-                    "juin_2025": 2.7777777777777777,
-                    "ytd_2026": 48.08879873788596,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’absentéisme",
-                "code": "Absenteeism Rate",
-                "formule": "Unplanned Lost Hours / Available Hours × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": 22.051802945657696,
-                    "juin_2025": null,
-                    "ytd_2026": 19.714748312685333,
-                    "pytd_2025": 10.604720928396622,
-                    "cible": 7.5
-                }
-            },
-            {
-                "nom": "Réalisation du budget d’effectif",
-                "code": "Hire Budget Realization",
-                "formule": "Actual HC / Budget HC × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 80.0,
-                    "mai_2026": 70.0,
-                    "juin_2025": 90.0,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 100.0
-                }
-            },
-            {
-                "nom": "Ratio employés directs/indirects",
-                "code": "Direct/Indirect Ratio",
-                "formule": "Headcount direct / Headcount indirect",
-                "unite": "ratio",
-                "valeurs": {
-                    "juin_2026": 4.333333333333333,
-                    "mai_2026": 4.6,
-                    "juin_2025": 5.0,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures travaillées",
-                "code": "Total Hours Worked",
-                "formule": "Somme des heures travaillées",
-                "unite": "heures",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’heures supplémentaires",
-                "code": "OT Rate",
-                "formule": "Overtime Hours / Total Hours Worked × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de réalisation du plan de formation",
-                "code": "Training Completion Rate",
-                "formule": "Completed Trainings / Approved Trainings × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures de formation par salarié",
-                "code": "Training Hours per Employee",
-                "formule": "Total Training Hours / Total Headcount",
-                "unite": "heures / salarié",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            }
-        ],
-        "LEATHER": [
-            {
-                "nom": "Effectif total",
-                "code": "Total Headcount",
-                "formule": "Nombre total de salariés",
-                "unite": "salariés",
-                "valeurs": {
-                    "juin_2026": 96,
-                    "mai_2026": 94,
-                    "juin_2025": 99,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 96
-                }
-            },
-            {
-                "nom": "Taux de turnover",
-                "code": "Overall Turnover Rate",
-                "formule": "Terminations during period / Employees at period start × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 1.0638297872340425,
-                    "mai_2026": 0.0,
-                    "juin_2025": 0.0,
-                    "ytd_2026": 10.429232192414431,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’absentéisme",
-                "code": "Absenteeism Rate",
-                "formule": "Unplanned Lost Hours / Available Hours × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": 6.548245342575973,
-                    "juin_2025": null,
-                    "ytd_2026": 8.517169672230352,
-                    "pytd_2025": 7.174759608569815,
-                    "cible": 7.5
-                }
-            },
-            {
-                "nom": "Réalisation du budget d’effectif",
-                "code": "Hire Budget Realization",
-                "formule": "Actual HC / Budget HC × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 88.07339449541286,
-                    "mai_2026": 86.23853211009175,
-                    "juin_2025": 90.82568807339449,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 100.0
-                }
-            },
-            {
-                "nom": "Ratio employés directs/indirects",
-                "code": "Direct/Indirect Ratio",
-                "formule": "Headcount direct / Headcount indirect",
-                "unite": "ratio",
-                "valeurs": {
-                    "juin_2026": 7.0,
-                    "mai_2026": 6.833333333333333,
-                    "juin_2025": 7.25,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures travaillées",
-                "code": "Total Hours Worked",
-                "formule": "Somme des heures travaillées",
-                "unite": "heures",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’heures supplémentaires",
-                "code": "OT Rate",
-                "formule": "Overtime Hours / Total Hours Worked × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de réalisation du plan de formation",
-                "code": "Training Completion Rate",
-                "formule": "Completed Trainings / Approved Trainings × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures de formation par salarié",
-                "code": "Training Hours per Employee",
-                "formule": "Total Training Hours / Total Headcount",
-                "unite": "heures / salarié",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            }
-        ],
-        "D|AIR": [
-            {
-                "nom": "Effectif total",
-                "code": "Total Headcount",
-                "formule": "Nombre total de salariés",
-                "unite": "salariés",
-                "valeurs": {
-                    "juin_2026": 8,
-                    "mai_2026": 8,
-                    "juin_2025": 14,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 11
-                }
-            },
-            {
-                "nom": "Taux de turnover",
-                "code": "Overall Turnover Rate",
-                "formule": "Terminations during period / Employees at period start × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 0.0,
-                    "mai_2026": 0.0,
-                    "juin_2025": 0.0,
-                    "ytd_2026": 9.090909090909092,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’absentéisme",
-                "code": "Absenteeism Rate",
-                "formule": "Unplanned Lost Hours / Available Hours × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": 2.635658914728682,
-                    "juin_2025": null,
-                    "ytd_2026": 2.6290580095795635,
-                    "pytd_2025": 13.737623762376241,
-                    "cible": 7.5
-                }
-            },
-            {
-                "nom": "Réalisation du budget d’effectif",
-                "code": "Hire Budget Realization",
-                "formule": "Actual HC / Budget HC × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 66.66666666666666,
-                    "mai_2026": 66.66666666666666,
-                    "juin_2025": 116.66666666666667,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 100.0
-                }
-            },
-            {
-                "nom": "Ratio employés directs/indirects",
-                "code": "Direct/Indirect Ratio",
-                "formule": "Headcount direct / Headcount indirect",
-                "unite": "ratio",
-                "valeurs": {
-                    "juin_2026": 1.6666666666666667,
-                    "mai_2026": 2.0,
-                    "juin_2025": 1.3333333333333333,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures travaillées",
-                "code": "Total Hours Worked",
-                "formule": "Somme des heures travaillées",
-                "unite": "heures",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’heures supplémentaires",
-                "code": "OT Rate",
-                "formule": "Overtime Hours / Total Hours Worked × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de réalisation du plan de formation",
-                "code": "Training Completion Rate",
-                "formule": "Completed Trainings / Approved Trainings × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures de formation par salarié",
-                "code": "Training Hours per Employee",
-                "formule": "Total Training Hours / Total Headcount",
-                "unite": "heures / salarié",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            }
-        ],
-        "HELMET": [
-            {
-                "nom": "Effectif total",
-                "code": "Total Headcount",
-                "formule": "Nombre total de salariés",
-                "unite": "salariés",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de turnover",
-                "code": "Overall Turnover Rate",
-                "formule": "Terminations during period / Employees at period start × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’absentéisme",
-                "code": "Absenteeism Rate",
-                "formule": "Unplanned Lost Hours / Available Hours × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Réalisation du budget d’effectif",
-                "code": "Hire Budget Realization",
-                "formule": "Actual HC / Budget HC × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Ratio employés directs/indirects",
-                "code": "Direct/Indirect Ratio",
-                "formule": "Headcount direct / Headcount indirect",
-                "unite": "ratio",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures travaillées",
-                "code": "Total Hours Worked",
-                "formule": "Somme des heures travaillées",
-                "unite": "heures",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’heures supplémentaires",
-                "code": "OT Rate",
-                "formule": "Overtime Hours / Total Hours Worked × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de réalisation du plan de formation",
-                "code": "Training Completion Rate",
-                "formule": "Completed Trainings / Approved Trainings × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures de formation par salarié",
-                "code": "Training Hours per Employee",
-                "formule": "Total Training Hours / Total Headcount",
-                "unite": "heures / salarié",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            }
-        ],
-        "MEL-T": [
-            {
-                "nom": "Effectif total",
-                "code": "Total Headcount",
-                "formule": "Nombre total de salariés",
-                "unite": "salariés",
-                "valeurs": {
-                    "juin_2026": 155,
-                    "mai_2026": 148,
-                    "juin_2025": 165,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 179
-                }
-            },
-            {
-                "nom": "Taux de turnover",
-                "code": "Overall Turnover Rate",
-                "formule": "Terminations during period / Employees at period start × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 1.3513513513513513,
-                    "mai_2026": 0.6756756756756757,
-                    "juin_2025": 0.6134969325153374,
-                    "ytd_2026": 18.880356442209188,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’absentéisme",
-                "code": "Absenteeism Rate",
-                "formule": "Unplanned Lost Hours / Available Hours × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": 8.406197014528409,
-                    "juin_2025": null,
-                    "ytd_2026": 9.009447109824874,
-                    "pytd_2025": 7.35889094792517,
-                    "cible": 7.5
-                }
-            },
-            {
-                "nom": "Réalisation du budget d’effectif",
-                "code": "Hire Budget Realization",
-                "formule": "Actual HC / Budget HC × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 87.07865168539325,
-                    "mai_2026": 84.26966292134831,
-                    "juin_2025": 92.69662921348315,
-                    "ytd_2026": null,
-                    "pytd_2025": null,
-                    "cible": 100.0
-                }
-            },
-            {
-                "nom": "Ratio employés directs/indirects",
-                "code": "Direct/Indirect Ratio",
-                "formule": "Headcount direct / Headcount indirect",
-                "unite": "ratio",
-                "valeurs": {
-                    "juin_2026": 2.875,
-                    "mai_2026": 2.7948717948717947,
-                    "juin_2025": 3.125,
-                    "ytd_2026": null,
-                    "pytd_2025": 3.0454545454545454,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Heures travaillées",
-                "code": "Total Hours Worked",
-                "formule": "Somme des heures travaillées",
-                "unite": "heures",
-                "valeurs": {
-                    "juin_2026": 27143,
-                    "mai_2026": 22453,
-                    "juin_2025": 23499,
-                    "ytd_2026": 144799,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux d’heures supplémentaires",
-                "code": "OT Rate",
-                "formule": "Overtime Hours / Total Hours Worked × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": 3.46313966768596,
-                    "mai_2026": 2.4963256580412417,
-                    "juin_2025": 1.0638750585131282,
-                    "ytd_2026": 1.263130270236673,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            },
-            {
-                "nom": "Taux de réalisation du plan de formation",
-                "code": "Training Completion Rate",
-                "formule": "Completed Trainings / Approved Trainings × 100",
-                "unite": "%",
-                "valeurs": {
-                    "juin_2026": null,
-                    "mai_2026": null,
-                    "juin_2025": null,
-                    "ytd_2026": 12.5,
-                    "pytd_2025": null,
-                    "cible": 100.0
-                }
-            },
-            {
-                "nom": "Heures de formation par salarié",
-                "code": "Training Hours per Employee",
-                "formule": "Total Training Hours / Total Headcount",
-                "unite": "heures / salarié",
-                "valeurs": {
-                    "juin_2026": 0.0,
-                    "mai_2026": 0.0,
-                    "juin_2025": 0.43636363636363634,
-                    "ytd_2026": 0.1032258064516129,
-                    "pytd_2025": null,
-                    "cible": null
-                }
-            }
-        ]
-    }
+    "LEATHER": [
+      {
+        "nom": "Effectif total",
+        "code": "Total Headcount",
+        "formule": "Nombre total de salariés",
+        "unite": "salariés",
+        "valeurs": {
+          "juin_2026": 94,
+          "mai_2026": 92,
+          "juin_2025": 99,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 96,
+          "juillet_2026": 96,
+          "aout_2026": 93,
+          "septembre_2026": 90,
+          "janvier_2026": 100,
+          "fevrier_2026": 94,
+          "mars_2026": 94,
+          "avril_2026": 92,
+          "septembre_2025": 98
+        }
+      },
+      {
+        "nom": "Taux de turnover",
+        "code": "Overall Turnover Rate",
+        "formule": "Terminations during period / Employees at period start × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 1.0638,
+          "mai_2026": 0,
+          "juin_2025": 0,
+          "ytd_2026": 16.9525,
+          "pytd_2025": null,
+          "cible": null,
+          "juillet_2026": 0,
+          "aout_2026": 4.3011,
+          "septembre_2026": 2.2222,
+          "janvier_2026": 4,
+          "fevrier_2026": 1.0638,
+          "mars_2026": 2.1277,
+          "avril_2026": 2.1739,
+          "septembre_2025": 3.061224489795918
+        }
+      },
+      {
+        "nom": "Taux d’absentéisme",
+        "code": "Absenteeism Rate",
+        "formule": "Unplanned Lost Hours / Available Hours × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": 6.548245342575973,
+          "juin_2025": null,
+          "ytd_2026": 8.517169672230352,
+          "pytd_2025": 7.174759608569815,
+          "cible": 7.5
+        }
+      },
+      {
+        "nom": "Réalisation du budget d’effectif",
+        "code": "Hire Budget Realization",
+        "formule": "Actual HC / Budget HC × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 88.07339449541286,
+          "mai_2026": 86.23853211009175,
+          "juin_2025": 90.82568807339449,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 100
+        }
+      },
+      {
+        "nom": "Ratio employés directs/indirects",
+        "code": "Direct/Indirect Ratio",
+        "formule": "Headcount direct / Headcount indirect",
+        "unite": "ratio",
+        "valeurs": {
+          "juin_2026": 7,
+          "mai_2026": 6.833333333333333,
+          "juin_2025": 7.25,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures travaillées",
+        "code": "Total Hours Worked",
+        "formule": "Somme des heures travaillées",
+        "unite": "heures",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux d’heures supplémentaires",
+        "code": "OT Rate",
+        "formule": "Overtime Hours / Total Hours Worked × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux de réalisation du plan de formation",
+        "code": "Training Completion Rate",
+        "formule": "Completed Trainings / Approved Trainings × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures de formation par salarié",
+        "code": "Training Hours per Employee",
+        "formule": "Total Training Hours / Total Headcount",
+        "unite": "heures / salarié",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      }
+    ],
+    "D|AIR": [
+      {
+        "nom": "Effectif total",
+        "code": "Total Headcount",
+        "formule": "Nombre total de salariés",
+        "unite": "salariés",
+        "valeurs": {
+          "juin_2026": 8,
+          "mai_2026": 8,
+          "juin_2025": 14,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 11
+        }
+      },
+      {
+        "nom": "Taux de turnover",
+        "code": "Overall Turnover Rate",
+        "formule": "Terminations during period / Employees at period start × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 0,
+          "mai_2026": 0,
+          "juin_2025": 0,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null,
+          "juillet_2026": 0,
+          "aout_2026": 0,
+          "septembre_2026": 16.6667,
+          "janvier_2026": 9.0909,
+          "fevrier_2026": 0,
+          "mars_2026": 0,
+          "avril_2026": 0,
+          "septembre_2025": 7.6923076923076925
+        }
+      },
+      {
+        "nom": "Taux d’absentéisme",
+        "code": "Absenteeism Rate",
+        "formule": "Unplanned Lost Hours / Available Hours × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": 2.635658914728682,
+          "juin_2025": null,
+          "ytd_2026": 2.6290580095795635,
+          "pytd_2025": 13.737623762376241,
+          "cible": 7.5
+        }
+      },
+      {
+        "nom": "Réalisation du budget d’effectif",
+        "code": "Hire Budget Realization",
+        "formule": "Actual HC / Budget HC × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 66.66666666666666,
+          "mai_2026": 66.66666666666666,
+          "juin_2025": 116.66666666666667,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 100
+        }
+      },
+      {
+        "nom": "Ratio employés directs/indirects",
+        "code": "Direct/Indirect Ratio",
+        "formule": "Headcount direct / Headcount indirect",
+        "unite": "ratio",
+        "valeurs": {
+          "juin_2026": 1.6666666666666667,
+          "mai_2026": 2,
+          "juin_2025": 1.3333333333333333,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures travaillées",
+        "code": "Total Hours Worked",
+        "formule": "Somme des heures travaillées",
+        "unite": "heures",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux d’heures supplémentaires",
+        "code": "OT Rate",
+        "formule": "Overtime Hours / Total Hours Worked × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux de réalisation du plan de formation",
+        "code": "Training Completion Rate",
+        "formule": "Completed Trainings / Approved Trainings × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures de formation par salarié",
+        "code": "Training Hours per Employee",
+        "formule": "Total Training Hours / Total Headcount",
+        "unite": "heures / salarié",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      }
+    ],
+    "HELMET": [
+      {
+        "nom": "Effectif total",
+        "code": "Total Headcount",
+        "formule": "Nombre total de salariés",
+        "unite": "salariés",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux de turnover",
+        "code": "Overall Turnover Rate",
+        "formule": "Terminations during period / Employees at period start × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux d’absentéisme",
+        "code": "Absenteeism Rate",
+        "formule": "Unplanned Lost Hours / Available Hours × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Réalisation du budget d’effectif",
+        "code": "Hire Budget Realization",
+        "formule": "Actual HC / Budget HC × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Ratio employés directs/indirects",
+        "code": "Direct/Indirect Ratio",
+        "formule": "Headcount direct / Headcount indirect",
+        "unite": "ratio",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures travaillées",
+        "code": "Total Hours Worked",
+        "formule": "Somme des heures travaillées",
+        "unite": "heures",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux d’heures supplémentaires",
+        "code": "OT Rate",
+        "formule": "Overtime Hours / Total Hours Worked × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Taux de réalisation du plan de formation",
+        "code": "Training Completion Rate",
+        "formule": "Completed Trainings / Approved Trainings × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      },
+      {
+        "nom": "Heures de formation par salarié",
+        "code": "Training Hours per Employee",
+        "formule": "Total Training Hours / Total Headcount",
+        "unite": "heures / salarié",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": null
+        }
+      }
+    ],
+    "MEL-T": [
+      {
+        "nom": "Effectif total",
+        "code": "Total Headcount",
+        "formule": "Nombre total de salariés",
+        "unite": "salariés",
+        "valeurs": {
+          "juin_2026": 148,
+          "mai_2026": 148,
+          "juin_2025": 165,
+          "ytd_2026": null,
+          "pytd_2025": null,
+          "cible": 179,
+          "juillet_2026": 155,
+          "aout_2026": 164,
+          "septembre_2026": 160,
+          "janvier_2026": 159,
+          "fevrier_2026": 150,
+          "mars_2026": 152,
+          "avril_2026": 147,
+          "septembre_2025": 162
+        }
+      },
+      {
+        "nom": "Taux de turnover",
+        "code": "Overall Turnover Rate",
+        "formule": "Terminations during period / Employees at period start × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 1.3514,
+          "mai_2026": 0.6757,
+          "juin_2025": 0.6134969325153374,
+          "ytd_2026": 26.9341,
+          "pytd_2025": null,
+          "cible": null,
+          "juillet_2026": 0.6452,
+          "aout_2026": 3.6585,
+          "septembre_2026": 3.75,
+          "janvier_2026": 8.1761,
+          "fevrier_2026": 2.6667,
+          "mars_2026": 3.2895,
+          "avril_2026": 2.7211,
+          "septembre_2025": 3.7037037037037033
+        }
+      },
+      {
+        "nom": "Taux d’absentéisme",
+        "code": "Absenteeism Rate",
+        "formule": "Heures d’absence non planifiée / heures disponibles × 100 (périmètre personnel direct disponible mensuellement)",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 9.8,
+          "mai_2026": 7,
+          "juin_2025": null,
+          "ytd_2026": 9.846601454727866,
+          "pytd_2025": 7.35889094792517,
+          "cible": 7.5,
+          "janvier_2026": 15.46303741375878,
+          "fevrier_2026": 13.588079079374445,
+          "mars_2026": 9.90026893760021,
+          "avril_2026": 8.172627062555629,
+          "juillet_2026": 17.3,
+          "aout_2026": 11.3,
+          "septembre_2026": 11.6,
+          "septembre_2025": 10.51292006384539
+        }
+      },
+      {
+        "nom": "Réalisation du budget d’effectif",
+        "code": "Hire Budget Realization",
+        "formule": "Effectif total en fin de mois / budget d’effectif 2026 (178) × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 87.07865168539325,
+          "mai_2026": 83.14606741573034,
+          "juin_2025": 92.69662921348315,
+          "ytd_2026": 89.8876404494382,
+          "pytd_2025": null,
+          "cible": 100,
+          "janvier_2026": 84.26966292134831,
+          "fevrier_2026": 85.39325842696628,
+          "mars_2026": 82.58426966292134,
+          "avril_2026": 83.14606741573034,
+          "juillet_2026": 91.57303370786516,
+          "aout_2026": 89.32584269662921,
+          "septembre_2026": 89.8876404494382
+        }
+      },
+      {
+        "nom": "Ratio employés directs/indirects",
+        "code": "Direct/Indirect Ratio",
+        "formule": "Effectif direct / effectif indirect",
+        "unite": "ratio",
+        "valeurs": {
+          "juin_2026": 2.875,
+          "mai_2026": 2.7948717948717947,
+          "juin_2025": 3.125,
+          "ytd_2026": 3.1025641025641026,
+          "pytd_2025": 3.0454545454545454,
+          "cible": null,
+          "janvier_2026": 2.9473684210526314,
+          "fevrier_2026": 2.8974358974358974,
+          "mars_2026": 2.675,
+          "avril_2026": 2.7,
+          "juillet_2026": 3.075,
+          "aout_2026": 3.076923076923077,
+          "septembre_2026": 3.1025641025641026,
+          "septembre_2025": 3
+        }
+      },
+      {
+        "nom": "Heures travaillées",
+        "code": "Total Hours Worked",
+        "formule": "Somme des heures travaillées",
+        "unite": "heures",
+        "valeurs": {
+          "juin_2026": 27143,
+          "mai_2026": 22453,
+          "juin_2025": 23499,
+          "ytd_2026": 212313,
+          "pytd_2025": null,
+          "cible": null,
+          "janvier_2026": 23953.5,
+          "fevrier_2026": 23561.5,
+          "mars_2026": 21122,
+          "avril_2026": 26566,
+          "juillet_2026": 26763.5,
+          "aout_2026": 13046,
+          "septembre_2026": 27704.5,
+          "septembre_2025": 26482.5
+        }
+      },
+      {
+        "nom": "Taux d’heures supplémentaires",
+        "code": "OT Rate",
+        "formule": "Heures supplémentaires / heures travaillées × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": 3.5000000000000004,
+          "mai_2026": 2.5,
+          "juin_2025": 1.0638750585131282,
+          "ytd_2026": 1.1506596393061188,
+          "pytd_2025": null,
+          "cible": null,
+          "janvier_2026": 0.46548521092950923,
+          "fevrier_2026": 0.30133904887210067,
+          "mars_2026": 0.4545024145440773,
+          "avril_2026": 0.18821049461717987,
+          "juillet_2026": 0.1,
+          "aout_2026": 1,
+          "septembre_2026": 1.7000000000000002,
+          "septembre_2025": 0.8496176720475787
+        }
+      },
+      {
+        "nom": "Taux de réalisation du plan de formation",
+        "code": "Training Completion Rate",
+        "formule": "Actions du plan marquées réalisées / actions renseignées dans le plan (4 / 8) × 100",
+        "unite": "%",
+        "valeurs": {
+          "juin_2026": null,
+          "mai_2026": null,
+          "juin_2025": null,
+          "ytd_2026": 50,
+          "pytd_2025": null,
+          "cible": 100,
+          "septembre_2026": 50
+        }
+      },
+      {
+        "nom": "Heures de formation par salarié",
+        "code": "Training Hours per Employee",
+        "formule": "Heures de formation du mois / effectif total de fin de mois",
+        "unite": "heures / salarié",
+        "valeurs": {
+          "juin_2026": 0.2064516129032258,
+          "mai_2026": 0.13513513513513514,
+          "juin_2025": 0.43636363636363634,
+          "ytd_2026": 0.9375,
+          "pytd_2025": null,
+          "cible": null,
+          "janvier_2026": 0,
+          "fevrier_2026": 0,
+          "mars_2026": 0,
+          "avril_2026": 0.10810810810810811,
+          "juillet_2026": 0.25766871165644173,
+          "aout_2026": 0,
+          "septembre_2026": 0.25
+        }
+      }
+    ]
+  }
 }

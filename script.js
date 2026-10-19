@@ -1747,8 +1747,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const nav = e.target.closest('[data-nav]'); if (nav) { navigate(nav.dataset.nav); return; }
           const qhseCategory = e.target.closest('[data-qhse-category]'); if (qhseCategory) { state.qhseCategory = qhseCategory.dataset.qhseCategory; state.selectedKpi = null; render(); return; }
           const kpiWidget = e.target.closest('[data-kpi-widget]'); if (kpiWidget) { openKpiWidget(kpiWidget.dataset.kpiId, kpiWidget.dataset.kpiWidget); return; }
-          const card = e.target.closest('[data-kpi-id]'); if (card) { state.selectedKpi = card.dataset.kpiId; render(); return; }
-          const proc = e.target.closest('[data-open-process]'); if (proc) { navigate('process:' + proc.dataset.openProcess); return; }
+          const card = e.target.closest('[data-kpi-id]'); if (card) { openKpi(card.dataset.kpiId); return; }
+          const proc = e.target.closest('[data-open-process]'); if (proc) { openProcessModal(proc.dataset.openProcess); return; }
           const site = e.target.closest('[data-site-quick]'); if (site) { state.site = site.dataset.siteQuick; render(); }
         });
         $('#theme-toggle').addEventListener('click', () => { document.documentElement.classList.toggle('dark'); renderChartsOnly(); lucide.createIcons(); });
@@ -2978,6 +2978,43 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#detail-modal').showModal(); lucide.createIcons(); requestAnimationFrame(() => { createPeriodChart('modal-period-chart', k); createSiteChart('modal-site-chart', k); });
       }
 
+
+      function openProcessModal(processId) {
+        const process = PROCESS_LIST.find(p => p.id === processId);
+        const kpis = filteredKpis(state.kpis.filter(k => k.process === processId));
+        if (!process || !kpis.length) return;
+        const summary = getSummary(kpis);
+        const site = state.site === "ALL" ? "Tous les sites" : state.site;
+        $("#modal-eyebrow").textContent = `${process.label} · ${site}`;
+        $("#modal-title").textContent = "Détail du département";
+        $("#modal-body").innerHTML = `
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            ${summaryCard("KPI suivis", summary.total, "list-checks", "gray", "Indicateurs du département")}
+            ${summaryCard("Atteints", summary.green, "circle-check", "green", "Objectifs atteints")}
+            ${summaryCard("À surveiller", summary.orange, "triangle-alert", "orange", "Suivi requis")}
+            ${summaryCard("Critiques", summary.red, "circle-alert", "red", "Actions prioritaires")}
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+            <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Répartition des statuts</h3><div class="chart-box"><canvas id="modal-process-status-chart"></canvas></div></div>
+            <div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Évolution de la performance</h3><div class="chart-box"><canvas id="modal-process-trend-chart"></canvas></div></div>
+          </div>
+          <div class="mt-5 rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">Indicateurs du département</h3>${processTable(kpis)}</div>`;
+        $("#detail-modal").showModal();
+        lucide.createIcons();
+        requestAnimationFrame(() => createProcessModalCharts(kpis));
+      }
+
+      function createProcessModalCharts(kpis) {
+        const current = getSummary(kpis);
+        chart("modal-process-status-chart", { type: "doughnut", data: { labels: ["Atteint", "À surveiller", "Critique", "N/A"], datasets: [{ data: [current.green, current.orange, current.red, current.gray], backgroundColor: ["#00c896", "#f97316", "#ff2d6f", "#475569"], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: "65%", plugins: { legend: { position: "bottom" } } } });
+        const periods = PERIODS.filter(p => p.key !== "2025").map(p => p.key);
+        const performance = periods.map(period => {
+          let green = 0, measured = 0;
+          kpis.forEach(k => { const status = statusOf(k, resolveSite(k), period); if (status !== "gray") { measured++; if (status === "green") green++; } });
+          return measured ? Math.round(green / measured * 100) : null;
+        });
+        chart("modal-process-trend-chart", { type: "line", data: { labels: periods.map(periodLabel), datasets: [{ label: "KPI atteints", data: performance, borderColor: "#2952ff", backgroundColor: "rgba(41,82,255,.12)", fill: true, tension: .35, borderWidth: 3, pointBackgroundColor: "#2952ff" }] }, options: baseOptions({ max: 100, unit: "%" }) });
+      }
 
       function renderChartsOnly() {
 

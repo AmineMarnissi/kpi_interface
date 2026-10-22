@@ -258,70 +258,76 @@
 
   const KPI_CATALOG = [
     // Strategy
-    kpi('strategy-score','strategy','Score global MEL-T','Score composite des KPI disponibles et pondérés.','score','higher',['score global','overall score'],['Summary','Overview'],['MEL-T']),
-    kpi('hoshin-achievement','strategy','Atteinte des objectifs Hoshin','Part des objectifs stratégiques atteints.','%','higher',['hoshin','objective achievement','atteinte objectifs'],['Hoshin','Summary'],['MEL-T']),
-    kpi('action-completion','strategy','Taux de réalisation des actions','Part des actions clôturées dans le délai.','%','higher',['action completion','actions completed','taux réalisation actions'],['Hoshin','Actions'],['MEL-T']),
-    kpi('critical-kpis','strategy','KPI critiques','Nombre de KPI classés critiques.','KPI','lower',['critical kpi','kpi critiques'],['Summary'],['MEL-T']),
+    kpi('strategy-score','strategy','Strategy Score','Composite score of available and weighted KPIs.','score','higher',['score global','overall score','strategy score'],['Summary','Overview'],['MEL-T']),
+    kpi('hoshin-achievement','strategy','Hoshin Objectives Achievement','Share of strategic objectives achieved.','%','higher',['hoshin','objective achievement','atteinte objectifs'],['Hoshin','Summary'],['MEL-T']),
+    kpi('action-completion','strategy','Action Completion Rate','Share of actions closed within deadline.','%','higher',['action completion','actions completed','taux réalisation actions'],['Hoshin','Actions'],['MEL-T']),
+    kpi('critical-kpis','strategy','Critical KPIs','Number of KPIs categorized as critical.','KPI','lower',['critical kpi','kpi critiques'],['Summary'],['MEL-T']),
 
-    // Production
-    kpi('operational-efficiency','production','Efficacité opérationnelle','Efficacité globale des opérations.','%','higher',['operational efficiency','efficacite operationnelle'],['Efficiency'],SITES),
-    kpi('productivity','production','Productivité en pièces/heure','Nombre de pièces produites par heure directe.','p/h','higher',['productivity','productivite','productivité'],['Efficiency'],SITES),
-    kpi('production-volume','production','Volume de production','Volume réellement produit sur la période.','pcs','higher',['production volume','volume production','output'],['Volume','Production','Efficiency'],SITES),
-    kpi('fqc','production','Taux de défaut FQC','Taux de défaut détecté au contrôle qualité final interne.','%','lower',['fqc defect rate','fqc','final quality control'],['Quality'],SITES),
-    kpi('oqc','production','Taux de défaut OQC','Taux de défaut détecté au contrôle qualité sortant.','%','lower',['oqc defect rate','oqc','outgoing quality control'],['Quality'],SITES),
-    kpi('volume-ratio','production','Ratio du volume de production','Rapport entre le volume réel et le volume budgété.','%','higher',['volume ratio','volume vs budget','production ratio'],['Volume','Efficiency'],SITES),
-    kpi('capacity-utilization','production','Taux d’utilisation de la capacité','Utilisation de la capacité disponible ou budgétée.','%','higher',['capacity utilization','utilisation capacite','capacity ratio'],['Efficiency','Capacity'],SITES),
-    kpi('efficiency-ratio','production','Ratio d’efficacité','Heures standard produites rapportées aux heures directes consommées.','%','higher',['efficiency ratio','ratio efficacite','efficacité'],['Efficiency'],SITES),
+    // Production (From Sheets: Efficiency, Ph_QC, Quality, Ratio)
+    kpi('operational-efficiency','production','Operational Efficiency % (O-Eff%)','Standard minutes produced divided by total worked minutes × 100.','%','higher',['operational efficiency','efficacite operationnelle','o-eff%'],['Efficiency'],SITES),
+    kpi('productivity','production','Productivity (p/h)','Finished goods volume divided by total worked hours.','p/h','higher',['productivity','productivite','productivité'],['Efficiency'],SITES),
+    kpi('production-volume','production','Production Volume FG','Sum of finished goods units manufactured during the period.','pcs','higher',['production volume','volume production','output','fg'],['Volume','Production','Efficiency'],SITES),
+    kpi('fqc-productivity','production','Productivity (p/h) - FQC','Finished goods output divided by total FQC worked hours.','p/h','higher',['fqc productivity','productivite fqc','ph_qc'],['Quality','Efficiency','Ph_QC'],SITES),
+    kpi('fqc-throughput','production','Throughput (p/h) - FQC','Finished goods output divided by 1.0 FTE worked hours.','p/h','higher',['fqc throughput','throughput fqc','ph_qc'],['Quality','Efficiency','Ph_QC'],SITES),
+    kpi('fqc-pieces','production','QC_Pcs','Total finished goods inspected at final quality control.','pcs','higher',['qc pieces','pieces fqc','qc_pcs'],['Quality','Volume','Ph_QC'],SITES),
+    kpi('fqc-worked-hours','production','Worked Hrs (QC)','Total working hours dedicated to final quality control.','h','context',['fqc worked hours','heures fqc','worked_hrs'],['Quality','Worked Hrs','Ph_QC'],SITES),
+    kpi('fqc','production','FQC Defect Rate Finished Goods','Percentage of defective finished goods detected in final QC.','%','lower',['fqc defect rate','fqc','final quality control'],['Quality'],SITES),
+    kpi('oqc','production','OQC Defect Rate Finished Goods','Percentage of defective finished goods detected in outgoing QC.','%','lower',['oqc defect rate','oqc','outgoing quality control'],['Quality'],SITES),
+    kpi('volume-ratio','production','Production Volume Ratio','Standard direct labour hours of actual production vs budgeted hours.','%','higher',['volume ratio','volume vs budget','production ratio'],['Volume','Efficiency','Ratio'],SITES),
+    kpi('capacity-utilization','production','Capacity Utilisation Ratio','Actual direct labour hours worked vs budgeted direct labour hours.','%','higher',['capacity utilization','utilisation capacite','capacity ratio'],['Efficiency','Capacity','Ratio'],SITES),
+    kpi('efficiency-ratio','production','Efficiency Ratio','Standard direct labour hours of actual production vs actual direct labour hours worked.','%','higher',['efficiency ratio','ratio efficacite','efficacité'],['Efficiency','Ratio'],SITES),
 
-    // Planning
-    kpi('otif','planning','OTIF','Commandes livrées à temps et en totalité.','%','higher',['otif','on time in full'],['Delivery'],SITES),
-    kpi('production-lead-time','planning','Lead Time de production','Durée interne de fabrication.','jours','lower',['production lead time','lead time production'],['Delivery'],SITES),
-    kpi('lead-time','planning','Lead Time End-to-End','Durée totale entre la demande et la livraison.','jours','lower',['lead time global','end to end lead time','lead time'],['Delivery'],SITES),
-    kpi('service-level','planning','Niveau de service','Taux de service client ou de respect des engagements.','%','higher',['service level','niveau de service'],['Delivery'],SITES),
-    kpi('delivery-reliability','planning','Fiabilité des livraisons','Fiabilité des livraisons réalisées.','%','higher',['delivery reliability','fiabilite livraison','fiabilité livraison'],['Delivery','Warehouse'],SITES),
-    kpi('inventory-accuracy','planning','Précision des stocks','Concordance entre stock physique et stock système.','%','higher',['inventory accuracy','stock accuracy','precision stock','précision stock'],['Inventory'],SITES),
-    kpi('logistics-cost','planning','Coût logistique total','Coût total des opérations logistiques.','TND','lower',['logistics cost','cout logistique','coût logistique total'],['Logistics','Costs'],SITES),
-    kpi('logistics-cost-per-piece','planning','Coût logistique par pièce','Coût logistique unitaire par pièce expédiée.','TND/pièce','lower',['cout logistique par piece','logistics cost per piece'],['Logistics','Costs'],SITES),
-    kpi('shipped-pieces','planning','Nombre de pièces expédiées','Volume total de pièces livrées ou expédiées.','pcs','higher',['pieces expediees','shipped pieces'],['Logistics','Volume'],SITES),
+    // Planning & Logistics (From Sheets: Delivery, Warehouse & Inventory Manag, Logistic)
+    kpi('otif','planning','OTIF 1st conf','Orders delivered on time and in full (first confirmation).','%','higher',['otif','on time in full','otif 1st conf'],['Delivery'],SITES),
+    kpi('production-lead-time','planning','Production Lead Time (LT Produzione)','Internal manufacturing duration (Spedizione - Avvio).','jours','lower',['production lead time','lead time production','lt produzione'],['Delivery'],SITES),
+    kpi('lead-time','planning','End-to-End Lead Time (LT End-to-End)','Total customer lead time (Consegna - Partenza materiale).','jours','lower',['lead time global','end to end lead time','lead time','lt e2e'],['Delivery'],SITES),
+    kpi('service-level','planning','Service Level (SL)','Units sold of finished goods divided by budgeted units × 100.','%','higher',['service level','niveau de service','sl'],['Delivery'],SITES),
+    kpi('delivery-reliability','planning','Reliability of Deliveries (POM)','Percentage of orders that are error-free.','%','higher',['delivery reliability','fiabilite livraison','pom'],['Delivery','Warehouse'],SITES),
+    kpi('inventory-accuracy','planning','Inventory Accuracy Rate (in %)','Ratio of correct counted inventory units vs units on record × 100.','%','higher',['inventory accuracy','inventory','stock accuracy','precision stock','précision stock','warehouse inventory'],['Inventory','Warehouse'],SITES),
+    kpi('inventory-correct-units','planning','Correct Counted Units','Correct units counted during inventory audits.','pcs','higher',['correct counted units','unites conformes','inventory count','stock physique'],['Inventory','Warehouse'],SITES),
+    kpi('inventory-record-units','planning','Units on Record','Theoretical stock units on record in system during inventory audit.','pcs','context',['units on record','stock theorique','unites enregistrees'],['Inventory','Warehouse'],SITES),
+    kpi('logistics-cost','planning','Total Logistic Cost (TND)','Total fees cost + transport cost in TND.','TND','lower',['logistics cost','cout logistique','coût logistique total'],['Logistics','Costs'],SITES),
+    kpi('logistics-cost-per-piece','planning','Logistic Cost Unit (TND)','Total logistic cost divided by number of pieces shipped.','TND/pièce','lower',['cout logistique par piece','logistics cost per piece','cost unit'],['Logistics','Costs'],SITES),
+    kpi('shipped-pieces','planning','Shipped Pieces (Capi Spediti)','Total units shipped (Capi Spediti) during the period.','pcs','higher',['pieces expediees','shipped pieces','capi spediti'],['Logistics','Volume'],SITES),
 
     // QHSE
-    kpi('customer-quality','qhse','Customer Quality','Taux de conformité qualité côté client.','%','higher',['customer quality','qualite client','qualité client'],['Quality'],SITES),
-    kpi('customer-complaints','qhse','Réclamations clients','Nombre de réclamations enregistrées.','réclamations','lower',['customer complaints','reclamations clients','réclamations clients','complaints'],['Quality','QHSE'],SITES),
-    kpi('pnc','qhse','PNC','Nombre de produits ou processus non conformes.','PNC','lower',['pnc','non conformity','non conformite','non-conformité'],['Quality','QHSE'],SITES),
-    kpi('qualipro-completion','qhse','Taux d’exploitation Qualipro','Taux global d’utilisation de la plateforme Qualipro par les utilisateurs suivis.','%','higher',['qualipro','completion rate','taux achevement'],['QHSE','Quality'],['MEL-T']),
-    kpi('accidents','qhse','Accidents','Nombre total d’accidents enregistrés.','accidents','lower',['accidents','accident'],['Safety','QHSE'],SITES),
-    kpi('tf1','qhse','TF1','Taux de fréquence des accidents avec arrêt.','TF','lower',['tf1','frequency rate'],['Safety','QHSE'],SITES),
-    kpi('tg','qhse','TG','Taux de gravité des accidents.','TG','lower',['tg','severity rate'],['Safety','QHSE'],SITES),
-    kpi('electricity','qhse','Consommation électrique','Consommation d’électricité sur la période.','kWh','lower',['electricity consumption','consommation electrique','consommation électrique'],['QHSE','Energy'],SITES),
-    kpi('water','qhse','Consommation d’eau','Consommation d’eau sur la période.','m³','lower',['water consumption','consommation eau','consommation d eau'],['QHSE','Environment'],SITES),
-    kpi('co2','qhse','Émissions CO₂','Émissions de gaz à effet de serre.','tCO₂','lower',['co2','carbon','emissions'],['QHSE','Environment'],SITES),
-    kpi('lost-time-accidents','qhse','Accidents avec arrêt','Nombre d’accidents ayant généré un arrêt de travail.','accidents','lower',['accidents avec arrêt','lost time accidents'],['Safety','QHSE'],SITES),
-    kpi('lost-days','qhse','Jours perdus','Nombre de jours perdus liés aux accidents du travail.','jours','lower',['jours perdus','lost days'],['Safety','QHSE'],SITES),
-    kpi('tep-total','qhse','Consommation énergétique totale','Consommation énergétique consolidée électricité + gasoil.','TEP','lower',['tep totale','total energy consumption'],['QHSE','Energy'],['MEL-T']),
-    kpi('diesel','qhse','Consommation de gasoil','Consommation de gasoil sans soufre.','L','lower',['gasoil','diesel consumption'],['QHSE','Energy'],['MEL-T']),
-    kpi('water-intensity','qhse','Consommation d’eau L/P/J','Consommation d’eau en litres par personne et par jour ouvrable.','L/P/J','lower',['consommation l p j','water intensity'],['QHSE','Environment'],SITES),
-    kpi('electric-intensity','qhse','Intensité électrique','Consommation électrique rapportée au nombre de pièces produites.','kWh/pièce','lower',['intensité électrique','electrical intensity'],['QHSE','Energy'],SITES),
+    kpi('customer-quality','planning','Customer Quality','Customer-side quality compliance rate.','%','higher',['customer quality','qualite client','qualité client'],['Delivery','Quality'],SITES),
+    kpi('qualipro-completion','qhse','Qualipro Exploitation Rate','Global utilization and login rate on Qualipro platform.','%','higher',['qualipro','completion rate','taux achevement'],['QHSE','Quality'],['MEL-T']),
+    kpi('pnc','qhse','PNC (Non-Compliant Products)','Number of non-compliant products or process incidents.','PNC','lower',['pnc','non conformity','non conformite','non-conformité'],['Quality','QHSE'],SITES),
+    kpi('customer-complaints','qhse','Customer Complaints','Total customer quality complaints registered.','complaints','lower',['customer complaints','reclamations clients','réclamations clients','complaints'],['Quality','QHSE'],SITES),
+    kpi('accidents','qhse','Total Accidents','Total recorded work accidents on period.','accidents','lower',['accidents','accident'],['Safety','QHSE'],SITES),
+    kpi('tf1','qhse','Frequency Rate (TF1)','Accident frequency rate with lost time.','TF','lower',['tf1','frequency rate'],['Safety','QHSE'],SITES),
+    kpi('tg','qhse','Severity Rate (TG)','Work accident severity rate.','TG','lower',['tg','severity rate'],['Safety','QHSE'],SITES),
+    kpi('electricity','qhse','Electricity Consumption','Electricity consumption in kWh. Safety + Leather measured via common meter.','kWh','lower',['electricity consumption','consommation electrique','consommation électrique'],['QHSE','Energy'],SITES),
+    kpi('water','qhse','Water Consumption','Total water consumption during period in m³.','m³','lower',['water consumption','consommation eau','consommation d eau'],['QHSE','Environment'],SITES),
+    kpi('co2','qhse','CO₂ Emissions','Greenhouse gas emissions. Safety + Leather aggregated from common meter.','tCO₂','lower',['co2','carbon','emissions'],['QHSE','Environment'],SITES),
+    kpi('lost-time-accidents','qhse','Lost Time Accidents (NALT)','Number of accidents resulting in sick leave / lost time.','accidents','lower',['accidents avec arrêt','lost time accidents'],['Safety','QHSE'],SITES),
+    kpi('lost-days','qhse','Lost Days (LD)','Number of working days lost due to occupational accidents.','days','lower',['jours perdus','lost days'],['Safety','QHSE'],SITES),
+    kpi('tep-total','qhse','Total Energy Consumption (TEP)','Consolidated total energy consumption (electricity + diesel).','TEP','lower',['tep totale','total energy consumption'],['QHSE','Energy'],['MEL-T']),
+    kpi('diesel','qhse','Diesel Consumption','Sulfur-free diesel consumption in liters.','L','lower',['gasoil','diesel consumption'],['QHSE','Energy'],['MEL-T']),
+    kpi('water-intensity','qhse','Water Intensity (L/P/Day)','Water consumption in liters per person per working day.','L/P/J','lower',['consommation l p j','water intensity'],['QHSE','Environment'],SITES),
+    kpi('electric-intensity','qhse','Electrical Intensity (kWh/piece)','Electricity consumed per finished garment produced.','kWh/pièce','lower',['intensité électrique','electrical intensity'],['QHSE','Energy'],SITES),
 
-    // People
-    kpi('headcount-total','people','Effectif total','Nombre total de salariés actifs.','personnes','context',['total headcount','headcount total','effectif total'],['People'],SITES),
-    kpi('turnover','people','Taux de turnover','Taux de rotation des effectifs.','%','lower',['turnover','attrition'],['People'],SITES),
-    kpi('absenteeism','people','Taux d’absentéisme','Heures d’absence rapportées aux heures théoriques.','%','lower',['absenteeism','absenteisme','absentéisme'],['People','Worked Hrs'],SITES),
-    kpi('headcount-vs-budget','people','Réalisation du budget d’effectif','Rapport entre effectif réel et effectif budgété.','%','higher',['headcount vs budget','hc vs budget','effectif budget'],['People'],SITES),
-    kpi('direct-indirect-ratio','people','Ratio employés directs/indirects','Rapport entre effectifs directs et indirects.','%','context',['direct indirect ratio','ratio direct indirect'],['People'],SITES),
-    kpi('worked-hours','people','Heures travaillées','Total des heures réellement travaillées.','h','context',['worked hours','heures travaillées'],['Worked Hrs'],SITES),
-    kpi('overtime-rate','people','Taux d’heures supplémentaires','Part des heures supplémentaires dans les heures travaillées.','%','lower',['overtime rate','ot rate','taux heures supplementaires'],['Worked Hrs','People'],SITES),
-    kpi('training-completion','people','Taux de réalisation du plan de formation','Part du plan de formation réalisée.','%','higher',['training completion','training plan','plan formation'],['People','Training'],SITES),
-    kpi('training-hours-per-employee','people','Heures de formation par salarié','Nombre d’heures de formation dispensées par salarié.','h/pers','higher',['training hours','heures formation'],['People','Training'],SITES),
+    // People & Worked Hrs (From Sheets: People, People_2, Worked Hrs)
+    kpi('headcount-total','people','Total Headcount (HC)','Total active headcount at start/end of period.','persons','context',['total headcount','headcount total','effectif total','hc'],['People'],SITES),
+    kpi('turnover','people','Overall Turnover Rate (in %)','Terminations during period divided by headcount at period start × 100.','%','lower',['turnover','attrition','overall turnover rate'],['People'],SITES),
+    kpi('absenteeism','people','Overall Absence Rate','Overall absence hours divided by available hours [Only DL].','%','lower',['absenteeism','absenteisme','absentéisme','overall absence rate'],['People','Worked Hrs'],SITES),
+    kpi('headcount-vs-budget','people','Headcount vs Budget','Actual headcount vs annual budget target (178 for MEL-T).','%','higher',['headcount vs budget','hc vs budget','effectif budget'],['People'],SITES),
+    kpi('direct-indirect-ratio','people','Direct / Indirect Ratio','Ratio between direct workforce and indirect staff.','ratio','context',['direct indirect ratio','ratio direct indirect'],['People'],SITES),
+    kpi('worked-hours','people','Total Worked Hours','Total hours actually worked during the period.','h','context',['worked hours','heures travaillées','total worked hours'],['Worked Hrs'],SITES),
+    kpi('overtime-rate','people','Overtime Rate (OT rate)','Share of overtime hours in total worked hours.','%','lower',['overtime rate','ot rate','taux heures supplementaires'],['Worked Hrs','People'],SITES),
+    kpi('training-completion','people','Training Plan Completion Rate','Share of annual training plan completed.','%','higher',['training completion','training plan','plan formation'],['People','Training'],SITES),
+    kpi('training-hours-per-employee','people','Training Hours per Employee','Training hours delivered per employee.','h/pers','higher',['training hours','heures formation'],['People','Training'],SITES),
 
-    // Finance
-    kpi('scrap-cost','finance','Valeur des rebuts matière','Valeur financière des matières et produits rebutés.','TND','lower',['scrap cost','cout rebut','coût rebut','material scrap'],['Costs','Scrap'],SITES),
-    kpi('maintenance-cost','finance','Coût total de maintenance','Dépenses de maintenance sur la période.','TND','lower',['maintenance cost','cout maintenance','coût maintenance'],['Maintenance','Costs'],SITES),
-    kpi('maintenance-cost-hour','finance','Coût de maintenance par heure directe','Coût de maintenance rapporté aux heures directes.','TND/h','lower',['maintenance cost per hour','cost hour','cout par heure'],['Maintenance','Costs'],SITES),
-    kpi('capex-realized','finance','CAPEX réalisé','Investissements réalisés ou engagés depuis le début de l’année.','TND','context',['capex realized','capex realise'],['CAPEX','Finance'],SITES),
-    kpi('capex-approved','finance','CAPEX approuvé','Montant total des investissements approuvés.','TND','context',['capex approved','capex approuve'],['CAPEX','Finance'],SITES),
-    kpi('capex-total','finance','CAPEX total actuel','Montant total du CAPEX à ce jour.','TND','context',['capex total','total capex'],['CAPEX','Finance'],SITES),
-    kpi('capex-consumption-rate','finance','Taux de consommation du budget CAPEX','Part du budget CAPEX consommée.','%','higher',['capex consumption','taux consommation capex'],['CAPEX','Finance'],SITES),
-    kpi('capex-breakdown','finance','Répartition du CAPEX par catégorie','Ventilation des investissements par type.','%','context',['capex breakdown','repartition capex'],['CAPEX','Finance'],SITES)
+    // Finance (From Sheets: Costs & Profitability, Capex)
+    kpi('scrap-cost','finance','Scrap Material Value (€)','Total euro value of raw materials scrapped during manufacturing.','€','lower',['scrap cost','cout rebut','coût rebut','material scrap','scrap material value'],['Costs','Scrap'],SITES),
+    kpi('maintenance-cost','finance','Maintenance Total Cost (TND) (BCR)','Total maintenance cost (Labor + Parts) in TND.','TND','lower',['maintenance cost','cout maintenance','coût maintenance','bcr'],['Maintenance','Costs'],['MEL-T']),
+    kpi('maintenance-cost-hour','finance','Maintenance Cost/h DL','Total maintenance cost per direct labor worked hour.','TND/h','lower',['maintenance cost per hour','cost hour','cout par heure','maintenance cost/h dl'],['Maintenance','Costs'],['MEL-T']),
+    kpi('capex-realized','finance','CAPEX Realized (Done)','Realized capital expenditures consolidated at MEL-T level.','TND','context',['capex realized','capex realise','capex done'],['CAPEX','Finance'],['MEL-T']),
+    kpi('capex-approved','finance','CAPEX Approved','Total capital expenditures approved.','TND','context',['capex approved','capex approuve'],['CAPEX','Finance'],['MEL-T']),
+    kpi('capex-total','finance','Total CAPEX','Consolidated total CAPEX project value to date.','TND','context',['capex total','total capex'],['CAPEX','Finance'],['MEL-T']),
+    kpi('capex-consumption-rate','finance','CAPEX Budget Consumption Rate','Cumulative realized CAPEX vs approved budget.','%','higher',['capex consumption','taux consommation capex'],['CAPEX','Finance'],['MEL-T']),
+    kpi('capex-breakdown','finance','CAPEX Breakdown by Category','Breakdown of capital investments by asset type.','TND','context',['capex breakdown','repartition capex'],['CAPEX','Finance'],['MEL-T'])
   ];
 
   function kpi(id, process, name, definition, unit, direction, aliases, sheetHints, sites) {
@@ -1514,9 +1520,36 @@
             'ytd_2026': 'ytd_2026', 'pytd_2025': 'pytd_2025'
           };
           const kpiMap = {
+            // English Excel titles & codes
+            'Operational Efficiency % (O-Eff%)': 'operational-efficiency',
+            'O-Eff%': 'operational-efficiency',
+            'Productivity (p/h)': 'productivity',
+            'Production Volume FG': 'production-volume',
+            'Productivity (p/h) - FQC': 'fqc-productivity',
+            'Productivity_QC_Ph': 'fqc-productivity',
+            'Throughput (p/h) - FQC': 'fqc-throughput',
+            'Throughput (ph)_QC': 'fqc-throughput',
+            'QC_Pcs': 'fqc-pieces',
+            'Worked Hrs (QC)': 'fqc-worked-hours',
+            'Worked Hrs - FQC': 'fqc-worked-hours',
+            'FQC Defect Rate Finished Goods': 'fqc',
+            'FQC Defective Rate': 'fqc',
+            'OQC Defect Rate Finished Goods': 'oqc',
+            'OQC Defective Rate': 'oqc',
+            'Production volume ratio': 'volume-ratio',
+            'Production Volume Ratio': 'volume-ratio',
+            'Capacity utilisation ratio': 'capacity-utilization',
+            'Capacity Utilization Ratio': 'capacity-utilization',
+            'Efficiency ratio': 'efficiency-ratio',
+            'Efficiency Ratio': 'efficiency-ratio',
+            // French aliases
             'Efficacité opérationnelle': 'operational-efficiency',
             'Productivité en pièces/heure': 'productivity',
             'Volume de production': 'production-volume',
+            'Productivité FQC': 'fqc-productivity',
+            'Throughput FQC': 'fqc-throughput',
+            'Pièces contrôlées FQC': 'fqc-pieces',
+            'Heures travaillées FQC': 'fqc-worked-hours',
             'Taux de défaut FQC': 'fqc',
             'Taux de défaut OQC': 'oqc',
             'Ratio du volume de production': 'volume-ratio',
@@ -1528,7 +1561,7 @@
             if (!siteLabel) return;
             
             kpiList.forEach(kpiObj => {
-              const staticKey = kpiMap[kpiObj.nom];
+              const staticKey = kpiMap[kpiObj.nom] || kpiMap[kpiObj.code];
               if (!staticKey) return;
               
               if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
@@ -1568,15 +1601,42 @@
         if (resLog.ok) {
           const logData = await resLog.json();
           const kpiMap = {
+            // English Excel titles & codes
+            'OTIF 1st conf': 'otif',
             'OTIF': 'otif',
+            'Production Lead Time (LT Produzione)': 'production-lead-time',
+            'Production Lead Time': 'production-lead-time',
+            'LT Produzione': 'production-lead-time',
             'Lead Time de production': 'production-lead-time',
+            'End-to-End Lead Time (LT End-to-End)': 'lead-time',
+            'End-to-End Lead Time': 'lead-time',
+            'LT End-to-End': 'lead-time',
             'Lead Time End-to-End': 'lead-time',
+            'Service Level (SL)': 'service-level',
+            'Service Level': 'service-level',
             'Niveau de service': 'service-level',
+            'Reliability of Deliveries (POM)': 'delivery-reliability',
+            'Reliability of deliveries (POM)': 'delivery-reliability',
             'Fiabilité des livraisons': 'delivery-reliability',
+            'POM': 'delivery-reliability',
+            'Inventory Accuracy Rate (in %)': 'inventory-accuracy',
+            'Inventory Accuracy Rate': 'inventory-accuracy',
             'Précision des stocks': 'inventory-accuracy',
+            'Correct Counted Units': 'inventory-correct-units',
+            'Unités conformes inventoriées': 'inventory-correct-units',
+            'Units on Record': 'inventory-record-units',
+            'Unités théoriques en stock': 'inventory-record-units',
+            'Total Logistic Cost (TND)': 'logistics-cost',
+            'Total Logistic Cost': 'logistics-cost',
             'Coût logistique total': 'logistics-cost',
+            'Total cost (TND)': 'logistics-cost',
+            'Logistic Cost Unit (TND)': 'logistics-cost-per-piece',
+            'Cost Unit (TND)': 'logistics-cost-per-piece',
             'Coût logistique par pièce': 'logistics-cost-per-piece',
-            'Nombre de pièces expédiées': 'shipped-pieces'
+            'Shipped Pieces (Capi Spediti)': 'shipped-pieces',
+            'Nombre de pièces expédiées': 'shipped-pieces',
+            'Shipped Pieces': 'shipped-pieces',
+            'Capi Spediti': 'shipped-pieces'
           };
           
           Object.entries(logData.sites || {}).forEach(([bu, kpiList]) => {
@@ -1584,7 +1644,7 @@
             if (!siteLabel) return;
             
             kpiList.forEach(kpiObj => {
-              const staticKey = kpiMap[kpiObj.nom];
+              const staticKey = kpiMap[kpiObj.nom] || kpiMap[kpiObj.code];
               if (!staticKey) return;
               
               if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };

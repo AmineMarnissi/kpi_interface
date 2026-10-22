@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const PERIODS = [
         { key: '2025' },
         { key: '2025-06' },
+        { key: '2025-YTD' },
         { key: '2026-01' },
         { key: '2026-02' },
         { key: '2026-03' },
@@ -31,17 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
         { key: '2026-06' },
         { key: '2026-07' },
         { key: '2026-08' },
-        { key: '2026-09' }
+        { key: '2026-09' },
+        { key: '2026-YTD' }
       ];
-      const TABLE_PERIODS = PERIODS.filter(p => p.key.startsWith('2026-'));
+      const TABLE_PERIODS = PERIODS.filter(p => /^2026-\d{2}$/.test(p.key));
       const PERIOD_LABELS = {
-        fr: { '2024': '2024', '2025': '2025', '2025-06': 'Juin 2025', '2026-01': 'Jan 2026', '2026-02': 'Fev 2026', '2026-03': 'Mar 2026', '2026-04': 'Avr 2026', '2026-05': 'Mai 2026', '2026-06': 'Juin 2026', '2026-07': 'Juil 2026', '2026-08': 'Août 2026', '2026-09': 'Sep 2026' },
-        en: { '2024': '2024', '2025': '2025', '2025-06': 'June 2025', '2026-01': 'Jan 2026', '2026-02': 'Feb 2026', '2026-03': 'Mar 2026', '2026-04': 'Apr 2026', '2026-05': 'May 2026', '2026-06': 'June 2026', '2026-07': 'Jul 2026', '2026-08': 'Aug 2026', '2026-09': 'Sep 2026' },
-        ar: { '2024': '2024', '2025': '2025', '2025-06': 'يونيو 2025', '2026-01': 'يناير 2026', '2026-02': 'فبراير 2026', '2026-03': 'مارس 2026', '2026-04': 'أبريل 2026', '2026-05': 'مايو 2026', '2026-06': 'يونيو 2026', '2026-07': 'يوليو 2026', '2026-08': 'أغسطس 2026', '2026-09': 'سبتمبر 2026' },
-        it: { '2024': '2024', '2025': '2025', '2025-06': 'Giugno 2025', '2026-01': 'Gen 2026', '2026-02': 'Feb 2026', '2026-03': 'Mar 2026', '2026-04': 'Apr 2026', '2026-05': 'Mag 2026', '2026-06': 'Giugno 2026', '2026-07': 'Lug 2026', '2026-08': 'Ago 2026', '2026-09': 'Set 2026' }
+        fr: { '2024': '2024', '2025': '2025', '2025-YTD': 'YTD 2025', '2025-06': 'Juin 2025', '2026-01': 'Jan 2026', '2026-02': 'Fev 2026', '2026-03': 'Mar 2026', '2026-04': 'Avr 2026', '2026-05': 'Mai 2026', '2026-06': 'Juin 2026', '2026-07': 'Juil 2026', '2026-08': 'Août 2026', '2026-09': 'Sep 2026', '2026-YTD': 'YTD 2026' },
+        en: { '2024': '2024', '2025': '2025', '2025-YTD': 'YTD 2025', '2025-06': 'June 2025', '2026-01': 'Jan 2026', '2026-02': 'Feb 2026', '2026-03': 'Mar 2026', '2026-04': 'Apr 2026', '2026-05': 'May 2026', '2026-06': 'June 2026', '2026-07': 'Jul 2026', '2026-08': 'Aug 2026', '2026-09': 'Sep 2026', '2026-YTD': 'YTD 2026' },
+        ar: { '2024': '2024', '2025': '2025', '2025-YTD': 'YTD 2025', '2025-06': 'يونيو 2025', '2026-01': 'يناير 2026', '2026-02': 'فبراير 2026', '2026-03': 'مارس 2026', '2026-04': 'أبريل 2026', '2026-05': 'مايو 2026', '2026-06': 'يونيو 2026', '2026-07': 'يوليو 2026', '2026-08': 'أغسطس 2026', '2026-09': 'سبتمبر 2026', '2026-YTD': 'YTD 2026' },
+        it: { '2024': '2024', '2025': '2025', '2025-YTD': 'YTD 2025', '2025-06': 'Giugno 2025', '2026-01': 'Gen 2026', '2026-02': 'Feb 2026', '2026-03': 'Mar 2026', '2026-04': 'Apr 2026', '2026-05': 'Mag 2026', '2026-06': 'Giugno 2026', '2026-07': 'Lug 2026', '2026-08': 'Ago 2026', '2026-09': 'Set 2026', '2026-YTD': 'YTD 2026' }
       };
       const SITES = ['Safety', 'Leather', 'D|AIR', 'MEL-T'];
-      const ENERGY_SITES = ['Safety + Leather', 'D|AIR', 'MEL-T'];
+      const FQC_SITES = ['Safety', 'Leather', 'MEL-T'];
+      const ENERGY_SITES = ['Safety + Leather', 'D|AIR', 'Warehouse', 'MEL-T'];
       const PROCESS_LIST = [
         { id: 'strategy', get label() { return t('p_strategy'); }, get short() { return t('ps_strategy'); }, icon: 'compass', color: 'violet', get description() { return t('pd_strategy'); } },
         { id: 'production', get label() { return t('p_production'); }, get short() { return t('ps_production'); }, icon: 'factory', color: 'indigo', get description() { return t('pd_production'); } },
@@ -53,70 +56,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const KPI_CATALOG = [
         // Strategy
-        kpi('strategy-score', 'strategy', 'Score global MEL-T', 'Score composite des KPI disponibles et pondérés.', 'score', 'higher', ['score global', 'overall score'], ['Summary', 'Overview'], ['MEL-T']),
-        kpi('hoshin-achievement', 'strategy', 'Atteinte des objectifs Hoshin', 'Part des objectifs stratégiques atteints.', '%', 'higher', ['hoshin', 'objective achievement', 'atteinte objectifs'], ['Hoshin', 'Summary'], ['MEL-T']),
-        kpi('action-completion', 'strategy', 'Taux de réalisation des actions', 'Part des actions clôturées dans le délai.', '%', 'higher', ['action completion', 'actions completed', 'taux réalisation actions'], ['Hoshin', 'Actions'], ['MEL-T']),
-        kpi('critical-kpis', 'strategy', 'KPI critiques', 'Nombre de KPI classés critiques.', 'KPI', 'lower', ['critical kpi', 'kpi critiques'], ['Summary'], ['MEL-T']),
+        kpi('strategy-score', 'strategy', 'Strategy Score', 'Composite score of available and weighted KPIs.', 'score', 'higher', ['score global', 'overall score', 'strategy score'], ['Summary', 'Overview'], ['MEL-T']),
+        kpi('hoshin-achievement', 'strategy', 'Hoshin Objectives Achievement', 'Share of strategic objectives achieved.', '%', 'higher', ['hoshin', 'objective achievement', 'atteinte objectifs'], ['Hoshin', 'Summary'], ['MEL-T']),
+        kpi('action-completion', 'strategy', 'Action Completion Rate', 'Share of actions closed within deadline.', '%', 'higher', ['action completion', 'actions completed', 'taux réalisation actions'], ['Hoshin', 'Actions'], ['MEL-T']),
+        kpi('critical-kpis', 'strategy', 'Critical KPIs', 'Number of KPIs categorized as critical.', 'KPI', 'lower', ['critical kpi', 'kpi critiques'], ['Summary'], ['MEL-T']),
 
-        // Production
-        kpi('operational-efficiency', 'production', 'Efficacité opérationnelle', 'Efficacité globale des opérations.', '%', 'higher', ['operational efficiency', 'efficacite operationnelle'], ['Efficiency'], SITES),
-        kpi('productivity', 'production', 'Productivité en pièces/heure', 'Nombre de pièces produites par heure directe.', 'p/h', 'higher', ['productivity', 'productivite', 'productivité'], ['Efficiency'], SITES),
-        kpi('production-volume', 'production', 'Volume de production', 'Volume réellement produit sur la période.', 'pcs', 'higher', ['production volume', 'volume production', 'output'], ['Volume', 'Production', 'Efficiency'], SITES),
-        kpi('fqc', 'production', 'Taux de défaut FQC', 'Taux de défaut détecté au contrôle qualité final interne.', '%', 'lower', ['fqc defect rate', 'fqc', 'final quality control'], ['Quality'], SITES),
-        kpi('oqc', 'production', 'Taux de défaut OQC', 'Taux de défaut détecté au contrôle qualité sortant.', '%', 'lower', ['oqc defect rate', 'oqc', 'outgoing quality control'], ['Quality'], SITES),
-        kpi('volume-ratio', 'production', 'Ratio du volume de production', 'Rapport entre le volume réel et le volume budgété.', '%', 'higher', ['volume ratio', 'volume vs budget', 'production ratio'], ['Volume', 'Efficiency'], SITES),
-        kpi('capacity-utilization', 'production', 'Taux d’utilisation de la capacité', 'Utilisation de la capacité disponible ou budgétée.', '%', 'higher', ['capacity utilization', 'utilisation capacite', 'capacity ratio'], ['Efficiency', 'Capacity'], SITES),
-        kpi('efficiency-ratio', 'production', 'Ratio d’efficacité', 'Heures standard produites rapportées aux heures directes consommées.', '%', 'higher', ['efficiency ratio', 'ratio efficacite', 'efficacité'], ['Efficiency'], SITES),
+        // Production (From Sheets: Efficiency, Ph_QC, Quality, Ratio)
+        kpi('operational-efficiency', 'production', 'Efficiency (mth) — Operational Efficiency %', 'Monthly operational efficiency: standard minutes produced divided by total worked minutes × 100. The YTD value is stored separately as Efficiency (ytd).', '%', 'higher', ['efficiency mth', 'efficiency monthly', 'operational efficiency', 'efficacite operationnelle', 'o-eff%'], ['Efficiency'], SITES),
+        kpi('productivity', 'production', 'Productivity (p/h)', 'Finished goods volume divided by total worked hours.', 'p/h', 'higher', ['productivity', 'productivite', 'productivité'], ['Efficiency'], SITES),
+        kpi('production-volume', 'production', 'Production Volume FG', 'Sum of finished goods units manufactured during the period.', 'pcs', 'higher', ['production volume', 'volume production', 'output', 'fg'], ['Volume', 'Production', 'Efficiency'], SITES),
+        kpi('fqc-productivity', 'production', 'Productivity (p/h) - FQC', 'Finished goods output divided by total FQC worked hours.', 'p/h', 'higher', ['fqc productivity', 'productivite fqc', 'ph_qc'], ['Quality', 'Efficiency', 'Ph_QC'], FQC_SITES),
+        kpi('fqc-throughput', 'production', 'Throughput (p/h) - FQC', 'Finished goods output divided by 1.0 FTE worked hours.', 'p/h', 'higher', ['fqc throughput', 'throughput fqc', 'ph_qc'], ['Quality', 'Efficiency', 'Ph_QC'], FQC_SITES),
+        kpi('fqc-pieces', 'production', 'QC_Pcs', 'Total finished goods inspected at final quality control.', 'pcs', 'higher', ['qc pieces', 'pieces fqc', 'qc_pcs'], ['Quality', 'Volume', 'Ph_QC'], FQC_SITES),
+        kpi('fqc-worked-hours', 'production', 'Worked Hrs (QC)', 'Total working hours dedicated to final quality control.', 'h', 'context', ['fqc worked hours', 'heures fqc', 'worked_hrs'], ['Quality', 'Worked Hrs', 'Ph_QC'], FQC_SITES),
+        kpi('fqc', 'production', 'FQC Defect Rate Finished Goods', 'Percentage of defective finished goods detected in final QC.', '%', 'lower', ['fqc defect rate', 'fqc', 'final quality control'], ['Quality'], SITES),
+        kpi('oqc', 'production', 'OQC Defect Rate Finished Goods', 'Percentage of defective finished goods detected in outgoing QC.', '%', 'lower', ['oqc defect rate', 'oqc', 'outgoing quality control'], ['Quality'], SITES),
+        kpi('volume-ratio', 'production', 'Production Volume Ratio', 'Standard direct labour hours of actual production vs budgeted hours.', '%', 'higher', ['volume ratio', 'volume vs budget', 'production ratio'], ['Volume', 'Efficiency', 'Ratio'], SITES),
+        kpi('capacity-utilization', 'production', 'Capacity Utilisation Ratio', 'Actual direct labour hours worked vs budgeted direct labour hours.', '%', 'higher', ['capacity utilization', 'utilisation capacite', 'capacity ratio'], ['Efficiency', 'Capacity', 'Ratio'], SITES),
+        kpi('efficiency-ratio', 'production', 'Efficiency Ratio', 'Standard direct labour hours of actual production vs actual direct labour hours worked.', '%', 'higher', ['efficiency ratio', 'ratio efficacite', 'efficacité'], ['Efficiency', 'Ratio'], SITES),
 
-        // Planning
-        kpi('otif', 'planning', 'OTIF', 'Commandes livrées à temps et en totalité.', '%', 'higher', ['otif', 'on time in full'], ['Delivery'], SITES),
-        kpi('production-lead-time', 'planning', 'Lead Time de production', 'Durée interne de fabrication.', 'jours', 'lower', ['production lead time', 'lead time production'], ['Delivery'], SITES),
-        kpi('lead-time', 'planning', 'Lead Time End-to-End', 'Durée totale entre la demande et la livraison.', 'jours', 'lower', ['lead time global', 'end to end lead time', 'lead time'], ['Delivery'], SITES),
-        kpi('service-level', 'planning', 'Niveau de service', 'Taux de service client ou de respect des engagements.', '%', 'higher', ['service level', 'niveau de service'], ['Delivery'], SITES),
-        kpi('delivery-reliability', 'planning', 'Fiabilité des livraisons', 'Fiabilité des livraisons réalisées.', '%', 'higher', ['delivery reliability', 'fiabilite livraison', 'fiabilité livraison'], ['Delivery', 'Warehouse'], SITES),
-        kpi('inventory-accuracy', 'planning', 'Précision des stocks', 'Concordance entre stock physique et stock système.', '%', 'higher', ['inventory accuracy', 'stock accuracy', 'precision stock', 'précision stock'], ['Inventory'], SITES),
-        kpi('logistics-cost', 'planning', 'Coût logistique total', 'Coût total des opérations logistiques.', 'TND', 'lower', ['logistics cost', 'cout logistique', 'coût logistique total'], ['Logistics', 'Costs'], SITES),
-        kpi('logistics-cost-per-piece', 'planning', 'Coût logistique par pièce', 'Coût logistique unitaire par pièce expédiée.', 'TND/pièce', 'lower', ['cout logistique par piece', 'logistics cost per piece'], ['Logistics', 'Costs'], SITES),
-        kpi('shipped-pieces', 'planning', 'Nombre de pièces expédiées', 'Volume total de pièces livrées ou expédiées.', 'pcs', 'higher', ['pieces expediees', 'shipped pieces'], ['Logistics', 'Volume'], SITES),
+        // Planning & Delivery (From Sheets: Delivery, Warehouse & Inventory Manag)
+        kpi('otif', 'planning', 'OTIF 1st conf', 'Orders delivered on time and in full (first confirmation).', '%', 'higher', ['otif', 'on time in full', 'otif 1st conf'], ['Delivery'], SITES),
+        kpi('production-lead-time', 'planning', 'Production Lead Time (LT Produzione)', 'Internal manufacturing duration (Spedizione - Avvio).', 'jours', 'lower', ['production lead time', 'lead time production', 'lt produzione'], ['Delivery'], SITES),
+        kpi('lead-time', 'planning', 'End-to-End Lead Time (LT End-to-End)', 'Total customer lead time (Consegna - Partenza materiale).', 'jours', 'lower', ['lead time global', 'end to end lead time', 'lead time', 'lt e2e'], ['Delivery'], SITES),
+        kpi('anticipation-lead-time', 'planning', 'Anticipation Lead Time (LT Anticipo)', 'Time between material departure and production start.', 'jours', 'context', ['lt anticipo', 'anticipation lead time'], ['Delivery'], SITES),
+        kpi('mo-count', 'planning', 'Manufacturing Orders Count (MO Count)', 'Number of manufacturing orders included in the OTIF calculation.', 'MO', 'context', ['mo count', 'manufacturing orders'], ['Delivery'], SITES),
+        kpi('service-level', 'planning', 'Service Level (SL)', 'Units sold of finished goods divided by budgeted units × 100.', '%', 'higher', ['service level', 'niveau de service', 'sl'], ['Delivery'], SITES),
+        kpi('delivery-reliability', 'planning', 'Reliability of Deliveries (POM)', 'Percentage of orders that are error-free.', '%', 'higher', ['delivery reliability', 'fiabilite livraison', 'pom'], ['Delivery', 'Warehouse'], SITES),
+        kpi('inventory-accuracy', 'planning', 'Inventory Accuracy Rate (in %)', 'Ratio of correct counted inventory units vs units on record × 100.', '%', 'higher', ['inventory accuracy', 'inventory', 'stock accuracy', 'precision stock', 'précision stock', 'warehouse inventory'], ['Inventory', 'Warehouse'], SITES),
+        kpi('inventory-correct-units', 'planning', 'Correct Counted Units', 'Correct units counted during inventory audits.', 'pcs', 'higher', ['correct counted units', 'unites conformes', 'inventory count', 'stock physique'], ['Inventory', 'Warehouse'], SITES),
+        kpi('inventory-record-units', 'planning', 'Units on Record', 'Theoretical stock units on record in system during inventory audit.', 'pcs', 'context', ['units on record', 'stock theorique', 'unites enregistrees'], ['Inventory', 'Warehouse'], SITES),
+        kpi('shipped-pieces', 'planning', 'Shipped Pieces / Units Sold', 'Units sold/shipped from the Delivery sheet.', 'pcs', 'higher', ['pieces expediees', 'shipped pieces', 'capi spediti', 'units sold'], ['Delivery', 'Volume'], SITES),
+        kpi('customer-units-sold', 'planning', 'Customer Units Sold', 'Units sold used as the denominator of customer quality indicators.', 'pcs', 'higher', ['units sold', '# units sold'], ['Delivery', 'Quality'], SITES),
+        kpi('customer-defective-units', 'planning', 'Customer Defective Units', 'Defective units identified at customer level.', 'pcs', 'lower', ['defective units', '# defective units'], ['Delivery', 'Quality'], SITES),
+        kpi('customer-reject-rate', 'planning', 'Customer Reject Rate (CRR)', 'Defective units divided by units sold × 100.', '%', 'lower', ['crr', 'customer reject rate', 'crr%'], ['Delivery', 'Quality'], SITES),
+        kpi('dpmu', 'planning', 'Defects per Million Units (DPMU)', 'Defective units per million units sold.', 'ppm', 'lower', ['dpmu', 'ppm'], ['Delivery', 'Quality'], SITES),
 
         // QHSE
-        kpi('customer-quality', 'planning', 'Customer Quality', 'Taux de conformité qualité côté client.', '%', 'higher', ['customer quality', 'qualite client', 'qualité client'], ['Delivery', 'Quality'], SITES),
-        kpi('qualipro-completion', 'qhse', 'Taux d’exploitation Qualipro', 'Taux global d’utilisation de la plateforme Qualipro par les utilisateurs suivis.', '%', 'higher', ['qualipro', 'completion rate', 'taux achevement'], ['QHSE', 'Quality'], ['MEL-T']),
-        kpi('pnc', 'qhse', 'PNC', 'Nombre de produits ou processus non conformes.', 'PNC', 'lower', ['pnc', 'non conformity', 'non conformite', 'non-conformité'], ['Quality', 'QHSE'], SITES),
-        kpi('customer-complaints', 'qhse', 'Réclamations clients', 'Nombre de réclamations enregistrées.', 'réclamations', 'lower', ['customer complaints', 'reclamations clients', 'réclamations clients', 'complaints'], ['Quality', 'QHSE'], SITES),
-        kpi('accidents', 'qhse', 'Accidents', 'Nombre total d’accidents enregistrés.', 'accidents', 'lower', ['accidents', 'accident'], ['Safety', 'QHSE'], SITES),
-        kpi('tf1', 'qhse', 'TF1', 'Taux de fréquence des accidents avec arrêt.', 'TF', 'lower', ['tf1', 'frequency rate'], ['Safety', 'QHSE'], SITES),
-        kpi('tg', 'qhse', 'TG', 'Taux de gravité des accidents.', 'TG', 'lower', ['tg', 'severity rate'], ['Safety', 'QHSE'], SITES),
-        kpi('electricity', 'qhse', 'Consommation électrique', 'Consommation d’électricité sur la période. Safety + Leather est une mesure agrégée issue d’un compteur commun.', 'kWh', 'lower', ['electricity consumption', 'consommation electrique', 'consommation électrique'], ['QHSE', 'Energy'], ENERGY_SITES),
-        kpi('water', 'qhse', 'Consommation d’eau', 'Consommation d’eau sur la période.', 'm³', 'lower', ['water consumption', 'consommation eau', 'consommation d eau'], ['QHSE', 'Environment'], SITES),
-        kpi('co2', 'qhse', 'Émissions CO₂', 'Émissions de gaz à effet de serre. Safety + Leather est une mesure agrégée issue d’un compteur commun.', 'tCO₂', 'lower', ['co2', 'carbon', 'emissions'], ['QHSE', 'Environment'], ENERGY_SITES),
-        kpi('lost-time-accidents', 'qhse', 'Accidents avec arrêt', 'Nombre d’accidents ayant généré un arrêt de travail.', 'accidents', 'lower', ['accidents avec arrêt', 'lost time accidents'], ['Safety', 'QHSE'], SITES),
-        kpi('lost-days', 'qhse', 'Jours perdus', 'Nombre de jours perdus liés aux accidents du travail.', 'jours', 'lower', ['jours perdus', 'lost days'], ['Safety', 'QHSE'], SITES),
-        kpi('tep-total', 'qhse', 'Consommation énergétique totale', 'Consommation énergétique consolidée électricité + gasoil.', 'TEP', 'lower', ['tep totale', 'total energy consumption'], ['QHSE', 'Energy'], ['MEL-T']),
-        kpi('diesel', 'qhse', 'Consommation de gasoil', 'Consommation de gasoil sans soufre.', 'L', 'lower', ['gasoil', 'diesel consumption'], ['QHSE', 'Energy'], ['MEL-T']),
-        kpi('water-intensity', 'qhse', 'Consommation d’eau L/P/J', 'Consommation d’eau en litres par personne et par jour ouvrable.', 'L/P/J', 'lower', ['consommation l p j', 'water intensity'], ['QHSE', 'Environment'], SITES),
-        kpi('electric-intensity', 'qhse', 'Intensité électrique', 'Consommation électrique rapportée au nombre de pièces produites. Safety + Leather est une mesure agrégée issue d’un compteur commun.', 'kWh/pièce', 'lower', ['intensité électrique', 'electrical intensity'], ['QHSE', 'Energy'], ENERGY_SITES),
+        kpi('customer-quality', 'planning', 'Customer Quality Rate (CQR)', 'Customer-side quality compliance rate.', '%', 'higher', ['customer quality', 'qualite client', 'qualité client'], ['Delivery', 'Quality'], SITES),
+        kpi('qualipro-completion', 'qhse', 'QUALIPRO System Usage Rate (SUR.Q)', 'Global utilization and login rate on Qualipro platform.', '%', 'higher', ['qualipro', 'completion rate', 'taux achevement'], ['QHSE', 'Quality'], ['MEL-T']),
+        kpi('pnc', 'qhse', 'PNC (Non-Compliant Products)', 'Number of non-compliant products or process incidents.', 'PNC', 'lower', ['pnc', 'non conformity', 'non conformite', 'non-conformité'], ['Quality', 'QHSE'], SITES),
+        kpi('customer-complaints', 'qhse', 'Customer Complaints', 'Total customer quality complaints registered.', 'complaints', 'lower', ['customer complaints', 'reclamations clients', 'réclamations clients', 'complaints'], ['Quality', 'QHSE'], SITES),
+        kpi('accidents', 'qhse', 'Number of Work Accidents', 'Total recorded work accidents on period.', 'accidents', 'lower', ['accidents', 'accident'], ['Safety', 'QHSE'], SITES),
+        kpi('tf1', 'qhse', 'Frequency Rate (TF)', 'Accident frequency rate with lost time.', 'TF', 'lower', ['tf1', 'frequency rate'], ['Safety', 'QHSE'], SITES),
+        kpi('tg', 'qhse', 'Severity Rate (TG)', 'Work accident severity rate.', 'TG', 'lower', ['tg', 'severity rate'], ['Safety', 'QHSE'], SITES),
+        kpi('electricity', 'qhse', 'Electricity Consumption', 'Electricity consumption in kWh. Safety + Leather measured via common meter.', 'kWh', 'lower', ['electricity consumption', 'consommation electrique', 'consommation électrique'], ['QHSE', 'Energy'], ENERGY_SITES),
+        kpi('water', 'qhse', 'Water Consumption', 'Total water consumption during period in m³.', 'm³', 'lower', ['water consumption', 'consommation eau', 'consommation d eau'], ['QHSE', 'Environment'], SITES),
+        kpi('co2', 'qhse', 'CO₂ Emissions', 'Greenhouse gas emissions. Safety + Leather aggregated from common meter.', 'tCO₂', 'lower', ['co2', 'carbon', 'emissions'], ['QHSE', 'Environment'], ENERGY_SITES),
+        kpi('lost-time-accidents', 'qhse', 'Lost Time Accidents (NALT)', 'Number of accidents resulting in sick leave / lost time.', 'accidents', 'lower', ['accidents avec arrêt', 'lost time accidents'], ['Safety', 'QHSE'], SITES),
+        kpi('lost-days', 'qhse', 'Lost Days (LD)', 'Number of working days lost due to occupational accidents.', 'days', 'lower', ['jours perdus', 'lost days'], ['Safety', 'QHSE'], SITES),
+        kpi('tep-total', 'qhse', 'Total Energy Consumption (TEP)', 'Consolidated total energy consumption (electricity + diesel).', 'TEP', 'lower', ['tep totale', 'total energy consumption'], ['QHSE', 'Energy'], ['MEL-T']),
+        kpi('diesel', 'qhse', 'Diesel Consumption', 'Sulfur-free diesel consumption in liters.', 'L', 'lower', ['gasoil', 'diesel consumption'], ['QHSE', 'Energy'], ['MEL-T']),
+        kpi('diesel-energy-equivalent', 'qhse', 'Diesel Energy Equivalent', 'Diesel consumption converted to tonnes of oil equivalent.', 'TEP', 'lower', ['équivalent énergétique de gasoil', 'diesel energy equivalent'], ['QHSE', 'Energy'], ['MEL-T']),
+        kpi('diesel-co2', 'qhse', 'Diesel CO₂ Emissions', 'CO₂ emissions associated with diesel consumption.', 'tCO₂', 'lower', ['émissions de gasoil', 'diesel co2'], ['QHSE', 'Energy'], ['MEL-T']),
+        kpi('water-intensity', 'qhse', 'Water Intensity (L/P/Day)', 'Water consumption in liters per person per working day.', 'L/P/J', 'lower', ['consommation l p j', 'water intensity'], ['QHSE', 'Environment'], SITES),
+        kpi('electric-intensity', 'qhse', 'Electrical Intensity (kWh/piece)', 'Electricity consumed per finished garment produced.', 'kWh/pièce', 'lower', ['intensité électrique', 'electrical intensity'], ['QHSE', 'Energy'], ENERGY_SITES),
 
-        // People
-        kpi('headcount-total', 'people', 'Effectif total', 'Nombre total de salariés actifs.', 'personnes', 'context', ['total headcount', 'headcount total', 'effectif total'], ['People'], SITES),
-        kpi('turnover', 'people', 'Taux de turnover', 'Taux de rotation des effectifs.', '%', 'lower', ['turnover', 'attrition'], ['People'], SITES),
-        kpi('absenteeism', 'people', 'Taux d’absentéisme', 'Heures d’absence rapportées aux heures théoriques. Pour MEL-T, la série mensuelle 2026 disponible couvre le personnel direct.', '%', 'lower', ['absenteeism', 'absenteisme', 'absentéisme'], ['People', 'Worked Hrs'], SITES),
-        kpi('headcount-vs-budget', 'people', 'Réalisation du budget d’effectif', 'Rapport entre effectif total réel et budget d’effectif. Pour MEL-T, le budget annuel source est de 178 personnes.', '%', 'higher', ['headcount vs budget', 'hc vs budget', 'effectif budget'], ['People'], SITES),
-        kpi('direct-indirect-ratio', 'people', 'Ratio employés directs/indirects', 'Rapport entre effectifs directs et indirects.', 'ratio', 'context', ['direct indirect ratio', 'ratio direct indirect'], ['People'], SITES),
-        kpi('worked-hours', 'people', 'Heures travaillées', 'Total des heures réellement travaillées.', 'h', 'context', ['worked hours', 'heures travaillées'], ['Worked Hrs'], SITES),
-        kpi('overtime-rate', 'people', 'Taux d’heures supplémentaires', 'Part des heures supplémentaires dans les heures travaillées.', '%', 'lower', ['overtime rate', 'ot rate', 'taux heures supplementaires'], ['Worked Hrs', 'People'], SITES),
-        kpi('training-completion', 'people', 'Taux de réalisation du plan de formation', 'Part du plan de formation réalisée.', '%', 'higher', ['training completion', 'training plan', 'plan formation'], ['People', 'Training'], SITES),
-        kpi('training-hours-per-employee', 'people', 'Heures de formation par salarié', 'Nombre d’heures de formation dispensées par salarié.', 'h/pers', 'higher', ['training hours', 'heures formation'], ['People', 'Training'], SITES),
+        // People & Worked Hrs (From Sheets: People, People_2, Worked Hrs)
+        kpi('headcount-total', 'people', 'Total Headcount (HC)', 'Total active headcount at start/end of period.', 'persons', 'context', ['total headcount', 'headcount total', 'effectif total', 'hc'], ['People'], SITES),
+        kpi('turnover', 'people', 'Overall Turnover Rate (in %)', 'Terminations during period divided by headcount at period start × 100.', '%', 'lower', ['turnover', 'attrition', 'overall turnover rate'], ['People'], SITES),
+        kpi('absenteeism', 'people', 'Unplanned Absenteeism Rate (UAR)', 'Overall absence hours divided by available hours [Only DL].', '%', 'lower', ['absenteeism', 'absenteisme', 'absentéisme', 'overall absence rate'], ['People', 'Worked Hrs'], SITES),
+        kpi('headcount-vs-budget', 'people', 'Hire Budget Realization Rate (HBRR)', 'Actual headcount vs annual budget target (178 for MEL-T).', '%', 'higher', ['headcount vs budget', 'hc vs budget', 'effectif budget'], ['People'], SITES),
+        kpi('direct-indirect-ratio', 'people', 'Direct / Indirect Ratio', 'Ratio between direct workforce and indirect staff.', 'ratio', 'context', ['direct indirect ratio', 'ratio direct indirect'], ['People'], SITES),
+        kpi('worked-hours', 'people', 'Total Worked Hours', 'Total hours actually worked during the period.', 'h', 'context', ['worked hours', 'heures travaillées', 'total worked hours'], ['Worked Hrs'], SITES),
+        kpi('overtime-rate', 'people', 'Overtime Rate (OT rate)', 'Share of overtime hours in total worked hours.', '%', 'lower', ['overtime rate', 'ot rate', 'taux heures supplementaires'], ['Worked Hrs', 'People'], SITES),
+        kpi('training-completion', 'people', 'Training Plan Completion Rate', 'Share of annual training plan completed.', '%', 'higher', ['training completion', 'training plan', 'plan formation'], ['People', 'Training'], SITES),
+        kpi('training-hours-per-employee', 'people', 'Training Hours per Employee', 'Training hours delivered per employee.', 'h/pers', 'higher', ['training hours', 'heures formation'], ['People', 'Training'], SITES),
 
-        // Finance
-        kpi('scrap-cost', 'finance', 'Valeur des rebuts matière', 'Valeur financière des matières et produits rebutés.', 'TND', 'lower', ['scrap cost', 'cout rebut', 'coût rebut', 'material scrap'], ['Costs', 'Scrap'], SITES),
-        kpi('maintenance-cost', 'finance', 'Coût total de maintenance', 'Dépenses de maintenance globales sur la période ; non ventilées par site dans la source.', 'TND', 'lower', ['maintenance cost', 'cout maintenance', 'coût maintenance'], ['Maintenance', 'Costs'], ['MEL-T']),
-        kpi('maintenance-cost-hour', 'finance', 'Coût de maintenance par heure directe', 'Coût global de maintenance rapporté aux heures directes ; non ventilé par site dans la source.', 'TND/h', 'lower', ['maintenance cost per hour', 'cost hour', 'cout par heure'], ['Maintenance', 'Costs'], ['MEL-T']),
-        kpi('capex-realized', 'finance', 'CAPEX réalisé', 'Investissements réalisés mensuellement et consolidés au niveau MEL-T.', 'TND', 'context', ['capex realized', 'capex realise'], ['CAPEX', 'Finance'], ['MEL-T']),
-        kpi('capex-approved', 'finance', 'CAPEX approuvé', 'Montant total des investissements approuvés, consolidé au niveau MEL-T.', 'TND', 'context', ['capex approved', 'capex approuve'], ['CAPEX', 'Finance'], ['MEL-T']),
-        kpi('capex-total', 'finance', 'CAPEX total actuel', 'Montant total du CAPEX à ce jour, consolidé au niveau MEL-T.', 'TND', 'context', ['capex total', 'total capex'], ['CAPEX', 'Finance'], ['MEL-T']),
-        kpi('capex-consumption-rate', 'finance', 'Taux de consommation du budget CAPEX', 'Part cumulée du CAPEX réalisé dans le total consolidé de septembre.', '%', 'higher', ['capex consumption', 'taux consommation capex'], ['CAPEX', 'Finance'], ['MEL-T']),
-        kpi('capex-breakdown', 'finance', 'Répartition du CAPEX par catégorie', 'Ventilation cumulée des investissements par type.', 'TND', 'context', ['capex breakdown', 'repartition capex'], ['CAPEX', 'Finance'], ['MEL-T'])
+        // Finance (From Sheets: Costs & Profitability, Capex)
+        kpi('scrap-cost', 'finance', 'Scrap Material Value (€)', 'Total euro value of raw materials scrapped during manufacturing.', '€', 'lower', ['scrap cost', 'cout rebut', 'coût rebut', 'material scrap', 'scrap material value'], ['Costs', 'Scrap'], SITES),
+        kpi('maintenance-cost', 'finance', 'Maintenance Total Cost (TND)', 'Total maintenance cost (Labor + Parts) in TND.', 'TND', 'lower', ['maintenance cost', 'cout maintenance', 'coût maintenance'], ['Maintenance', 'Costs'], ['MEL-T']),
+        kpi('maintenance-cost-hour', 'finance', 'Maintenance Cost/h DL', 'Total maintenance cost per direct labor worked hour.', 'TND/h', 'lower', ['maintenance cost per hour', 'cost hour', 'cout par heure', 'maintenance cost/h dl'], ['Maintenance', 'Costs'], ['MEL-T']),
+        kpi('maintenance-cost-hour-overall', 'finance', 'Maintenance Cost/h Overall', 'Total maintenance cost per overall worked hour.', 'TND/h', 'lower', ['maintenance cost/h overall'], ['Maintenance', 'Costs'], ['MEL-T']),
+        kpi('maintenance-cost-mch', 'finance', 'Maintenance Cost/h (MCH)', 'Total maintenance cost per 1.0 FTE running hour.', 'TND/h', 'lower', ['maintenance cost/h mch', 'mch'], ['Maintenance', 'Costs'], ['MEL-T']),
+        kpi('capex-realized', 'finance', 'CAPEX Realized (Done)', 'Realized capital expenditures consolidated at MEL-T level.', 'TND', 'context', ['capex realized', 'capex realise', 'capex done'], ['CAPEX', 'Finance'], ['MEL-T']),
+        kpi('capex-approved', 'finance', 'CAPEX Approved', 'Total capital expenditures approved.', 'TND', 'context', ['capex approved', 'capex approuve'], ['CAPEX', 'Finance'], ['MEL-T']),
+        kpi('capex-total', 'finance', 'Total CAPEX', 'Consolidated total CAPEX project value to date.', 'TND', 'context', ['capex total', 'total capex'], ['CAPEX', 'Finance'], ['MEL-T']),
+        kpi('capex-consumption-rate', 'finance', 'CAPEX Budget Consumption Rate', 'Cumulative realized CAPEX vs approved budget.', '%', 'higher', ['capex consumption', 'taux consommation capex'], ['CAPEX', 'Finance'], ['MEL-T']),
+        kpi('capex-breakdown', 'finance', 'CAPEX Breakdown by Category', 'Breakdown of capital investments by asset type.', 'TND', 'context', ['capex breakdown', 'repartition capex'], ['CAPEX', 'Finance'], ['MEL-T'])
       ];
 
       function kpi(id, process, name, definition, unit, direction, aliases, sheetHints, sites) {
@@ -1225,7 +1242,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.hoshin_process_blueprint = [];
       window.qualipro_usage_details = null;
 
-      const DATA_VERSION = '2026-10-14-22';
+      const DATA_VERSION = '2026-10-22-production-scope-badges';
       const withDataVersion = (path) => `${path}?v=${encodeURIComponent(DATA_VERSION)}`;
 
       async function loadDataFromDataFolder() {
@@ -1297,6 +1314,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (indicator === "Émission d'électricité" || (indicator === "Émissions totales CO₂" && mappedSite === "MEL-T")) key = 'co2';
                 else if (indicator === "Intensité électrique (IE)" || (indicator === "Intensité électrique Globale" && mappedSite === "MEL-T")) key = 'electric-intensity';
                 else if (indicator === "Consommation Gasoil" || indicator === "Consommation Gasoil sans soufre") key = 'diesel';
+                else if (indicator === "Équivalent énergétique de gasoil") key = 'diesel-energy-equivalent';
+                else if (indicator === "Émissions de gasoil") key = 'diesel-co2';
                 else if (indicator === "TEP" || indicator === "TEP totale") key = 'tep-total';
                 else if (indicator === "Consommation d'eau") key = 'water';
                 else if (indicator === "Consommation L/P/J") key = 'water-intensity';
@@ -1329,9 +1348,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 'ytd_2026': 'ytd_2026', 'pytd_2025': 'pytd_2025'
               };
               const kpiMap = {
+                // English Excel titles & codes
+                'Operational Efficiency % (O-Eff%)': 'operational-efficiency',
+                'Efficiency (mth)': 'operational-efficiency',
+                'Efficiency (ytd)': 'operational-efficiency',
+                'O-Eff%': 'operational-efficiency',
+                'Productivity (p/h)': 'productivity',
+                'Production Volume FG': 'production-volume',
+                'Productivity (p/h) - FQC': 'fqc-productivity',
+                'Productivity_QC_Ph': 'fqc-productivity',
+                'Throughput (p/h) - FQC': 'fqc-throughput',
+                'Throughput (ph)_QC': 'fqc-throughput',
+                'QC_Pcs': 'fqc-pieces',
+                'Worked Hrs (QC)': 'fqc-worked-hours',
+                'Worked Hrs - FQC': 'fqc-worked-hours',
+                'FQC Defect Rate Finished Goods': 'fqc',
+                'FQC Defective Rate': 'fqc',
+                'OQC Defect Rate Finished Goods': 'oqc',
+                'OQC Defective Rate': 'oqc',
+                'Production volume ratio': 'volume-ratio',
+                'Production Volume Ratio': 'volume-ratio',
+                'Capacity utilisation ratio': 'capacity-utilization',
+                'Capacity Utilization Ratio': 'capacity-utilization',
+                'Efficiency ratio': 'efficiency-ratio',
+                'Efficiency Ratio': 'efficiency-ratio',
+                // French aliases
                 'Efficacité opérationnelle': 'operational-efficiency',
                 'Productivité en pièces/heure': 'productivity',
                 'Volume de production': 'production-volume',
+                'Productivité FQC': 'fqc-productivity',
+                'Throughput FQC': 'fqc-throughput',
+                'Pièces contrôlées FQC': 'fqc-pieces',
+                'Heures travaillées FQC': 'fqc-worked-hours',
                 'Taux de défaut FQC': 'fqc',
                 'Taux de défaut OQC': 'oqc',
                 'Ratio du volume de production': 'volume-ratio',
@@ -1343,7 +1391,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!siteLabel) return;
 
                 kpiList.forEach(kpiObj => {
-                  const staticKey = kpiMap[kpiObj.nom];
+                  const staticKey = kpiMap[kpiObj.nom] || kpiMap[kpiObj.code];
                   if (!staticKey) return;
                   if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
                   if (!STATIC_DATA[staticKey].values) STATIC_DATA[staticKey].values = {};
@@ -1352,8 +1400,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     STATIC_DATA[staticKey].details = STATIC_DATA[staticKey].details || {};
                     STATIC_DATA[staticKey].details[siteLabel] = kpiObj.details;
                   }
-                  if (staticKey.startsWith('capex')) {
-                    STATIC_DATA[staticKey].source = '202606_Factory_Meeting_KPIs -RECAP_v2.xlsx · Capex';
+                  if (['operational-efficiency', 'productivity', 'production-volume'].includes(staticKey)) {
+                    STATIC_DATA[staticKey].source = '202609_Factory_Meeting_KPIs - Global.xlsx · Efficiency';
+                  } else if (['fqc-productivity', 'fqc-throughput', 'fqc-pieces', 'fqc-worked-hours'].includes(staticKey)) {
+                    STATIC_DATA[staticKey].source = '202609_Factory_Meeting_KPIs - Global.xlsx · Ph_QC';
+                  } else if (['fqc', 'oqc'].includes(staticKey)) {
+                    STATIC_DATA[staticKey].source = '202609_Factory_Meeting_KPIs - Global.xlsx · Quality';
                   }
 
                   Object.entries(kpiObj.valeurs || {}).forEach(([rawPeriod, val]) => {
@@ -1374,14 +1426,8 @@ document.addEventListener('DOMContentLoaded', () => {
                       if (rawPeriod === 'mai_2026' || rawPeriod === '2026-05') STATIC_DATA[staticKey].values[siteLabel]['2026-05'] = Number(val);
                       if (rawPeriod === 'juin_2025' || rawPeriod === '2025-06') STATIC_DATA[staticKey].values[siteLabel]['2025-06'] = Number(val);
                       if (rawPeriod === 'septembre_2025' || rawPeriod === '2025-09') STATIC_DATA[staticKey].values[siteLabel]['2025-09'] = Number(val);
-                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025'] = Number(val);
-                      if (rawPeriod === 'ytd_2026') {
-                        // Pour les ratios qui n'ont que du YTD, on l'injecte dans le mois en cours pour qu'il s'affiche !
-                        if (!STATIC_DATA[staticKey].values[siteLabel]['2026-09']) {
-                          STATIC_DATA[staticKey].values[siteLabel]['2026-09'] = Number(val);
-                        }
-                        STATIC_DATA[staticKey].values[siteLabel]['2026'] = Number(val);
-                      }
+                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025-YTD'] = Number(val);
+                      if (rawPeriod === 'ytd_2026') STATIC_DATA[staticKey].values[siteLabel]['2026-YTD'] = Number(val);
                     }
                   });
                 });
@@ -1397,15 +1443,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (resLog.ok) {
               const logData = await resLog.json();
               const kpiMap = {
+                // English Excel titles & codes
+                'OTIF 1st conf': 'otif',
                 'OTIF': 'otif',
+                'Production Lead Time (LT Produzione)': 'production-lead-time',
+                'Production Lead Time': 'production-lead-time',
+                'LT Produzione': 'production-lead-time',
                 'Lead Time de production': 'production-lead-time',
+                'End-to-End Lead Time (LT End-to-End)': 'lead-time',
+                'End-to-End Lead Time': 'lead-time',
+                'LT End-to-End': 'lead-time',
                 'Lead Time End-to-End': 'lead-time',
+                'LT Anticipo': 'anticipation-lead-time',
+                'Anticipation Lead Time': 'anticipation-lead-time',
+                'MO count': 'mo-count',
+                'MO Count': 'mo-count',
+                'Service Level (SL)': 'service-level',
+                'Service Level': 'service-level',
                 'Niveau de service': 'service-level',
+                'Reliability of Deliveries (POM)': 'delivery-reliability',
+                'Reliability of deliveries (POM)': 'delivery-reliability',
                 'Fiabilité des livraisons': 'delivery-reliability',
+                'POM': 'delivery-reliability',
+                'Inventory Accuracy Rate (in %)': 'inventory-accuracy',
+                'Inventory Accuracy Rate': 'inventory-accuracy',
                 'Précision des stocks': 'inventory-accuracy',
-                'Coût logistique total': 'logistics-cost',
-                'Coût logistique par pièce': 'logistics-cost-per-piece',
-                'Nombre de pièces expédiées': 'shipped-pieces'
+                'Correct Counted Units': 'inventory-correct-units',
+                'Unités conformes inventoriées': 'inventory-correct-units',
+                'Units on Record': 'inventory-record-units',
+                'Unités théoriques en stock': 'inventory-record-units',
+                'Shipped Pieces (Capi Spediti)': 'shipped-pieces',
+                'Nombre de pièces expédiées': 'shipped-pieces',
+                'Shipped Pieces': 'shipped-pieces',
+                'Capi Spediti': 'shipped-pieces',
+                '# Units sold': 'customer-units-sold',
+                'Units sold': 'customer-units-sold',
+                '# Defective units': 'customer-defective-units',
+                'Defective units': 'customer-defective-units',
+                'CRR%': 'customer-reject-rate',
+                'Customer Reject Rate': 'customer-reject-rate',
+                'DPMU (ppm)': 'dpmu',
+                'DPMU': 'dpmu',
+                'Customer Claims': 'customer-complaints',
+                'Customer Quality Rate': 'customer-quality'
               };
 
               Object.entries(logData.sites || {}).forEach(([bu, kpiList]) => {
@@ -1413,12 +1493,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!siteLabel) return;
 
                 kpiList.forEach(kpiObj => {
-                  const staticKey = kpiMap[kpiObj.nom];
+                  const staticKey = kpiMap[kpiObj.nom] || kpiMap[kpiObj.code];
                   if (!staticKey) return;
 
                   if (!STATIC_DATA[staticKey]) STATIC_DATA[staticKey] = { values: {}, targets: {} };
                   if (!STATIC_DATA[staticKey].values) STATIC_DATA[staticKey].values = {};
                   if (!STATIC_DATA[staticKey].values[siteLabel]) STATIC_DATA[staticKey].values[siteLabel] = {};
+                  const warehouseKeys = new Set(['delivery-reliability', 'inventory-accuracy', 'inventory-correct-units', 'inventory-record-units']);
+                  STATIC_DATA[staticKey].source = warehouseKeys.has(staticKey)
+                    ? '202609_Factory_Meeting_KPIs - Global.xlsx · Warehouse & Inventory Manag'
+                    : '202609_Factory_Meeting_KPIs - Global.xlsx · Delivery';
                   Object.entries(kpiObj.valeurs || {}).forEach(([rawPeriod, val]) => {
                     if (val === null) return;
                     if (rawPeriod === 'cible') {
@@ -1436,11 +1520,8 @@ document.addEventListener('DOMContentLoaded', () => {
                       if (rawPeriod === 'mai_2026' || rawPeriod === '2026-05') STATIC_DATA[staticKey].values[siteLabel]['2026-05'] = Number(val);
                       if (rawPeriod === 'juin_2025' || rawPeriod === '2025-06') STATIC_DATA[staticKey].values[siteLabel]['2025-06'] = Number(val);
                       if (rawPeriod === 'septembre_2025' || rawPeriod === '2025-09') STATIC_DATA[staticKey].values[siteLabel]['2025-09'] = Number(val);
-                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025'] = Number(val);
-                      if (rawPeriod === 'ytd_2026') {
-                        if (!STATIC_DATA[staticKey].values[siteLabel]['2026-09']) STATIC_DATA[staticKey].values[siteLabel]['2026-09'] = Number(val);
-                        STATIC_DATA[staticKey].values[siteLabel]['2026'] = Number(val);
-                      }
+                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025-YTD'] = Number(val);
+                      if (rawPeriod === 'ytd_2026') STATIC_DATA[staticKey].values[siteLabel]['2026-YTD'] = Number(val);
                     }
                   });
                 });
@@ -1497,11 +1578,8 @@ document.addEventListener('DOMContentLoaded', () => {
                       if (rawPeriod === 'mai_2026' || rawPeriod === '2026-05') STATIC_DATA[staticKey].values[siteLabel]['2026-05'] = Number(val);
                       if (rawPeriod === 'juin_2025' || rawPeriod === '2025-06') STATIC_DATA[staticKey].values[siteLabel]['2025-06'] = Number(val);
                       if (rawPeriod === 'septembre_2025' || rawPeriod === '2025-09') STATIC_DATA[staticKey].values[siteLabel]['2025-09'] = Number(val);
-                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025'] = Number(val);
-                      if (rawPeriod === 'ytd_2026') {
-                        if (!STATIC_DATA[staticKey].values[siteLabel]['2026-09']) STATIC_DATA[staticKey].values[siteLabel]['2026-09'] = Number(val);
-                        STATIC_DATA[staticKey].values[siteLabel]['2026'] = Number(val);
-                      }
+                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025-YTD'] = Number(val);
+                      if (rawPeriod === 'ytd_2026') STATIC_DATA[staticKey].values[siteLabel]['2026-YTD'] = Number(val);
                     }
                   });
                 });
@@ -1520,13 +1598,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Valeur des rebuts matière': 'scrap-cost',
                 'Coût total de maintenance': 'maintenance-cost',
                 'Coût de maintenance par heure directe': 'maintenance-cost-hour',
+                'Coût de maintenance par heure globale': 'maintenance-cost-hour-overall',
+                'Coût de maintenance par heure MCH': 'maintenance-cost-mch',
                 'CAPEX réalisé': 'capex-realized',
                 'CAPEX approuvé': 'capex-approved',
                 'CAPEX total actuel': 'capex-total',
                 'Taux de consommation du budget CAPEX': 'capex-consumption-rate',
                 'Répartition du CAPEX par catégorie': 'capex-breakdown'
               };
-              const factoryWideMaintenance = new Set(['maintenance-cost', 'maintenance-cost-hour']);
+              const factoryWideMaintenance = new Set(['maintenance-cost', 'maintenance-cost-hour', 'maintenance-cost-hour-overall', 'maintenance-cost-mch']);
 
               Object.entries(finData.sites || {}).forEach(([bu, kpiList]) => {
                 const siteLabel = bu === "SAFETY" ? "Safety" : bu === "LEATHER" ? "Leather" : bu === "D|AIR" ? "D|AIR" : bu === "MEL-T" ? "MEL-T" : null;
@@ -1566,11 +1646,8 @@ document.addEventListener('DOMContentLoaded', () => {
                       if (rawPeriod === 'mai_2026' || rawPeriod === '2026-05') STATIC_DATA[staticKey].values[siteLabel]['2026-05'] = Number(val);
                       if (rawPeriod === 'juin_2025' || rawPeriod === '2025-06') STATIC_DATA[staticKey].values[siteLabel]['2025-06'] = Number(val);
                       if (rawPeriod === 'septembre_2025' || rawPeriod === '2025-09') STATIC_DATA[staticKey].values[siteLabel]['2025-09'] = Number(val);
-                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025'] = Number(val);
-                      if (rawPeriod === 'ytd_2026') {
-                        if (!STATIC_DATA[staticKey].values[siteLabel]['2026-09']) STATIC_DATA[staticKey].values[siteLabel]['2026-09'] = Number(val);
-                        STATIC_DATA[staticKey].values[siteLabel]['2026'] = Number(val);
-                      }
+                      if (rawPeriod === 'pytd_2025') STATIC_DATA[staticKey].values[siteLabel]['2025-YTD'] = Number(val);
+                      if (rawPeriod === 'ytd_2026') STATIC_DATA[staticKey].values[siteLabel]['2026-YTD'] = Number(val);
                     }
                   });
                 });
@@ -2804,6 +2881,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ${pageHeader(p.label, p.description, p.icon)}
       <div class="flex flex-wrap gap-2">${SITES.map(s => quickSite(s)).join('')}</div>
       ${processId === 'qhse' ? renderQhseCategoryFilter() : ''}
+      ${renderMissingPeriodNotice(visible, processId)}
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         ${visible.length ? visible.map(k => renderKpiCard(k)).join('') : emptyState('Aucun KPI ne correspond aux filtres actifs.')}
       </div>
@@ -2833,7 +2911,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const QHSE_CATEGORIES = {
         ALL: [],
         sst: ['accidents', 'tf1', 'tg', 'lost-time-accidents', 'lost-days'],
-        energy: ['electricity', 'water', 'co2', 'tep-total', 'diesel', 'water-intensity', 'electric-intensity'],
+        energy: ['electricity', 'water', 'co2', 'tep-total', 'diesel', 'diesel-energy-equivalent', 'diesel-co2', 'water-intensity', 'electric-intensity'],
         qualipro: ['qualipro-completion'],
         quality: ['pnc', 'customer-complaints']
       };
@@ -2857,8 +2935,56 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<section class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-4"><div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><div class="text-[10px] uppercase tracking-[.18em] font-black text-[#2952ff] dark:text-[#93b8ff]">Filtrer les KPI QHSE</div><p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Choisissez une famille d’indicateurs à afficher.</p></div><div class="flex flex-wrap gap-2">${Object.keys(QHSE_CATEGORIES).map(category => `<button data-qhse-category="${category}" class="px-3 py-2 rounded-xl border text-xs font-bold transition-colors ${state.qhseCategory === category ? 'bg-[#2952ff] text-white border-[#2952ff]' : 'bg-slate-50 dark:bg-[#06081a] border-slate-200/70 dark:border-[#1e2a4a] text-slate-700 dark:text-slate-200'}">${qhseCategoryLabel(category)}</button>`).join('')}</div></div></section>`;
       }
 
+      function periodAvailability(k, site, period) {
+        if (!/^2026-\d{2}$/.test(period) || getValue(k, site, period) !== null) return null;
+        const eligibleMonths = TABLE_PERIODS.map(p => p.key).filter(key => key <= period && getValue(k, site, key) !== null);
+        const latestKey = eligibleMonths.length ? eligibleMonths[eligibleMonths.length - 1] : null;
+        const hasYtd = getValue(k, site, '2026-YTD') !== null;
+        return { latestKey, hasYtd };
+      }
+
+      function periodAvailabilityText(k, site, period) {
+        const availability = periodAvailability(k, site, period);
+        if (!availability) return '';
+        const lang = siteLang === 'it_en' ? 'it' : siteLang;
+        const labels = {
+          fr: { missing: `Pas de valeur ${periodLabel(period)}`, latest: 'dernière valeur mensuelle', ytd: 'YTD disponible' },
+          en: { missing: `No value for ${periodLabel(period)}`, latest: 'latest monthly value', ytd: 'YTD available' },
+          ar: { missing: `لا توجد قيمة لـ ${periodLabel(period)}`, latest: 'آخر قيمة شهرية', ytd: 'YTD متاح' },
+          it: { missing: `Nessun valore per ${periodLabel(period)}`, latest: 'ultimo valore mensile', ytd: 'YTD disponibile' }
+        };
+        const l = labels[lang] || labels.fr;
+        const parts = [l.missing];
+        if (availability.latestKey) parts.push(`${l.latest} : ${periodLabel(availability.latestKey)}`);
+        if (availability.hasYtd) parts.push(`${l.ytd} : ${displayValue(getValue(k, site, '2026-YTD'), k.unit)}`);
+        return parts.join(' · ');
+      }
+
+      function periodAvailabilityBadge(k, site, period, compact = false) {
+        const label = periodAvailabilityText(k, site, period);
+        if (!label) return '';
+        return `<span class="inline-flex items-center gap-1 rounded-full border border-amber-300/70 bg-amber-50 px-2 py-1 ${compact ? 'text-[9px]' : 'text-[10px]'} font-bold text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><i data-lucide="calendar-x-2" class="w-3 h-3"></i>${esc(label)}</span>`;
+      }
+
+      function renderMissingPeriodNotice(kpis, processId) {
+        if (!/^2026-\d{2}$/.test(state.period)) return '';
+        const missing = kpis.filter(k => getValue(k, resolveSite(k), state.period) === null);
+        if (!missing.length) return '';
+        const deliveryNote = processId === 'planning'
+          ? ' La feuille Delivery s’arrête à juin 2026 pour la majorité des KPI. Le YTD reste séparé et ne remplace pas septembre.'
+          : '';
+        return `<div class="rounded-2xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><div class="flex items-start gap-2"><i data-lucide="calendar-x-2" class="mt-0.5 h-4 w-4 shrink-0"></i><div><b>${missing.length} indicateur${missing.length > 1 ? 's' : ''} sans valeur pour ${periodLabel(state.period)}.</b>${deliveryNote} Consultez le badge de chaque KPI pour connaître la dernière période mensuelle disponible.</div></div></div>`;
+      }
+
+      function periodTableCell(k, site, period) {
+        const value = getValue(k, site, period);
+        const badge = periodAvailabilityBadge(k, site, period, true);
+        return `<td class="p-3 whitespace-nowrap"><div>${displayValue(value, k.unit)}</div>${badge ? `<div class="mt-1">${badge}</div>` : ''}</td>`;
+      }
+
       function renderKpiCard(k) {
         const site = resolveSite(k), val = getValue(k, site, state.period), target = getTarget(k, site, state.period), status = statusOf(k, site, state.period), delta = compareDelta(k, site);
+        const availabilityBadge = periodAvailabilityBadge(k, site, state.period);
         return `<article data-kpi-id="${k.id}" class="card relative cursor-pointer text-left rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] bg-white dark:bg-[#0d1326] p-4 shadow-sm ${state.selectedKpi === k.id ? 'kpi-card-selected' : ''}">
       <div class="absolute top-3 right-3 flex items-center gap-1 z-10">
         <button type="button" data-kpi-widget="metadata" data-kpi-id="${k.id}" title="Afficher la fiche KPI" aria-label="Afficher la fiche KPI" class="grid h-7 w-7 place-items-center rounded-lg border border-slate-200/80 dark:border-[#2d3f6e] bg-white/95 dark:bg-[#0f1729]/95 text-slate-500 dark:text-slate-300 hover:text-[#2952ff] hover:border-[#2952ff]/50 transition-colors"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
@@ -2866,13 +2992,14 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div class="flex items-start justify-between gap-2 pr-16"><div class="min-w-0"><div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold truncate">${esc(site)}</div><h3 class="font-black mt-1 leading-tight">${esc(k.name)}</h3></div><span class="px-2.5 py-1 rounded-full text-xs font-black ${statusClass(status)}">${statusLabel(status)}</span></div>
       <div class="flex items-end justify-between gap-2 mt-4"><div><div class="text-3xl font-black">${displayValue(val, k.unit)}</div><div class="text-[13px] text-slate-500 mt-1">Target : <strong>${displayValue(target, k.unit)}</strong></div></div>${trendBadge(delta, k.direction)}</div>
+      ${availabilityBadge ? `<div class="mt-3">${availabilityBadge}</div>` : ''}
       <div class="sparkline mt-3"><canvas id="spark-${k.id}"></canvas></div>
       <div class="mt-3 pt-3 border-t border-slate-100 dark:border-[#1e2a4a] flex justify-between text-[10px] text-slate-500"><span>${(() => { const s = typeof k.source === 'string' ? k.source : k.source?.sheet || ''; return s.includes('QHSE_KPI_') ? '' : (s ? esc(s) : 'Source non trouvée') })()}</span><span>${qualityLabel(k.quality)}</span></div>
     </article>`;
       }
 
       function processTable(kpis) {
-        return `<div class="overflow-x-auto overflow-y-visible"><table class="w-full min-w-[1100px] text-xs table-sticky"><thead class="bg-slate-50 dark:bg-[#06081a]"><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">KPI</th><th class="p-3">Site</th>${TABLE_PERIODS.map(p => `<th class="p-3 whitespace-nowrap">${periodLabel(p.key)}</th>`).join('')}<th class="p-3 whitespace-nowrap">Target</th><th class="p-3 whitespace-nowrap">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${kpis.map(k => { const s = resolveSite(k); return `<tr class="hover:bg-slate-50 dark:hover:bg-[#141d35]/60 cursor-pointer" data-kpi-id="${k.id}"><td class="p-3 min-w-[220px]"><b>${esc(k.name)}</b><div class="text-[10px] text-slate-500 mt-1">${esc(k.unit)}</div></td><td class="p-3 whitespace-nowrap">${s}</td>${TABLE_PERIODS.map(p => `<td class="p-3 whitespace-nowrap">${displayValue(getValue(k, s, p.key), k.unit)}</td>`).join('')}<td class="p-3 whitespace-nowrap">${displayValue(getTarget(k, s, state.period), k.unit)}</td><td class="p-3 whitespace-nowrap"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass(statusOf(k, s, state.period))}">${statusLabel(statusOf(k, s, state.period))}</span></td></tr>`; }).join('')}</tbody></table></div>`;
+        return `<div class="overflow-x-auto overflow-y-visible"><table class="w-full min-w-[1100px] text-xs table-sticky"><thead class="bg-slate-50 dark:bg-[#06081a]"><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">KPI</th><th class="p-3">Site</th>${TABLE_PERIODS.map(p => `<th class="p-3 whitespace-nowrap">${periodLabel(p.key)}</th>`).join('')}<th class="p-3 whitespace-nowrap">Target</th><th class="p-3 whitespace-nowrap">Statut</th></tr></thead><tbody class="divide-y divide-slate-100 dark:divide-slate-800">${kpis.map(k => { const s = resolveSite(k); return `<tr class="hover:bg-slate-50 dark:hover:bg-[#141d35]/60 cursor-pointer" data-kpi-id="${k.id}"><td class="p-3 min-w-[220px]"><b>${esc(k.name)}</b><div class="text-[10px] text-slate-500 mt-1">${esc(k.unit)}</div></td><td class="p-3 whitespace-nowrap">${s}</td>${TABLE_PERIODS.map(p => periodTableCell(k, s, p.key)).join('')}<td class="p-3 whitespace-nowrap">${displayValue(getTarget(k, s, state.period), k.unit)}</td><td class="p-3 whitespace-nowrap"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${statusClass(statusOf(k, s, state.period))}">${statusLabel(statusOf(k, s, state.period))}</span></td></tr>`; }).join('')}</tbody></table></div>`;
       }
 
       function renderHeatmap(kpis) {
@@ -2894,11 +3021,14 @@ document.addEventListener('DOMContentLoaded', () => {
       function priorityItem(x, rank) { return `<button data-kpi-id="${x.k.id}" class="w-full text-left flex gap-3 p-3 rounded-xl bg-rose-500/5 border border-rose-500/15"><span class="h-7 w-7 rounded-lg bg-rose-500/10 text-rose-600 grid place-items-center font-black text-xs">${rank}</span><div><b class="text-sm">${x.k.name}</b><div class="text-[11px] text-slate-500 mt-1">${x.site} · écart défavorable ${fmt.format(x.score)}%</div></div></button>`; }
       function actionTable() { return `<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="text-left text-[10px] uppercase tracking-wider text-slate-500"><th class="p-3">Action</th><th class="p-3">KPI</th><th class="p-3">Responsable</th><th class="p-3">Échéance</th><th class="p-3">Statut</th></tr></thead><tbody><tr class="border-t border-slate-100 dark:border-[#1e2a4a]"><td colspan="5" class="p-8 text-center text-slate-500">Aucune action structurée importée. Prévoir une feuille « Actions » avec Action, KPI, Responsable, Échéance et Statut.</td></tr></tbody></table></div>`; }
 
-      function energyAggregationNotice(k) { if (['electricity', 'co2', 'electric-intensity'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> les valeurs « Safety + Leather » sont agrégées par un compteur commun dans le fichier QHSE ; elles ne doivent pas être interprétées comme deux mesures indépendantes.</div>'; if (k.id === 'absenteeism') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> pour MEL-T, la série mensuelle 2026 d’absentéisme est fournie par la source au périmètre personnel direct. Le taux global consolidé n’est disponible que pour septembre.</div>'; if (k.id === 'headcount-vs-budget') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de calcul :</b> pour MEL-T, le taux correspond à l’effectif total de fin de mois rapporté au budget annuel 2026 de 178 personnes.</div>'; if (['maintenance-cost', 'maintenance-cost-hour', 'capex-realized', 'capex-approved', 'capex-total', 'capex-consumption-rate', 'capex-breakdown'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> cette mesure financière est globale MEL-T dans le fichier source et n’est pas ventilée par site.</div>'; return ''; }
+      function energyAggregationNotice(k) { if (['electricity', 'co2', 'electric-intensity'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> les valeurs « Safety + Leather » sont agrégées par un compteur commun dans le fichier QHSE ; elles ne doivent pas être interprétées comme deux mesures indépendantes.</div>'; if (k.id === 'absenteeism') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> pour MEL-T, la série mensuelle 2026 d’absentéisme est fournie par la source au périmètre personnel direct. Le taux global consolidé n’est disponible que pour septembre.</div>'; if (k.id === 'headcount-vs-budget') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de calcul :</b> pour MEL-T, le taux correspond à l’effectif total de fin de mois rapporté au budget annuel 2026 de 178 personnes.</div>'; if (['maintenance-cost', 'maintenance-cost-hour', 'maintenance-cost-hour-overall', 'maintenance-cost-mch', 'capex-realized', 'capex-approved', 'capex-total', 'capex-consumption-rate', 'capex-breakdown'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> cette mesure financière est globale MEL-T dans le fichier source et n’est pas ventilée par site.</div>'; return ''; }
       function kpiMeta(k) { const sStr = typeof k.source === 'string' ? k.source : k.source?.sheet || ''; const sourceLabel = k.source ? (k.source.row != null ? `${esc(sStr)} · ligne ${k.source.row + 1}` : (sStr.includes('QHSE_KPI_') ? 'Système QHSE' : (sStr ? esc(sStr) : 'Non identifiée'))) : 'Non identifiée'; return `<dl class="space-y-3 text-sm"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Définition</dt><dd class="mt-1">${k.definition}</dd></div><div class="grid grid-cols-2 gap-3"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Unité</dt><dd class="mt-1 font-bold">${k.unit}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sens</dt><dd class="mt-1 font-bold">${directionLabel(k.direction)}</dd></div></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Source</dt><dd class="mt-1">${sourceLabel}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Qualité de donnée</dt><dd class="mt-1">${qualityLabel(k.quality)}</dd></div></dl>`; }
       function autoAnalysis(k) {
-        const s = resolveSite(k), v = getValue(k, s, state.period), t = getTarget(k, s, state.period), prev = getValue(k, s, '2026-05'), yoy = getValue(k, s, '2025');
-        if (v === null) return `<p>La valeur de <strong>${k.name}</strong> pour ${periodLabel(state.period)} et le périmètre ${s} n’a pas été identifiée dans le fichier source.</p><p class="mt-3">Vérifier le libellé du KPI, la feuille attendue et les en-têtes de période dans le rapport d’import.</p>`;
+        const s = resolveSite(k), v = getValue(k, s, state.period), t = getTarget(k, s, state.period), prev = getValue(k, s, '2026-05'), yoy = getValue(k, s, '2025-06');
+        if (v === null) {
+          const availability = periodAvailabilityText(k, s, state.period);
+          return `<p>La valeur de <strong>${k.name}</strong> pour ${periodLabel(state.period)} et le périmètre ${s} n’est pas renseignée dans le fichier source.</p>${availability ? `<p class="mt-3 font-bold text-amber-700 dark:text-amber-300">${esc(availability)}</p>` : ''}<p class="mt-3">Aucune valeur YTD n’est utilisée comme remplacement d’un mois manquant.</p>`;
+        }
         let txt = `<p><strong>${k.name}</strong> atteint <strong>${displayValue(v, k.unit)}</strong> sur le périmètre <strong>${s}</strong>.`;
         if (t !== null) { const d = v - t; txt += ` La cible est ${displayValue(t, k.unit)}, soit un écart de <strong>${signed(d, k.unit)}</strong>. Le statut calculé est <strong class="${statusText(statusOf(k, s, state.period))}">${statusLabel(statusOf(k, s, state.period))}</strong>.`; }
         txt += '</p>';
@@ -2974,7 +3104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = resolveSite(k), st = statusOf(k, s, state.period), v = getValue(k, s, state.period), target = getTarget(k, s, state.period);
         $('#modal-eyebrow').textContent = `${PROCESS_LIST.find(p => p.id === k.process)?.label} · ${s}`;
         $('#modal-title').textContent = k.name;
-        $('#modal-body').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'), displayValue(v, k.unit), 'activity', st, periodLabel(state.period))}${summaryCard(t('modal_target'), displayValue(target, k.unit), 'target', target === null ? 'gray' : 'green', t('modal_target_available'))}${summaryCard(t('modal_gap'), v !== null && target !== null ? signed(v - target, k.unit) : t('na_label'), 'git-compare', st, 'Reel - Target')}${summaryCard(t('modal_status'), statusLabel(st), 'badge-check', st, qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${energyAggregationNotice(k)}${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
+        $('#modal-body').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'), displayValue(v, k.unit), 'activity', st, periodLabel(state.period))}${summaryCard(t('modal_target'), displayValue(target, k.unit), 'target', target === null ? 'gray' : 'green', t('modal_target_available'))}${summaryCard(t('modal_gap'), v !== null && target !== null ? signed(v - target, k.unit) : t('na_label'), 'git-compare', st, 'Reel - Target')}${summaryCard(t('modal_status'), statusLabel(st), 'badge-check', st, qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${periodAvailabilityBadge(k, s, state.period) ? `<div class="mt-5">${periodAvailabilityBadge(k, s, state.period)}</div>` : ''}${energyAggregationNotice(k)}${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
         $('#detail-modal').showModal(); lucide.createIcons(); requestAnimationFrame(() => { createPeriodChart('modal-period-chart', k); createSiteChart('modal-site-chart', k); });
       }
 

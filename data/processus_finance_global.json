@@ -14,15 +14,15 @@
         "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
         "unite": "EUR",
         "valeurs": {
-          "juin_2026": 0,
+          "juin_2026": 0.0,
           "mai_2026": 0,
           "juin_2025": 483,
-          "ytd_2026": 1037,
+          "ytd_2026": 1037.0,
           "pytd_2025": 2793,
           "cible": 568.35785,
-          "juillet_2026": 10,
-          "aout_2026": 51,
-          "septembre_2026": 97,
+          "juillet_2026": 10.0,
+          "aout_2026": 51.0,
+          "septembre_2026": 97.0,
           "janvier_2026": 0,
           "fevrier_2026": 616,
           "mars_2026": 256,
@@ -142,15 +142,15 @@
         "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
         "unite": "EUR",
         "valeurs": {
-          "juin_2026": 12,
+          "juin_2026": 12.0,
           "mai_2026": 203,
           "juin_2025": 0,
-          "ytd_2026": 1742,
+          "ytd_2026": 1742.0,
           "pytd_2025": 1401.3,
           "cible": 669.68516,
-          "juillet_2026": 220,
-          "aout_2026": 276,
-          "septembre_2026": 83,
+          "juillet_2026": 220.0,
+          "aout_2026": 276.0,
+          "septembre_2026": 83.0,
           "janvier_2026": 0,
           "fevrier_2026": 138,
           "mars_2026": 143,
@@ -270,15 +270,15 @@
         "formule": "Valeur totale des matières premières rebutées pendant la fabrication",
         "unite": "EUR",
         "valeurs": {
-          "juin_2026": 12,
+          "juin_2026": 12.0,
           "mai_2026": 0,
           "juin_2025": 0.11,
-          "ytd_2026": 32,
+          "ytd_2026": 32.0,
           "pytd_2025": 321.11,
           "cible": 413.04924,
-          "juillet_2026": 20,
-          "aout_2026": 0,
-          "septembre_2026": 0,
+          "juillet_2026": 20.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
           "janvier_2026": 0,
           "fevrier_2026": 0,
           "mars_2026": 0,
@@ -521,12 +521,12 @@
           "juin_2026": 23.97,
           "mai_2026": 203,
           "juin_2025": 483.11,
-          "ytd_2026": 2811,
+          "ytd_2026": 2811.0,
           "pytd_2025": 4515.41,
           "cible": 1651.09225,
-          "juillet_2026": 250,
+          "juillet_2026": 250.0,
           "aout_2026": 150.77,
-          "septembre_2026": 180,
+          "septembre_2026": 180.0,
           "janvier_2026": 0,
           "fevrier_2026": 754,
           "mars_2026": 399,
@@ -541,19 +541,11 @@
         "unite": "TND",
         "valeurs": {
           "juin_2026": 11370.942,
-          "mai_2026": 12370.127,
-          "juin_2025": 12449.186,
-          "ytd_2026": 132503.655,
-          "pytd_2025": 185607.05,
-          "cible": 153995.7446,
           "juillet_2026": 14089.602,
           "aout_2026": 9544.59,
           "septembre_2026": 12082.094,
-          "janvier_2026": 9569.389,
-          "fevrier_2026": 16616.235,
-          "mars_2026": 30642.729,
-          "avril_2026": 25787.336,
-          "septembre_2025": 9559.485
+          "ytd_2026": 132503.655,
+          "cible": 153995.7446
         }
       },
       {
@@ -563,19 +555,11 @@
         "unite": "TND / heure directe",
         "valeurs": {
           "juin_2026": 0.6102,
-          "mai_2026": 0.8034,
-          "juin_2025": 0.727831038615569,
-          "ytd_2026": 1.0071,
-          "pytd_2025": 0.8764744493319261,
-          "cible": 0.6879,
           "juillet_2026": 0.7381,
           "aout_2026": 1.0828,
           "septembre_2026": 0.6086,
-          "janvier_2026": 0.5575,
-          "fevrier_2026": 0.9991,
-          "mars_2026": 2.1016,
-          "avril_2026": 1.3886,
-          "septembre_2025": 0.5040194553554952
+          "ytd_2026": 1.0071,
+          "cible": 0.6879
         }
       },
       {
@@ -682,6 +666,36 @@
           "Generic plants": 112046.0632,
           "Leasehold Improvements": 1849.75,
           "Machinery": 299492.1
+        }
+      },
+      {
+        "nom": "Coût de maintenance par heure globale",
+        "code": "Maintenance Cost/h overall",
+        "description": "Maintenance Cost/h overall",
+        "formule": "Valeur extraite de Costs & Profitability",
+        "unite": "TND/h",
+        "valeurs": {
+          "juin_2026": 0.4189,
+          "juillet_2026": 0.5264,
+          "aout_2026": 0.7316,
+          "septembre_2026": 0.4361,
+          "ytd_2026": 0.7035,
+          "cible": 0.5179
+        }
+      },
+      {
+        "nom": "Coût de maintenance par heure MCH",
+        "code": "Maintenance Cost/h (MCH)",
+        "description": "Maintenance Cost/h (MCH)",
+        "formule": "Valeur extraite de Costs & Profitability",
+        "unite": "TND/h",
+        "valeurs": {
+          "juin_2026": 58.7646,
+          "juillet_2026": 72.8145,
+          "aout_2026": 49.326,
+          "septembre_2026": 62.4398,
+          "ytd_2026": 89.2581,
+          "cible": 136.3096
         }
       }
     ]

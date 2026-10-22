@@ -1,162 +1,293 @@
 {
-  "processus": "Planning & Logistics",
-  "description": "Indicateurs clés de performance logistique par Business Unit",
+  "processus": "Planning & Delivery",
+  "description": "Indicateurs opérationnels issus de Delivery, complétés par POM et Inventory Accuracy depuis Warehouse & Inventory Manag",
   "notes": [
-    "Les valeurs sont extraites du fichier 202606_Factory_Meeting_KPIs -RECAP.xlsx.",
-    "Les indicateurs exprimés en pourcentage sont convertis en valeurs sur 100, comme dans processus_production_global.json.",
-    "Certaines sections du classeur ne ventilent pas tous les indicateurs par BU ; ces valeurs restent null lorsque la source ne les fournit pas.",
-    "Dans plusieurs feuilles logistiques, MEL-T correspond au consolidé global."
+    "Source opérationnelle: 202609_Factory_Meeting_KPIs - Global.xlsx, feuille Delivery.",
+    "Les données Delivery 2026 s’arrêtent à juin; le YTD reste une période distincte et ne remplace jamais septembre.",
+    "POM et Inventory Accuracy proviennent uniquement de Warehouse & Inventory Manag.",
+    "La feuille Logistic n’est pas utilisée."
   ],
   "sites": {
     "SAFETY": [
       {
         "nom": "OTIF",
         "code": "OTIF",
-        "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+        "description": "Orders delivered on time and in full at first confirmation.",
+        "formule": "OTIF orders / total orders × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": 20.0,
-          "mai_2026": 89.0,
-          "juin_2025": 37.5,
-          "ytd_2026": 58.333333333333336,
-          "pytd_2025": 73.0,
-          "cible": 83.0,
           "janvier_2026": 50.0,
           "fevrier_2026": 63.0,
           "mars_2026": 86.0,
           "avril_2026": 36.0,
-          "septembre_2025": 56.99999999999999
+          "mai_2026": 89.0,
+          "juin_2026": 20.0,
+          "ytd_2026": 58.3333,
+          "cible": 83.0
+        }
+      },
+      {
+        "nom": "MO count",
+        "code": "MO Count",
+        "description": "Manufacturing orders included in OTIF.",
+        "formule": "Count of manufacturing orders",
+        "unite": "MO",
+        "valeurs": {
+          "janvier_2026": 8.0,
+          "fevrier_2026": 8.0,
+          "mars_2026": 7.0,
+          "avril_2026": 11.0,
+          "mai_2026": 9.0,
+          "juin_2026": 5.0,
+          "ytd_2026": 48.0
+        }
+      },
+      {
+        "nom": "LT Anticipo",
+        "code": "LT Anticipo",
+        "description": "Anticipation lead time.",
+        "formule": "Avvio - Partenza materiale",
+        "unite": "jours",
+        "valeurs": {
+          "janvier_2026": 30.0,
+          "fevrier_2026": 28.0,
+          "mars_2026": 82.0,
+          "avril_2026": 31.0,
+          "mai_2026": 54.0,
+          "juin_2026": 64.2,
+          "ytd_2026": 45.5208,
+          "cible": 90.0
         }
       },
       {
         "nom": "Lead Time de production",
         "code": "LT Production",
+        "description": "Internal production lead time.",
         "formule": "Spedizione - Avvio",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 46.2,
-          "mai_2026": 27.0,
-          "juin_2025": null,
-          "ytd_2026": 45.520833333333336,
-          "pytd_2025": null,
-          "cible": 90,
           "janvier_2026": 45.0,
           "fevrier_2026": 55.0,
           "mars_2026": 30.0,
-          "avril_2026": 47.0
+          "avril_2026": 47.0,
+          "mai_2026": 27.0,
+          "juin_2026": 46.2,
+          "ytd_2026": 41.5625,
+          "cible": 30.0
         }
       },
       {
         "nom": "Lead Time End-to-End",
         "code": "LT End-to-End",
+        "description": "End-to-end delivery lead time.",
         "formule": "Consegna - Partenza materiale",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 114.4,
-          "mai_2026": 84.0,
-          "juin_2025": null,
-          "ytd_2026": 91.08333333333333,
-          "pytd_2025": null,
-          "cible": 120,
           "janvier_2026": 78.0,
           "fevrier_2026": 86.0,
           "mars_2026": 115.0,
-          "avril_2026": 81.0
+          "avril_2026": 81.0,
+          "mai_2026": 84.0,
+          "juin_2026": 114.4,
+          "ytd_2026": 91.0833,
+          "cible": 120.0
         }
       },
       {
         "nom": "Niveau de service",
         "code": "Service Level",
-        "formule": "Units sold of finished goods / Budgeted units × 100",
+        "description": "YTD units sold versus budget.",
+        "formule": "Units sold / budget × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 64.76681942465436,
-          "pytd_2025": 81.08639380315681,
+          "ytd_2026": 64.7668,
           "cible": 95.0
-        }
-      },
-      {
-        "nom": "Fiabilité des livraisons",
-        "code": "POM",
-        "formule": "Error-free orders / Total orders × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": 91.6667,
-          "mai_2026": 100.0,
-          "juin_2025": 100,
-          "ytd_2026": 98.7103,
-          "pytd_2025": null,
-          "cible": 98.0,
-          "juillet_2026": 100.0,
-          "aout_2026": 100.0,
-          "septembre_2026": 100.0,
-          "janvier_2026": 100.0,
-          "fevrier_2026": 100.0,
-          "mars_2026": 100.0,
-          "avril_2026": 92.8571
-        }
-      },
-      {
-        "nom": "Précision des stocks",
-        "code": "Inventory Accuracy Rate",
-        "formule": "Correct counted units / Units on record × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 65.0,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique total",
-        "code": "Total Logistic Cost",
-        "formule": "Fees cost + Transport cost",
-        "unite": "TND",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique par pièce",
-        "code": "Logistic Cost Unit",
-        "formule": "Total logistic cost / Number of pieces shipped",
-        "unite": "TND / pièce",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
         }
       },
       {
         "nom": "Nombre de pièces expédiées",
         "code": "Shipped Pieces",
-        "formule": "Somme des pièces expédiées",
+        "description": "Units sold/shipped reported in Delivery.",
+        "formule": "Units sold",
         "unite": "pièces",
         "valeurs": {
-          "juin_2026": 2003.0,
-          "mai_2026": 2300.0,
-          "juin_2025": 3170,
-          "ytd_2026": 17115,
-          "pytd_2025": null,
-          "cible": null,
           "janvier_2026": 4264.0,
           "fevrier_2026": 2767.0,
           "mars_2026": 2252.0,
-          "avril_2026": 3232.0
+          "avril_2026": 3232.0,
+          "mai_2026": 2300.0,
+          "juin_2026": 2003.0,
+          "ytd_2026": 16818.0
+        }
+      },
+      {
+        "nom": "# Units sold",
+        "code": "Units sold",
+        "description": "Units sold used for customer quality.",
+        "formule": "Count of units sold",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 4264.0,
+          "fevrier_2026": 2767.0,
+          "mars_2026": 2252.0,
+          "avril_2026": 3232.0,
+          "mai_2026": 2300.0,
+          "juin_2026": 2003.0,
+          "ytd_2026": 16818.0
+        }
+      },
+      {
+        "nom": "# Defective units",
+        "code": "Defective units",
+        "description": "Customer defective units.",
+        "formule": "Count of defective units",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.0
+        }
+      },
+      {
+        "nom": "CRR%",
+        "code": "Customer Reject Rate",
+        "description": "Customer reject rate.",
+        "formule": "Defective units / units sold × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.0,
+          "cible": 0.5
+        }
+      },
+      {
+        "nom": "Customer Quality Rate",
+        "code": "CQR",
+        "description": "Customer quality rate.",
+        "formule": "100 - CRR",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 100.0,
+          "mai_2026": 100.0,
+          "juin_2026": 100.0,
+          "ytd_2026": 100.0,
+          "cible": 99.5
+        }
+      },
+      {
+        "nom": "DPMU (ppm)",
+        "code": "DPMU",
+        "description": "Defective units per million units sold.",
+        "formule": "Defective units / units sold × 1,000,000",
+        "unite": "ppm",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.0
+        }
+      },
+      {
+        "nom": "Customer Claims",
+        "code": "Customer Claims",
+        "description": "Customer claims registered in Delivery.",
+        "formule": "Count of claims",
+        "unite": "réclamations",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.0
+        }
+      },
+      {
+        "nom": "Fiabilité des livraisons",
+        "code": "POM",
+        "description": "Reliability of deliveries from Warehouse.",
+        "formule": "Error-free orders / total orders × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 92.8571,
+          "mai_2026": 100.0,
+          "juin_2026": 91.6667,
+          "juillet_2026": 100.0,
+          "aout_2026": 100.0,
+          "septembre_2026": 100.0,
+          "ytd_2026": 98.7103,
+          "cible": 98.0
+        }
+      },
+      {
+        "nom": "Précision des stocks",
+        "code": "Inventory Accuracy Rate",
+        "description": "Inventory accuracy from Warehouse.",
+        "formule": "Correct counted units / units on record × 100",
+        "unite": "%",
+        "valeurs": {
+          "fevrier_2026": 40.0,
+          "mars_2026": 57.1429,
+          "avril_2026": 33.3333,
+          "ytd_2026": 65.0,
+          "cible": 97.0
+        }
+      },
+      {
+        "nom": "Unités conformes inventoriées",
+        "code": "Correct Counted Units",
+        "description": "Correct counted inventory units.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 4.0,
+          "mars_2026": 4.0,
+          "avril_2026": 2.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 26.0
+        }
+      },
+      {
+        "nom": "Unités théoriques en stock",
+        "code": "Units on Record",
+        "description": "Units recorded in the inventory system.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 10.0,
+          "mars_2026": 7.0,
+          "avril_2026": 6.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 40.0
         }
       }
     ],
@@ -164,151 +295,282 @@
       {
         "nom": "OTIF",
         "code": "OTIF",
-        "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+        "description": "Orders delivered on time and in full at first confirmation.",
+        "formule": "OTIF orders / total orders × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": 42.8571,
-          "mai_2026": 25.0,
-          "juin_2025": 20.0,
-          "ytd_2026": 55.10204081632652,
-          "pytd_2025": 59.0,
-          "cible": 69.0,
           "janvier_2026": 88.0,
           "fevrier_2026": 38.0,
           "mars_2026": 100.0,
           "avril_2026": 0.0,
-          "septembre_2025": 50.0
+          "mai_2026": 25.0,
+          "juin_2026": 42.8571,
+          "ytd_2026": 55.102,
+          "cible": 69.0
+        }
+      },
+      {
+        "nom": "MO count",
+        "code": "MO Count",
+        "description": "Manufacturing orders included in OTIF.",
+        "formule": "Count of manufacturing orders",
+        "unite": "MO",
+        "valeurs": {
+          "janvier_2026": 8.0,
+          "fevrier_2026": 8.0,
+          "mars_2026": 10.0,
+          "avril_2026": 5.0,
+          "mai_2026": 4.0,
+          "juin_2026": 14.0,
+          "ytd_2026": 49.0
+        }
+      },
+      {
+        "nom": "LT Anticipo",
+        "code": "LT Anticipo",
+        "description": "Anticipation lead time.",
+        "formule": "Avvio - Partenza materiale",
+        "unite": "jours",
+        "valeurs": {
+          "janvier_2026": 16.0,
+          "fevrier_2026": 12.0,
+          "mars_2026": 27.0,
+          "avril_2026": 51.0,
+          "mai_2026": 86.0,
+          "juin_2026": 43.7143,
+          "ytd_2026": 34.7143,
+          "cible": 90.0
         }
       },
       {
         "nom": "Lead Time de production",
         "code": "LT Production",
+        "description": "Internal production lead time.",
         "formule": "Spedizione - Avvio",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 31.7857,
-          "mai_2026": 66.0,
-          "juin_2025": null,
-          "ytd_2026": 57.08163265306123,
-          "pytd_2025": null,
-          "cible": 35,
           "janvier_2026": 57.0,
           "fevrier_2026": 76.0,
           "mars_2026": 67.0,
-          "avril_2026": 71.0
+          "avril_2026": 71.0,
+          "mai_2026": 66.0,
+          "juin_2026": 31.7857,
+          "ytd_2026": 57.0816,
+          "cible": 35.0
         }
       },
       {
         "nom": "Lead Time End-to-End",
         "code": "LT End-to-End",
+        "description": "End-to-end delivery lead time.",
         "formule": "Consegna - Partenza materiale",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 79.5,
-          "mai_2026": 155.0,
-          "juin_2025": null,
-          "ytd_2026": 95.79591836734694,
-          "pytd_2025": null,
-          "cible": 125,
           "janvier_2026": 75.0,
           "fevrier_2026": 91.0,
           "mars_2026": 97.0,
-          "avril_2026": 126.0
+          "avril_2026": 126.0,
+          "mai_2026": 155.0,
+          "juin_2026": 79.5,
+          "ytd_2026": 95.7959,
+          "cible": 125.0
         }
       },
       {
         "nom": "Niveau de service",
         "code": "Service Level",
-        "formule": "Units sold of finished goods / Budgeted units × 100",
+        "description": "YTD units sold versus budget.",
+        "formule": "Units sold / budget × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 84.2883174731727,
-          "pytd_2025": 97.72774113767518,
+          "ytd_2026": 84.2883,
           "cible": 95.0
-        }
-      },
-      {
-        "nom": "Fiabilité des livraisons",
-        "code": "POM",
-        "formule": "Error-free orders / Total orders × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": 98.3333,
-          "mai_2026": 100.0,
-          "juin_2025": 100,
-          "ytd_2026": 99.8611,
-          "pytd_2025": null,
-          "cible": 98.0,
-          "juillet_2026": 100.0,
-          "aout_2026": 100.0,
-          "septembre_2026": 100.0,
-          "janvier_2026": 100.0,
-          "fevrier_2026": 100.0,
-          "mars_2026": 100.0,
-          "avril_2026": 100.0
-        }
-      },
-      {
-        "nom": "Précision des stocks",
-        "code": "Inventory Accuracy Rate",
-        "formule": "Correct counted units / Units on record × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 65.0,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique total",
-        "code": "Total Logistic Cost",
-        "formule": "Fees cost + Transport cost",
-        "unite": "TND",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique par pièce",
-        "code": "Logistic Cost Unit",
-        "formule": "Total logistic cost / Number of pieces shipped",
-        "unite": "TND / pièce",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
         }
       },
       {
         "nom": "Nombre de pièces expédiées",
         "code": "Shipped Pieces",
-        "formule": "Somme des pièces expédiées",
+        "description": "Units sold/shipped reported in Delivery.",
+        "formule": "Units sold",
         "unite": "pièces",
         "valeurs": {
-          "juin_2026": 1706.0,
-          "mai_2026": 1536.0,
-          "juin_2025": 1697,
-          "ytd_2026": 8156,
-          "pytd_2025": null,
-          "cible": null,
           "janvier_2026": 1812.0,
           "fevrier_2026": 1149.0,
           "mars_2026": 1162.0,
-          "avril_2026": 961.0
+          "avril_2026": 961.0,
+          "mai_2026": 1536.0,
+          "juin_2026": 1706.0,
+          "ytd_2026": 8326.0
+        }
+      },
+      {
+        "nom": "# Units sold",
+        "code": "Units sold",
+        "description": "Units sold used for customer quality.",
+        "formule": "Count of units sold",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 1812.0,
+          "fevrier_2026": 1149.0,
+          "mars_2026": 1162.0,
+          "avril_2026": 961.0,
+          "mai_2026": 1536.0,
+          "juin_2026": 1706.0,
+          "ytd_2026": 8326.0
+        }
+      },
+      {
+        "nom": "# Defective units",
+        "code": "Defective units",
+        "description": "Customer defective units.",
+        "formule": "Count of defective units",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 40.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 40.0
+        }
+      },
+      {
+        "nom": "CRR%",
+        "code": "Customer Reject Rate",
+        "description": "Customer reject rate.",
+        "formule": "Defective units / units sold × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 4.1623,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.4804,
+          "cible": 0.5
+        }
+      },
+      {
+        "nom": "Customer Quality Rate",
+        "code": "CQR",
+        "description": "Customer quality rate.",
+        "formule": "100 - CRR",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 95.8377,
+          "mai_2026": 100.0,
+          "juin_2026": 100.0,
+          "ytd_2026": 99.5196,
+          "cible": 99.5
+        }
+      },
+      {
+        "nom": "DPMU (ppm)",
+        "code": "DPMU",
+        "description": "Defective units per million units sold.",
+        "formule": "Defective units / units sold × 1,000,000",
+        "unite": "ppm",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 41623.3091,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 4804.2277
+        }
+      },
+      {
+        "nom": "Customer Claims",
+        "code": "Customer Claims",
+        "description": "Customer claims registered in Delivery.",
+        "formule": "Count of claims",
+        "unite": "réclamations",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0,
+          "mars_2026": 0.0,
+          "avril_2026": 1.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 1.0
+        }
+      },
+      {
+        "nom": "Fiabilité des livraisons",
+        "code": "POM",
+        "description": "Reliability of deliveries from Warehouse.",
+        "formule": "Error-free orders / total orders × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 100.0,
+          "mai_2026": 100.0,
+          "juin_2026": 98.3333,
+          "juillet_2026": 100.0,
+          "aout_2026": 100.0,
+          "septembre_2026": 100.0,
+          "ytd_2026": 99.8611,
+          "cible": 98.0
+        }
+      },
+      {
+        "nom": "Précision des stocks",
+        "code": "Inventory Accuracy Rate",
+        "description": "Inventory accuracy from Warehouse.",
+        "formule": "Correct counted units / units on record × 100",
+        "unite": "%",
+        "valeurs": {
+          "fevrier_2026": 40.0,
+          "mars_2026": 57.1429,
+          "avril_2026": 33.3333,
+          "ytd_2026": 65.0,
+          "cible": 97.0
+        }
+      },
+      {
+        "nom": "Unités conformes inventoriées",
+        "code": "Correct Counted Units",
+        "description": "Correct counted inventory units.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 4.0,
+          "mars_2026": 4.0,
+          "avril_2026": 2.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 26.0
+        }
+      },
+      {
+        "nom": "Unités théoriques en stock",
+        "code": "Units on Record",
+        "description": "Units recorded in the inventory system.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 10.0,
+          "mars_2026": 7.0,
+          "avril_2026": 6.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 40.0
         }
       }
     ],
@@ -316,279 +578,282 @@
       {
         "nom": "OTIF",
         "code": "OTIF",
-        "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+        "description": "Orders delivered on time and in full at first confirmation.",
+        "formule": "OTIF orders / total orders × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": 85.7143,
-          "mai_2026": 100.0,
-          "juin_2025": 100,
-          "ytd_2026": 89.47368421052632,
-          "pytd_2025": 82.0,
-          "cible": 92.0,
           "janvier_2026": 100.0,
           "fevrier_2026": 100.0,
           "mars_2026": 100.0,
           "avril_2026": 50.0,
-          "septembre_2025": 60.0
+          "mai_2026": 100.0,
+          "juin_2026": 85.7143,
+          "ytd_2026": 89.4737,
+          "cible": 92.0
+        }
+      },
+      {
+        "nom": "MO count",
+        "code": "MO Count",
+        "description": "Manufacturing orders included in OTIF.",
+        "formule": "Count of manufacturing orders",
+        "unite": "MO",
+        "valeurs": {
+          "janvier_2026": 4.0,
+          "fevrier_2026": 3.0,
+          "mars_2026": 2.0,
+          "avril_2026": 2.0,
+          "mai_2026": 1.0,
+          "juin_2026": 7.0,
+          "ytd_2026": 19.0
+        }
+      },
+      {
+        "nom": "LT Anticipo",
+        "code": "LT Anticipo",
+        "description": "Anticipation lead time.",
+        "formule": "Avvio - Partenza materiale",
+        "unite": "jours",
+        "valeurs": {
+          "janvier_2026": 34.0,
+          "fevrier_2026": 47.0,
+          "mars_2026": 81.0,
+          "avril_2026": 79.0,
+          "mai_2026": 69.0,
+          "juin_2026": 35.4286,
+          "ytd_2026": 48.0526,
+          "cible": 90.0
         }
       },
       {
         "nom": "Lead Time de production",
         "code": "LT Production",
+        "description": "Internal production lead time.",
         "formule": "Spedizione - Avvio",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 17.5714,
-          "mai_2026": 30.0,
-          "juin_2025": null,
-          "ytd_2026": 24.31578947368421,
-          "pytd_2025": null,
-          "cible": 15,
           "janvier_2026": 31.0,
           "fevrier_2026": 8.0,
           "mars_2026": 47.0,
-          "avril_2026": 35.0
+          "avril_2026": 35.0,
+          "mai_2026": 30.0,
+          "juin_2026": 17.5714,
+          "ytd_2026": 24.3158,
+          "cible": 15.0
         }
       },
       {
         "nom": "Lead Time End-to-End",
         "code": "LT End-to-End",
+        "description": "End-to-end delivery lead time.",
         "formule": "Consegna - Partenza materiale",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 57.0,
-          "mai_2026": 102.0,
-          "juin_2025": null,
-          "ytd_2026": 76.36842105263158,
-          "pytd_2025": null,
-          "cible": 105,
           "janvier_2026": 68.0,
           "fevrier_2026": 58.0,
           "mars_2026": 130.0,
-          "avril_2026": 117.0
+          "avril_2026": 117.0,
+          "mai_2026": 102.0,
+          "juin_2026": 57.0,
+          "ytd_2026": 76.3684,
+          "cible": 105.0
         }
       },
       {
         "nom": "Niveau de service",
         "code": "Service Level",
-        "formule": "Units sold of finished goods / Budgeted units × 100",
+        "description": "YTD units sold versus budget.",
+        "formule": "Units sold / budget × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 56.91597906130779,
-          "pytd_2025": 44.67483729989074,
+          "ytd_2026": 56.916,
           "cible": 95.0
         }
       },
       {
-        "nom": "Fiabilité des livraisons",
-        "code": "POM",
-        "formule": "Error-free orders / Total orders × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": 100.0,
-          "mai_2026": 100.0,
-          "juin_2025": 100,
-          "ytd_2026": 100.0,
-          "pytd_2025": null,
-          "cible": 98.0,
-          "juillet_2026": 100.0,
-          "aout_2026": 100.0,
-          "septembre_2026": 100.0,
-          "janvier_2026": 100.0,
-          "fevrier_2026": 100.0,
-          "mars_2026": 100.0,
-          "avril_2026": 100.0
-        }
-      },
-      {
-        "nom": "Précision des stocks",
-        "code": "Inventory Accuracy Rate",
-        "formule": "Correct counted units / Units on record × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 65.0,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique total",
-        "code": "Total Logistic Cost",
-        "formule": "Fees cost + Transport cost",
-        "unite": "TND",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique par pièce",
-        "code": "Logistic Cost Unit",
-        "formule": "Total logistic cost / Number of pieces shipped",
-        "unite": "TND / pièce",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
         "nom": "Nombre de pièces expédiées",
         "code": "Shipped Pieces",
-        "formule": "Somme des pièces expédiées",
+        "description": "Units sold/shipped reported in Delivery.",
+        "formule": "Units sold",
         "unite": "pièces",
         "valeurs": {
-          "juin_2026": 1388.0,
-          "mai_2026": 868.0,
-          "juin_2025": 904,
-          "ytd_2026": 5895,
-          "pytd_2025": null,
-          "cible": null,
           "janvier_2026": 1390.0,
           "fevrier_2026": 816.0,
           "mars_2026": 877.0,
-          "avril_2026": 1076.0
+          "avril_2026": 1076.0,
+          "mai_2026": 868.0,
+          "juin_2026": 1388.0,
+          "ytd_2026": 6415.0
         }
-      }
-    ],
-    "HELMET": [
+      },
       {
-        "nom": "OTIF",
-        "code": "OTIF",
-        "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+        "nom": "# Units sold",
+        "code": "Units sold",
+        "description": "Units sold used for customer quality.",
+        "formule": "Count of units sold",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 1390.0,
+          "fevrier_2026": 816.0,
+          "mars_2026": 877.0,
+          "avril_2026": 1076.0,
+          "mai_2026": 868.0,
+          "juin_2026": 1388.0,
+          "ytd_2026": 6415.0
+        }
+      },
+      {
+        "nom": "# Defective units",
+        "code": "Defective units",
+        "description": "Customer defective units.",
+        "formule": "Count of defective units",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 1.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 1.0
+        }
+      },
+      {
+        "nom": "CRR%",
+        "code": "Customer Reject Rate",
+        "description": "Customer reject rate.",
+        "formule": "Defective units / units sold × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.1225,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.0156,
+          "cible": 0.5
         }
       },
       {
-        "nom": "Lead Time de production",
-        "code": "LT Production",
-        "formule": "Spedizione - Avvio",
-        "unite": "jours",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Lead Time End-to-End",
-        "code": "LT End-to-End",
-        "formule": "Consegna - Partenza materiale",
-        "unite": "jours",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Niveau de service",
-        "code": "Service Level",
-        "formule": "Units sold of finished goods / Budgeted units × 100",
+        "nom": "Customer Quality Rate",
+        "code": "CQR",
+        "description": "Customer quality rate.",
+        "formule": "100 - CRR",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
+          "janvier_2026": 100.0,
+          "fevrier_2026": 99.8775,
+          "mars_2026": 100.0,
+          "avril_2026": 100.0,
+          "mai_2026": 100.0,
+          "juin_2026": 100.0,
+          "ytd_2026": 99.9844,
+          "cible": 99.5
+        }
+      },
+      {
+        "nom": "DPMU (ppm)",
+        "code": "DPMU",
+        "description": "Defective units per million units sold.",
+        "formule": "Defective units / units sold × 1,000,000",
+        "unite": "ppm",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 1225.4902,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 155.8846
+        }
+      },
+      {
+        "nom": "Customer Claims",
+        "code": "Customer Claims",
+        "description": "Customer claims registered in Delivery.",
+        "formule": "Count of claims",
+        "unite": "réclamations",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 1.0,
+          "mars_2026": 0.0,
+          "avril_2026": 0.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 1.0
         }
       },
       {
         "nom": "Fiabilité des livraisons",
         "code": "POM",
-        "formule": "Error-free orders / Total orders × 100",
+        "description": "Reliability of deliveries from Warehouse.",
+        "formule": "Error-free orders / total orders × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 100.0,
+          "mai_2026": 100.0,
+          "juin_2026": 100.0,
+          "juillet_2026": 100.0,
+          "aout_2026": 100.0,
+          "septembre_2026": 100.0,
+          "ytd_2026": 100.0,
+          "cible": 98.0
         }
       },
       {
         "nom": "Précision des stocks",
         "code": "Inventory Accuracy Rate",
-        "formule": "Correct counted units / Units on record × 100",
+        "description": "Inventory accuracy from Warehouse.",
+        "formule": "Correct counted units / units on record × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
+          "fevrier_2026": 40.0,
+          "mars_2026": 57.1429,
+          "avril_2026": 33.3333,
           "ytd_2026": 65.0,
-          "pytd_2025": null,
-          "cible": null
+          "cible": 97.0
         }
       },
       {
-        "nom": "Coût logistique total",
-        "code": "Total Logistic Cost",
-        "formule": "Fees cost + Transport cost",
-        "unite": "TND",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Coût logistique par pièce",
-        "code": "Logistic Cost Unit",
-        "formule": "Total logistic cost / Number of pieces shipped",
-        "unite": "TND / pièce",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
-        }
-      },
-      {
-        "nom": "Nombre de pièces expédiées",
-        "code": "Shipped Pieces",
-        "formule": "Somme des pièces expédiées",
+        "nom": "Unités conformes inventoriées",
+        "code": "Correct Counted Units",
+        "description": "Correct counted inventory units.",
+        "formule": "Count",
         "unite": "pièces",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": null,
-          "pytd_2025": null,
-          "cible": null
+          "janvier_2026": 0.0,
+          "fevrier_2026": 4.0,
+          "mars_2026": 4.0,
+          "avril_2026": 2.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 26.0
+        }
+      },
+      {
+        "nom": "Unités théoriques en stock",
+        "code": "Units on Record",
+        "description": "Units recorded in the inventory system.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 10.0,
+          "mars_2026": 7.0,
+          "avril_2026": 6.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 40.0
         }
       }
     ],
@@ -596,162 +861,283 @@
       {
         "nom": "OTIF",
         "code": "OTIF",
-        "formule": "Orders delivered on time and in full / Total orders delivered × 100",
+        "description": "Orders delivered on time and in full at first confirmation.",
+        "formule": "OTIF orders / total orders × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": 50.0,
-          "mai_2026": 71.0,
-          "juin_2025": 50.0,
-          "ytd_2026": 62.06896551724138,
-          "pytd_2025": 69.0,
-          "cible": 79.0,
           "janvier_2026": 75.0,
           "fevrier_2026": 58.0,
           "mars_2026": 95.0,
           "avril_2026": 28.0,
-          "septembre_2025": 56.00000000000001
+          "mai_2026": 71.0,
+          "juin_2026": 50.0,
+          "ytd_2026": 62.069,
+          "cible": 79.0
+        }
+      },
+      {
+        "nom": "MO count",
+        "code": "MO Count",
+        "description": "Manufacturing orders included in OTIF.",
+        "formule": "Count of manufacturing orders",
+        "unite": "MO",
+        "valeurs": {
+          "janvier_2026": 20.0,
+          "fevrier_2026": 19.0,
+          "mars_2026": 19.0,
+          "avril_2026": 18.0,
+          "mai_2026": 14.0,
+          "juin_2026": 26.0,
+          "ytd_2026": 116.0
+        }
+      },
+      {
+        "nom": "LT Anticipo",
+        "code": "LT Anticipo",
+        "description": "Anticipation lead time.",
+        "formule": "Avvio - Partenza materiale",
+        "unite": "jours",
+        "valeurs": {
+          "janvier_2026": 25.0,
+          "fevrier_2026": 24.0,
+          "mars_2026": 53.0,
+          "avril_2026": 42.0,
+          "mai_2026": 64.0,
+          "juin_2026": 45.4231,
+          "ytd_2026": 41.3707,
+          "cible": 90.0
         }
       },
       {
         "nom": "Lead Time de production",
         "code": "LT Production",
+        "description": "Internal production lead time.",
         "formule": "Spedizione - Avvio",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 30.7308,
-          "mai_2026": 38.0,
-          "juin_2025": null,
-          "ytd_2026": 45.293103448275865,
-          "pytd_2025": null,
-          "cible": 27,
           "janvier_2026": 47.0,
           "fevrier_2026": 56.0,
           "mars_2026": 51.0,
-          "avril_2026": 52.0
+          "avril_2026": 52.0,
+          "mai_2026": 38.0,
+          "juin_2026": 30.7308,
+          "ytd_2026": 45.2931,
+          "cible": 27.0
         }
       },
       {
         "nom": "Lead Time End-to-End",
         "code": "LT End-to-End",
+        "description": "End-to-end delivery lead time.",
         "formule": "Consegna - Partenza materiale",
         "unite": "jours",
         "valeurs": {
-          "juin_2026": 80.1538,
-          "mai_2026": 106.0,
-          "juin_2025": null,
-          "ytd_2026": 90.66379310344827,
-          "pytd_2025": null,
-          "cible": 117,
           "janvier_2026": 75.0,
           "fevrier_2026": 84.0,
           "mars_2026": 107.0,
-          "avril_2026": 97.0
+          "avril_2026": 97.0,
+          "mai_2026": 106.0,
+          "juin_2026": 80.1538,
+          "ytd_2026": 90.6638,
+          "cible": 117.0
         }
       },
       {
         "nom": "Niveau de service",
         "code": "Service Level",
-        "formule": "Units sold of finished goods / Budgeted units × 100",
+        "description": "YTD units sold versus budget.",
+        "formule": "Units sold / budget × 100",
         "unite": "%",
         "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 66.98149248662875,
-          "pytd_2025": 70.36787697867854,
+          "ytd_2026": 66.9815,
           "cible": 95.0
-        }
-      },
-      {
-        "nom": "Fiabilité des livraisons",
-        "code": "POM",
-        "formule": "Error-free orders / Total orders × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": 98.4375,
-          "mai_2026": 100.0,
-          "juin_2025": 100,
-          "ytd_2026": 99.4465,
-          "pytd_2025": null,
-          "cible": 98.0,
-          "juillet_2026": 100.0,
-          "aout_2026": 100.0,
-          "septembre_2026": 100.0,
-          "janvier_2026": 100.0,
-          "fevrier_2026": 100.0,
-          "mars_2026": 100.0,
-          "avril_2026": 98.7952
-        }
-      },
-      {
-        "nom": "Précision des stocks",
-        "code": "Inventory Accuracy Rate",
-        "formule": "Correct counted units / Units on record × 100",
-        "unite": "%",
-        "valeurs": {
-          "juin_2026": null,
-          "mai_2026": null,
-          "juin_2025": null,
-          "ytd_2026": 65.0,
-          "pytd_2025": null,
-          "cible": 97.0
-        }
-      },
-      {
-        "nom": "Coût logistique total",
-        "code": "Total Logistic Cost",
-        "formule": "Fees cost + Transport cost",
-        "unite": "TND",
-        "valeurs": {
-          "juin_2026": 58863.793999999994,
-          "mai_2026": 64973.246,
-          "juin_2025": 29253.972,
-          "ytd_2026": 293330.463,
-          "pytd_2025": 574413.561,
-          "cible": null,
-          "janvier_2026": 47727.532,
-          "fevrier_2026": 42202.066,
-          "mars_2026": 35363.025,
-          "avril_2026": 44200.8,
-          "septembre_2025": 39285.774999999994
-        }
-      },
-      {
-        "nom": "Coût logistique par pièce",
-        "code": "Logistic Cost Unit",
-        "formule": "Total logistic cost / Number of pieces shipped",
-        "unite": "TND / pièce",
-        "valeurs": {
-          "juin_2026": 12.513561649659863,
-          "mai_2026": 13.8123,
-          "juin_2025": 5.0691339455900195,
-          "ytd_2026": 9.41187393313226,
-          "pytd_2025": 2.090540241221685,
-          "cible": null,
-          "janvier_2026": 6.3927,
-          "fevrier_2026": 8.9184,
-          "mars_2026": 8.2412,
-          "avril_2026": 8.3888,
-          "septembre_2025": 6.241781855735621
         }
       },
       {
         "nom": "Nombre de pièces expédiées",
         "code": "Shipped Pieces",
-        "formule": "Somme des pièces expédiées",
+        "description": "Units sold/shipped reported in Delivery.",
+        "formule": "Units sold",
         "unite": "pièces",
         "valeurs": {
-          "juin_2026": 5097.0,
-          "mai_2026": 4704.0,
-          "juin_2025": 5771,
-          "ytd_2026": 31166,
-          "pytd_2025": 274768,
-          "cible": null,
           "janvier_2026": 7466.0,
           "fevrier_2026": 4732.0,
           "mars_2026": 4291.0,
           "avril_2026": 5269.0,
-          "septembre_2025": 6294
+          "mai_2026": 4704.0,
+          "juin_2026": 5097.0,
+          "ytd_2026": 31559.0
+        }
+      },
+      {
+        "nom": "# Units sold",
+        "code": "Units sold",
+        "description": "Units sold used for customer quality.",
+        "formule": "Count of units sold",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 7466.0,
+          "fevrier_2026": 4732.0,
+          "mars_2026": 4291.0,
+          "avril_2026": 5269.0,
+          "mai_2026": 4704.0,
+          "juin_2026": 5097.0,
+          "ytd_2026": 31559.0
+        }
+      },
+      {
+        "nom": "# Defective units",
+        "code": "Defective units",
+        "description": "Customer defective units.",
+        "formule": "Count of defective units",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 1.0,
+          "mars_2026": 0.0,
+          "avril_2026": 40.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 41.0
+        }
+      },
+      {
+        "nom": "CRR%",
+        "code": "Customer Reject Rate",
+        "description": "Customer reject rate.",
+        "formule": "Defective units / units sold × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 0.0211,
+          "mars_2026": 0.0,
+          "avril_2026": 0.7592,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 0.1299,
+          "cible": 0.5
+        }
+      },
+      {
+        "nom": "Customer Quality Rate",
+        "code": "CQR",
+        "description": "Customer quality rate.",
+        "formule": "100 - CRR",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 99.9789,
+          "mars_2026": 100.0,
+          "avril_2026": 99.2408,
+          "mai_2026": 100.0,
+          "juin_2026": 100.0,
+          "ytd_2026": 99.8701,
+          "cible": 99.5
+        }
+      },
+      {
+        "nom": "DPMU (ppm)",
+        "code": "DPMU",
+        "description": "Defective units per million units sold.",
+        "formule": "Defective units / units sold × 1,000,000",
+        "unite": "ppm",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 211.3271,
+          "mars_2026": 0.0,
+          "avril_2026": 7591.5734,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 1299.154
+        }
+      },
+      {
+        "nom": "Customer Claims",
+        "code": "Customer Claims",
+        "description": "Customer claims registered in Delivery.",
+        "formule": "Count of claims",
+        "unite": "réclamations",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 1.0,
+          "mars_2026": 0.0,
+          "avril_2026": 1.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "ytd_2026": 2.0,
+          "cible": 4.0
+        }
+      },
+      {
+        "nom": "Fiabilité des livraisons",
+        "code": "POM",
+        "description": "Reliability of deliveries from Warehouse.",
+        "formule": "Error-free orders / total orders × 100",
+        "unite": "%",
+        "valeurs": {
+          "janvier_2026": 100.0,
+          "fevrier_2026": 100.0,
+          "mars_2026": 100.0,
+          "avril_2026": 98.7952,
+          "mai_2026": 100.0,
+          "juin_2026": 98.4375,
+          "juillet_2026": 100.0,
+          "aout_2026": 100.0,
+          "septembre_2026": 100.0,
+          "ytd_2026": 99.4465,
+          "cible": 98.0
+        }
+      },
+      {
+        "nom": "Précision des stocks",
+        "code": "Inventory Accuracy Rate",
+        "description": "Inventory accuracy from Warehouse.",
+        "formule": "Correct counted units / units on record × 100",
+        "unite": "%",
+        "valeurs": {
+          "fevrier_2026": 40.0,
+          "mars_2026": 57.1429,
+          "avril_2026": 33.3333,
+          "ytd_2026": 65.0,
+          "cible": 97.0
+        }
+      },
+      {
+        "nom": "Unités conformes inventoriées",
+        "code": "Correct Counted Units",
+        "description": "Correct counted inventory units.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 4.0,
+          "mars_2026": 4.0,
+          "avril_2026": 2.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 26.0
+        }
+      },
+      {
+        "nom": "Unités théoriques en stock",
+        "code": "Units on Record",
+        "description": "Units recorded in the inventory system.",
+        "formule": "Count",
+        "unite": "pièces",
+        "valeurs": {
+          "janvier_2026": 0.0,
+          "fevrier_2026": 10.0,
+          "mars_2026": 7.0,
+          "avril_2026": 6.0,
+          "mai_2026": 0.0,
+          "juin_2026": 0.0,
+          "juillet_2026": 0.0,
+          "aout_2026": 0.0,
+          "septembre_2026": 0.0,
+          "ytd_2026": 40.0
         }
       }
     ]

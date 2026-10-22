@@ -3088,6 +3088,59 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${headline}<div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">${comparisons}</div><div class="mt-4 rounded-xl border border-slate-200/70 bg-white p-4 text-sm leading-6 dark:border-[#1e2a4a] dark:bg-[#0d1326]"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black mb-2">État du KPI</div>${narrative.map(sentence => `<p class="mt-1">${esc(sentence)}</p>`).join('')}</div>`;
       }
 
+      const QUARTERLY_SUM_KPIS = new Set([
+        'production-volume', 'fqc-pieces', 'fqc-worked-hours', 'mo-count', 'shipped-pieces',
+        'customer-units-sold', 'customer-defective-units', 'customer-complaints', 'pnc',
+        'accidents', 'lost-time-accidents', 'lost-days', 'electricity', 'water', 'co2',
+        'tep-total', 'diesel', 'diesel-energy-equivalent', 'diesel-co2', 'worked-hours',
+        'scrap-cost', 'maintenance-cost'
+      ]);
+      const QUARTERLY_END_KPIS = new Set([
+        'inventory-correct-units', 'inventory-record-units', 'headcount-total',
+        'capex-realized', 'capex-approved', 'capex-total', 'capex-breakdown'
+      ]);
+
+      function quarterlyAggregationMode(k) {
+        if (QUARTERLY_SUM_KPIS.has(k.id)) return 'sum';
+        if (QUARTERLY_END_KPIS.has(k.id)) return 'end';
+        return 'average';
+      }
+
+      function quarterlyKpiValue(k, site, months) {
+        const values = months.map(month => getValue(k, site, month));
+        const available = values.filter(value => value !== null);
+        const mode = quarterlyAggregationMode(k);
+        let value = null;
+        if (mode === 'end') {
+          value = values[values.length - 1];
+        } else if (available.length === months.length) {
+          value = mode === 'sum'
+            ? available.reduce((total, item) => total + item, 0)
+            : available.reduce((total, item) => total + item, 0) / available.length;
+        }
+        return { value, available: available.length, total: months.length, mode };
+      }
+
+      function quarterlyMethodLabel(mode) {
+        return mode === 'sum' ? 'Somme des 3 mois' : mode === 'end' ? 'Valeur de fin de trimestre' : 'Moyenne des 3 mois';
+      }
+
+      function renderQuarterlyKpis(k, site) {
+        const quarters = [
+          { label: 'T1 2026', months: ['2026-01', '2026-02', '2026-03'], icon: 'calendar-days' },
+          { label: 'T2 2026', months: ['2026-04', '2026-05', '2026-06'], icon: 'calendar-range' },
+          { label: 'T3 2026', months: ['2026-07', '2026-08', '2026-09'], icon: 'calendar-check-2' },
+        ];
+        const cards = quarters.map((quarter, index) => {
+          const result = quarterlyKpiValue(k, site, quarter.months);
+          const complete = result.value !== null;
+          const coverage = `${result.available}/${result.total} mois disponibles`;
+          const accent = index === 2 ? 'border-[#2952ff]/40 bg-[#2952ff]/5 dark:bg-[#2952ff]/10' : 'border-slate-200/70 bg-slate-50 dark:border-[#1e2a4a] dark:bg-[#06081a]';
+          return `<div class="rounded-2xl border ${accent} p-4"><div class="flex items-start justify-between gap-3"><div><div class="text-[10px] uppercase tracking-[.16em] text-slate-500 font-black">${quarter.label}</div><div class="mt-2 text-2xl font-black ${complete ? 'text-slate-900 dark:text-white' : 'text-slate-400'}">${displayValue(result.value, k.unit)}</div></div><div class="grid h-9 w-9 place-items-center rounded-xl ${index === 2 ? 'bg-[#2952ff]/10 text-[#2952ff] dark:text-[#93b8ff]' : 'bg-white text-slate-500 dark:bg-[#0d1326] dark:text-slate-300'}"><i data-lucide="${quarter.icon}" class="h-4 w-4"></i></div></div><div class="mt-3 text-[11px] text-slate-500">${quarterlyMethodLabel(result.mode)}</div><div class="mt-2"><span class="inline-flex rounded-full border px-2 py-1 text-[9px] font-bold ${complete ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300' : 'border-amber-300/70 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200'}">${coverage}</span></div></div>`;
+        }).join('');
+        return `<section class="mt-5 rounded-2xl border border-slate-200/70 bg-white p-5 dark:border-[#1e2a4a] dark:bg-[#0d1326]"><div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><h3 class="flex items-center gap-2 font-black"><i data-lucide="calendar-range" class="h-4 w-4 text-[#4d77ff]"></i>Valeurs trimestrielles 2026</h3><p class="mt-1 text-xs text-slate-500">T1, T2 et T3 calculés uniquement à partir des mois disponibles dans la source.</p></div><div class="text-[10px] font-bold text-slate-500">${esc(site)}</div></div><div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">${cards}</div><p class="mt-3 text-[10px] leading-5 text-slate-500">Un trimestre incomplet reste N/A. Les volumes et coûts sont additionnés, les taux et délais sont moyennés, et les stocks ou effectifs utilisent la valeur de fin de trimestre.</p></section>`;
+      }
+
       function renderQualiproUserDetails(k) {
         if (k.id !== 'qualipro-completion') return '';
         const detail = window.qualipro_usage_details;
@@ -3144,7 +3197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $('#modal-title').textContent = isMetadata ? `Fiche KPI · ${k.name}` : `Analyse automatique · ${k.name}`;
         $('#modal-body').innerHTML = isMetadata
           ? `<section class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-5">${kpiMeta(k)}</section>${energyAggregationNotice(k)}`
-          : `<section class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-5"><div class="text-sm leading-7 text-slate-800 dark:text-slate-200">${autoAnalysis(k)}</div></section>`;
+          : `<section class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-5"><div class="text-sm leading-7 text-slate-800 dark:text-slate-200">${autoAnalysis(k)}</div></section>${renderQuarterlyKpis(k, site)}`;
         $('#detail-modal').showModal();
         lucide.createIcons();
       }
@@ -3155,7 +3208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = resolveSite(k), st = statusOf(k, s, state.period), v = getValue(k, s, state.period), target = getTarget(k, s, state.period);
         $('#modal-eyebrow').textContent = `${PROCESS_LIST.find(p => p.id === k.process)?.label} · ${s}`;
         $('#modal-title').textContent = k.name;
-        $('#modal-body').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'), displayValue(v, k.unit), 'activity', st, periodLabel(state.period))}${summaryCard(t('modal_target'), displayValue(target, k.unit), 'target', target === null ? 'gray' : 'green', t('modal_target_available'))}${summaryCard(t('modal_gap'), v !== null && target !== null ? signed(v - target, k.unit) : t('na_label'), 'git-compare', st, 'Reel - Target')}${summaryCard(t('modal_status'), statusLabel(st), 'badge-check', st, qualityLabel(k.quality))}</div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${periodAvailabilityBadge(k, s, state.period) ? `<div class="mt-5">${periodAvailabilityBadge(k, s, state.period)}</div>` : ''}${energyAggregationNotice(k)}${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
+        $('#modal-body').innerHTML = `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${summaryCard(t('modal_value'), displayValue(v, k.unit), 'activity', st, periodLabel(state.period))}${summaryCard(t('modal_target'), displayValue(target, k.unit), 'target', target === null ? 'gray' : 'green', t('modal_target_available'))}${summaryCard(t('modal_gap'), v !== null && target !== null ? signed(v - target, k.unit) : t('na_label'), 'git-compare', st, 'Reel - Target')}${summaryCard(t('modal_status'), statusLabel(st), 'badge-check', st, qualityLabel(k.quality))}</div>${renderQuarterlyKpis(k, s)}<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_period_compare')}</h3><div class="chart-box"><canvas id="modal-period-chart"></canvas></div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_site_compare')}</h3><div class="chart-box"><canvas id="modal-site-chart"></canvas></div></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5"><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_analysis')}</h3><div class="text-sm leading-7">${autoAnalysis(k)}</div></div><div class="rounded-2xl border border-slate-200/70 dark:border-[#1e2a4a] p-4"><h3 class="font-black mb-3">${t('modal_metadata')}</h3>${kpiMeta(k)}</div></div>${periodAvailabilityBadge(k, s, state.period) ? `<div class="mt-5">${periodAvailabilityBadge(k, s, state.period)}</div>` : ''}${energyAggregationNotice(k)}${renderQualiproUserDetails(k)}${renderAccidentRegisterDetails(k)}${renderCapexBreakdownDetails(k)}`;
         $('#detail-modal').showModal(); lucide.createIcons(); requestAnimationFrame(() => { createPeriodChart('modal-period-chart', k); createSiteChart('modal-site-chart', k); });
       }
 

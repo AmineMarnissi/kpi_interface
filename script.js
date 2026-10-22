@@ -3023,18 +3023,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
       function energyAggregationNotice(k) { if (['electricity', 'co2', 'electric-intensity'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> les valeurs « Safety + Leather » sont agrégées par un compteur commun dans le fichier QHSE ; elles ne doivent pas être interprétées comme deux mesures indépendantes.</div>'; if (k.id === 'absenteeism') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> pour MEL-T, la série mensuelle 2026 d’absentéisme est fournie par la source au périmètre personnel direct. Le taux global consolidé n’est disponible que pour septembre.</div>'; if (k.id === 'headcount-vs-budget') return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de calcul :</b> pour MEL-T, le taux correspond à l’effectif total de fin de mois rapporté au budget annuel 2026 de 178 personnes.</div>'; if (['maintenance-cost', 'maintenance-cost-hour', 'maintenance-cost-hour-overall', 'maintenance-cost-mch', 'capex-realized', 'capex-approved', 'capex-total', 'capex-consumption-rate', 'capex-breakdown'].includes(k.id)) return '<div class="mt-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200"><b>Notice de périmètre :</b> cette mesure financière est globale MEL-T dans le fichier source et n’est pas ventilée par site.</div>'; return ''; }
       function kpiMeta(k) { const sStr = typeof k.source === 'string' ? k.source : k.source?.sheet || ''; const sourceLabel = k.source ? (k.source.row != null ? `${esc(sStr)} · ligne ${k.source.row + 1}` : (sStr.includes('QHSE_KPI_') ? 'Système QHSE' : (sStr ? esc(sStr) : 'Non identifiée'))) : 'Non identifiée'; return `<dl class="space-y-3 text-sm"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Définition</dt><dd class="mt-1">${k.definition}</dd></div><div class="grid grid-cols-2 gap-3"><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Unité</dt><dd class="mt-1 font-bold">${k.unit}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Sens</dt><dd class="mt-1 font-bold">${directionLabel(k.direction)}</dd></div></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Source</dt><dd class="mt-1">${sourceLabel}</dd></div><div><dt class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Qualité de donnée</dt><dd class="mt-1">${qualityLabel(k.quality)}</dd></div></dl>`; }
-      function autoAnalysis(k) {
-        const s = resolveSite(k), v = getValue(k, s, state.period), t = getTarget(k, s, state.period), prev = getValue(k, s, '2026-05'), yoy = getValue(k, s, '2025-06');
-        if (v === null) {
-          const availability = periodAvailabilityText(k, s, state.period);
-          return `<p>La valeur de <strong>${k.name}</strong> pour ${periodLabel(state.period)} et le périmètre ${s} n’est pas renseignée dans le fichier source.</p>${availability ? `<p class="mt-3 font-bold text-amber-700 dark:text-amber-300">${esc(availability)}</p>` : ''}<p class="mt-3">Aucune valeur YTD n’est utilisée comme remplacement d’un mois manquant.</p>`;
+      function analysisComparisonCard(k, current, label, reference, mode = 'period') {
+        const referenceValue = toNumber(reference);
+        const currentValue = toNumber(current);
+        const referenceDisplay = displayValue(referenceValue, k.unit);
+        if (currentValue === null || referenceValue === null) {
+          return `<div class="rounded-xl border border-slate-200/70 bg-slate-50 p-3 dark:border-[#1e2a4a] dark:bg-[#06081a]"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">${esc(label)}</div><div class="mt-2 text-sm font-bold">Référence : ${referenceDisplay}</div><div class="mt-1 text-xs text-slate-500">Écart : N/A</div></div>`;
         }
-        let txt = `<p><strong>${k.name}</strong> atteint <strong>${displayValue(v, k.unit)}</strong> sur le périmètre <strong>${s}</strong>.`;
-        if (t !== null) { const d = v - t; txt += ` La cible est ${displayValue(t, k.unit)}, soit un écart de <strong>${signed(d, k.unit)}</strong>. Le statut calculé est <strong class="${statusText(statusOf(k, s, state.period))}">${statusLabel(statusOf(k, s, state.period))}</strong>.`; }
-        txt += '</p>';
-        if (prev !== null) txt += `<p class="mt-3">Par rapport à mai 2026, l’évolution est de <strong>${signed(v - prev, k.unit)}</strong> (${trendWord(k, v, prev)}).</p>`;
-        if (yoy !== null) txt += `<p class="mt-3">Par rapport à juin 2025, l’évolution est de <strong>${signed(v - yoy, k.unit)}</strong>.</p>`;
-        return txt;
+        const delta = currentValue - referenceValue;
+        const percentDelta = referenceValue === 0 ? null : delta / Math.abs(referenceValue) * 100;
+        let assessment = '';
+        let assessmentClass = 'text-slate-500';
+        if (mode === 'target') {
+          const status = statusOf(k, resolveSite(k), state.period);
+          assessment = statusLabel(status);
+          assessmentClass = statusText(status);
+        } else if (k.direction !== 'context') {
+          assessment = trendWord(k, currentValue, referenceValue);
+          assessmentClass = assessment === 'amélioration' ? 'text-emerald-600' : assessment === 'dégradation' ? 'text-rose-600' : 'text-slate-500';
+        }
+        return `<div class="rounded-xl border border-slate-200/70 bg-slate-50 p-3 dark:border-[#1e2a4a] dark:bg-[#06081a]"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black">${esc(label)}</div><div class="mt-2 text-sm"><span class="text-slate-500">Référence :</span> <b>${referenceDisplay}</b></div><div class="mt-1 text-sm"><span class="text-slate-500">Écart :</span> <b>${signed(delta, k.unit)}</b>${percentDelta !== null ? ` <span class="text-xs text-slate-500">(${percentDelta > 0 ? '+' : ''}${fmt.format(percentDelta)} %)</span>` : ''}</div>${assessment ? `<div class="mt-1 text-xs font-bold ${assessmentClass}">${esc(assessment)}</div>` : ''}</div>`;
+      }
+
+      function autoAnalysis(k) {
+        const site = resolveSite(k);
+        const current = getValue(k, site, state.period);
+        const target = getTarget(k, site, state.period);
+        const august2026 = getValue(k, site, '2026-08');
+        const annual2025 = getValue(k, site, '2025');
+        const september2025 = getValue(k, site, '2025-09');
+        const availability = periodAvailabilityText(k, site, state.period);
+        const headline = current === null
+          ? `<p>La valeur de <strong>${k.name}</strong> pour <strong>${periodLabel(state.period)}</strong> et le périmètre <strong>${site}</strong> n’est pas renseignée dans le fichier source.</p>${availability ? `<p class="mt-3 font-bold text-amber-700 dark:text-amber-300">${esc(availability)}</p>` : ''}<p class="mt-3 text-xs text-slate-500">Aucune valeur YTD n’est utilisée comme remplacement d’un mois manquant.</p>`
+          : `<p><strong>${k.name}</strong> atteint <strong>${displayValue(current, k.unit)}</strong> pour <strong>${periodLabel(state.period)}</strong> sur le périmètre <strong>${site}</strong>.</p>`;
+        const comparisons = [
+          analysisComparisonCard(k, current, `${periodLabel(state.period)} vs Août 2026`, august2026),
+          analysisComparisonCard(k, current, `${periodLabel(state.period)} vs Cible`, target, 'target'),
+          analysisComparisonCard(k, current, `${periodLabel(state.period)} vs Référence 2025`, annual2025),
+          analysisComparisonCard(k, current, `${periodLabel(state.period)} vs Septembre 2025`, september2025),
+        ].join('');
+
+        const describeEvolution = (reference, referenceLabel, annualReference = false) => {
+          const ref = toNumber(reference);
+          if (current === null || ref === null) return `${referenceLabel} : comparaison non disponible.`;
+          const delta = current - ref;
+          if (delta === 0) return `${referenceLabel} : le résultat est stable à ${displayValue(current, k.unit)}.`;
+          const movement = delta > 0 ? 'en hausse' : 'en baisse';
+          const evaluation = k.direction === 'context' ? 'évolution à interpréter selon le contexte' : trendWord(k, current, ref);
+          const caution = annualReference ? ' Cette comparaison avec une référence annuelle reste indicative.' : '';
+          return `${referenceLabel} : le résultat est ${movement} de ${displayValue(Math.abs(delta), k.unit)} ; cette évolution correspond à une ${evaluation}.${caution}`;
+        };
+
+        const narrative = [];
+        narrative.push(describeEvolution(august2026, 'Par rapport à août 2026'));
+        if (current === null || target === null) {
+          narrative.push('Cible : comparaison non disponible.');
+        } else {
+          const targetGap = current - target;
+          const targetStatus = statusLabel(statusOf(k, site, state.period));
+          narrative.push(`Par rapport à la cible de ${displayValue(target, k.unit)}, l’écart est de ${signed(targetGap, k.unit)}. Le KPI est classé « ${targetStatus} ».`);
+        }
+        narrative.push(describeEvolution(annual2025, 'Par rapport à la référence 2025', true));
+        narrative.push(describeEvolution(september2025, 'Par rapport à septembre 2025'));
+        return `${headline}<div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">${comparisons}</div><div class="mt-4 rounded-xl border border-slate-200/70 bg-white p-4 text-sm leading-6 dark:border-[#1e2a4a] dark:bg-[#0d1326]"><div class="text-[10px] uppercase tracking-wider text-slate-500 font-black mb-2">État du KPI</div>${narrative.map(sentence => `<p class="mt-1">${esc(sentence)}</p>`).join('')}</div>`;
       }
 
       function renderQualiproUserDetails(k) {

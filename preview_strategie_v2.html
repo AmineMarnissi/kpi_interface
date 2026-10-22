@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau PVT hiérarchique — Hoshin Kanri</title>
+<style>
+:root {
+  --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#64748b; --line:#dbe3ef;
+  --blue:#2457d6; --blue2:#eaf0ff; --green:#0f9f6e; --green2:#e8f8f1;
+  --amber:#c47b00; --amber2:#fff5d8; --violet:#7c3aed; --violet2:#f1eafe;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);padding:18px 24px;backdrop-filter:blur(8px)}
+h1{margin:0;font-size:24px}
+.subtitle{margin-top:5px;color:var(--muted);font-size:13px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+button,input{font:inherit}
+button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:700}
+button:hover{border-color:var(--blue);color:var(--blue)}
+input{min-width:290px;border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:#fff;color:var(--text)}
+main{max-width:1450px;margin:0 auto;padding:24px}
+.summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.stat strong{display:block;font-size:24px;color:var(--blue)}
+.stat span{font-size:12px;color:var(--muted)}
+.tree{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.node{border-bottom:1px solid var(--line)}
+.node:last-child{border-bottom:none}
+.row{display:grid;grid-template-columns:40px minmax(0,1fr) 95px;align-items:center;min-height:46px;padding:5px 12px}
+.row:hover{background:#f8fafc}
+.toggle{width:27px;height:27px;padding:0;border-radius:6px;font-size:18px;line-height:1}
+.label{font-size:14px;line-height:1.35}
+.count{justify-self:end;font-size:12px;color:var(--muted);background:#f1f5f9;padding:5px 8px;border-radius:999px}
+.children{display:none}
+.node.open>.children{display:block}
+.level-axis>.row{background:#eaf0ff;font-weight:800;border-left:5px solid var(--blue)}
+.level-objective>.row{background:#f8fbff;font-weight:700;padding-left:36px}
+.level-initiative>.row{background:#fffaf0;font-weight:700;padding-left:68px;border-left:4px solid #f59e0b}
+.level-actor>.row{background:#fafafa;padding-left:100px;border-left:4px solid var(--violet)}
+.level-kpi>.row{padding-left:132px;background:#fff}
+.level-kpi .label{color:#075985}
+.level-kpi .toggle{visibility:hidden}
+.actor-badge{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:var(--violet2);color:var(--violet);font-size:11px;font-weight:700}
+.kpi-badge{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:var(--green2);color:var(--green);font-size:11px;font-weight:700}
+.hidden-search{display:none!important}
+.note{margin:0 0 16px;padding:12px 14px;border:1px solid #b9d4ff;background:#eef5ff;border-radius:10px;font-size:13px;color:#24436b}
+@media(max-width:800px){
+  .summary{grid-template-columns:repeat(2,1fr)}
+  input{min-width:100%;width:100%}
+  .row{grid-template-columns:36px minmax(0,1fr) 70px}
+  .level-objective>.row{padding-left:18px}
+  .level-initiative>.row{padding-left:34px}
+  .level-actor>.row{padding-left:50px}
+  .level-kpi>.row{padding-left:66px}
+}
+@media print{
+  header{position:static}
+  .toolbar{display:none}
+  .children{display:block!important}
+  main{max-width:none;padding:0}
+  .tree{border:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Tableau PVT hiérarchique</h1>
+  <div class="subtitle">Axe stratégique → Objectif annuel → Initiative → Acteurs → KPI</div>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Rechercher un axe, objectif, initiative, acteur ou KPI…">
+    <button onclick="openAll()">Tout ouvrir</button>
+    <button onclick="closeAll()">Tout fermer</button>
+    <button onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+<main>
+  <p class="note"><strong>Correction :</strong> chaque initiative affiche maintenant tous ses acteurs présents dans la feuille PVT. Par exemple, sous I1 de S1, Imre Kapusi, Mohamed Sniha, Zouhour Fathallah et Mohamed Sniha (Par interim) sont tous affichés avec leur KPI respectif.</p>
+  <section class="summary" id="summary"></section>
+  <section class="tree" id="tree"></section>
+</main>
+<script>
+const DATA = {"S1 - Innovation et nouveaux produits": {"count": 41, "objectives": {"A1 - Développer de nouveaux produits": {"count": 4, "initiatives": {"I1 - Lancer ≥ 5 nouveaux produits (SMART GO, DEMON, LEGGENDA, SUPER SPEED 5, DUPLO)": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S4 - Performance de service & Satisfaction client": {"count": 42, "objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"count": 5, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"count": 1, "actors": {"Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}}}, "S5 - Organisation, Culture & Développement des personnes": {"count": 54, "objectives": {"A2 - Construire une main-d'œuvre masculine stable formée à la couture": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A3 - Réduire la dépendance aux couturières expertes (Skill Scarcity)": {"count": 15, "initiatives": {"I2 - Académie interne de couture (compétences de base)": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I3 - Réduction de la complexité des opérations de couture": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I4 - Équilibrage des lignes selon les compétences disponibles": {"count": 5, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K4 - % d'opérateurs polyvalents (>60 %), Skill Coverage", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A8 - Finaliser la structure organisationnelle et clarifier les rôles": {"count": 4, "initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K7 - ETCR, Temps moyen de formation (<3 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A10 - Mettre en œuvre un plan structuré de formation et de développement des compétences": {"count": 4, "initiatives": {"I7 - Plan structuré de formation et de développement des compétences": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K9 - FR, SR, NALT, LD", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"count": 5, "initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K9 - FR, SR, NALT, LD", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S2 - Excellence opérationnelle & Lean / Réduction des coûts": {"count": 28, "objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A6 - Étendre le Lean Thinking à tous les départements": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A7 - Atteindre un taux de livraison à temps (OTIF > 98 %) et améliorer le niveau de service": {"count": 5, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I9 - Optimisation de la planification, des flux et de la logistique": {"count": 1, "actors": {"Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"count": 5, "initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"count": 3, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}, "S3 - Qualité, Sécurité, Développement durable": {"count": 21, "objectives": {"A4 - Réduire les coûts opérationnels et de maintenance de 10 à 15 %": {"count": 7, "initiatives": {"I5 - Programme Lean Manufacturing & Kaizen": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A9 - Intégrer les audits dans les plans d'amélioration": {"count": 4, "initiatives": {"I6 - Système intégré d'audits": {"count": 3, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A11 - Améliorer la sécurité, le bien-être et l'engagement des collaborateurs": {"count": 5, "initiatives": {"I8 - Programme Sécurité, Bien-être et Engagement": {"count": 4, "actors": {"Imre Kapusi": {"count": 1, "kpis": [{"label": "K3 - OEE, Productivité, Throughput", "count": 1}]}, "Sabrine Neffeti": {"count": 1, "kpis": [{"label": "K8 - eNPS, UAR (Absentéisme), OTR (Turnover)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K5 - DHU, % audits clôturés à temps", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I10 - Energy Kaizen / Green Manufacturing": {"count": 1, "actors": {"Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}, "A5 - Réduire les coûts des bâtiments et des utilités de 5 à 10 %": {"count": 5, "initiatives": {"I11 - Rationalisation des espaces et réduction des bâtiments": {"count": 3, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}, "Mohamed Sniha (Par interim)": {"count": 1, "kpis": [{"label": "K6 - OTIF, Lead Time, Service Level, Stabilité du planning", "count": 1}]}}}, "I12 - Réduction des coûts fixes (Overhead Optimization)": {"count": 2, "actors": {"Mohamed Sniha": {"count": 1, "kpis": [{"label": "K1 - MCH (Maintenance Cost per Hour), BCR (Budget Compliance Rate), % du CA provenant des nouveaux produits (<24 mois)", "count": 1}]}, "Zouhour Fathallah": {"count": 1, "kpis": [{"label": "K2 - EC, IE, CO₂, WC", "count": 1}]}}}}}}}};
+
+function collectStats() {
+  const axes = [];
+  const objectives = [];
+  const initiatives = [];
+  const actorRelations = [];
+  const kpiRelations = [];
+
+  Object.entries(DATA).forEach(([axisLabel, axis]) => {
+    axes.push({ label: axisLabel, count: axis.count });
+
+    Object.entries(axis.objectives).forEach(([objectiveLabel, objective]) => {
+      objectives.push({
+        label: objectiveLabel,
+        axis: axisLabel,
+        count: objective.count
+      });
+
+      Object.entries(objective.initiatives).forEach(([initiativeLabel, initiative]) => {
+        initiatives.push({
+          label: initiativeLabel,
+          axis: axisLabel,
+          objective: objectiveLabel,
+          count: initiative.count
+        });
+
+        Object.entries(initiative.actors).forEach(([actorLabel, actor]) => {
+          actorRelations.push({
+            actor: actorLabel,
+            axis: axisLabel,
+            objective: objectiveLabel,
+            initiative: initiativeLabel,
+            count: actor.count
+          });
+
+          actor.kpis.forEach(kpi => {
+            kpiRelations.push({
+              kpi: kpi.label,
+              actor: actorLabel,
+              axis: axisLabel,
+              objective: objectiveLabel,
+              initiative: initiativeLabel,
+              count: kpi.count
+            });
+          });
+        });
+      });
+    });
+  });
+
+  return { axes, objectives, initiatives, actorRelations, kpiRelations };
+}
+
+function totals() {
+  const s = collectStats();
+  return {
+    axes: s.axes.length,
+    objectives: s.objectives.length,
+    initiatives: s.initiatives.length,
+    actors: s.actorRelations.length,
+    kpis: s.kpiRelations.length
+  };
+}
+
+function node(level,label,count,childrenHtml='') {
+  const hasChildren = !!childrenHtml;
+  return `<div class="node level-${level}" data-text="${escapeAttr(label.toLowerCase())}">
+    <div class="row">
+      <button class="toggle" ${hasChildren ? '' : 'disabled'} onclick="toggleNode(this)">${hasChildren ? '+' : ''}</button>
+      <div class="label">${escapeHtml(label)}${level==='actor' ? '<span class="actor-badge">Acteur</span>' : ''}${level==='kpi' ? '<span class="kpi-badge">KPI</span>' : ''}</div>
+      <div class="count">${count ?? ''}</div>
+    </div>
+    ${hasChildren ? `<div class="children">${childrenHtml}</div>` : ''}
+  </div>`;
+}
+
+function buildTree() {
+  let out='';
+  Object.entries(DATA).forEach(([axis,a])=>{
+    let objectives='';
+    Object.entries(a.objectives).forEach(([obj,o])=>{
+      let initiatives='';
+      Object.entries(o.initiatives).forEach(([init,i])=>{
+        let actors='';
+        Object.entries(i.actors).forEach(([actor,ac])=>{
+          const kpis = ac.kpis.map(k=>node('kpi',k.label,k.count)).join('');
+          actors += node('actor',actor,ac.count,kpis);
+        });
+        initiatives += node('initiative',init,i.count,actors);
+      });
+      objectives += node('objective',obj,o.count,initiatives);
+    });
+    out += node('axis',axis,a.count,objectives);
+  });
+  document.getElementById('tree').innerHTML = out;
+}
+
+function toggleNode(btn) {
+  const n=btn.closest('.node');
+  n.classList.toggle('open');
+  btn.textContent=n.classList.contains('open')?'−':'+';
+}
+function openAll() {
+  document.querySelectorAll('.node:has(.children)').forEach(n=>n.classList.add('open'));
+  document.querySelectorAll('.toggle:not(:disabled)').forEach(b=>b.textContent='−');
+}
+function closeAll() {
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('open'));
+  document.querySelectorAll('.toggle:not(:disabled)').forEach(b=>b.textContent='+');
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function escapeAttr(s) { return escapeHtml(s); }
+
+function applySearch(q) {
+  q=q.trim().toLowerCase();
+  const nodes=[...document.querySelectorAll('.node')];
+  if(!q) {
+    nodes.forEach(n=>n.classList.remove('hidden-search'));
+    return;
+  }
+  nodes.forEach(n=>n.classList.add('hidden-search'));
+  nodes.forEach(n=>{
+    if((n.dataset.text||'').includes(q)) {
+      n.classList.remove('hidden-search');
+      let p=n.parentElement?.closest('.node');
+      while(p) {
+        p.classList.remove('hidden-search');
+        p.classList.add('open');
+        const b=p.querySelector(':scope > .row > .toggle');
+        if(b) b.textContent='−';
+        p=p.parentElement?.closest('.node');
+      }
+      n.querySelectorAll('.node').forEach(c=>c.classList.remove('hidden-search'));
+    }
+  });
+}
+
+const t=totals();
+const summaryCards = [
+  { key:'axes', label:'Axes stratégiques', value:t.axes },
+  { key:'objectives', label:'Objectifs annuels', value:t.objectives },
+  { key:'initiatives', label:'Initiatives', value:t.initiatives },
+  { key:'actorRelations', label:'Relations acteurs', value:t.actors },
+  { key:'kpiRelations', label:'Relations KPI', value:t.kpis }
+];
+document.getElementById('summary').innerHTML = summaryCards.map(c =>
+  `<button type="button" class="stat" onclick="openStatsModal('${c.key}')">
+    <strong>${c.value}</strong>
+    <span>${c.label}</span>
+    <small>Voir le contenu →</small>
+  </button>`
+).join('');
+
+
+const statsCache = collectStats();
+
+function escapePath(value) {
+  return escapeHtml(value ?? '');
+}
+
+function renderDetailItem(title, metaHtml='') {
+  return `<div class="detail-item"><strong>${escapeHtml(title)}</strong>${metaHtml ? `<span>${metaHtml}</span>` : ''}</div>`;
+}
+
+function openStatsModal(type) {
+  const modal = document.getElementById('stats-modal');
+  const title = document.getElementById('stats-modal-title');
+  const subtitle = document.getElementById('stats-modal-subtitle');
+  const content = document.getElementById('stats-modal-content');
+  const search = document.getElementById('modal-search');
+
+  let items = [];
+  let label = '';
+
+  if (type === 'axes') {
+    label = 'Axes stratégiques';
+    items = statsCache.axes.map(x => ({
+      search: x.label,
+      html: renderDetailItem(x.label, `Nombre agrégé de KPI : ${escapePath(x.count ?? '')}`)
+    }));
+  } else if (type === 'objectives') {
+    label = 'Objectifs annuels';
+    items = statsCache.objectives.map(x => ({
+      search: `${x.label} ${x.axis}`,
+      html: renderDetailItem(x.label,
+        `<div class="path-grid"><b>Axe</b><div>${escapePath(x.axis)}</div><b>Nombre</b><div>${escapePath(x.count ?? '')}</div></div>`)
+    }));
+  } else if (type === 'initiatives') {
+    label = 'Initiatives';
+    items = statsCache.initiatives.map(x => ({
+      search: `${x.label} ${x.axis} ${x.objective}`,
+      html: renderDetailItem(x.label,
+        `<div class="path-grid"><b>Axe</b><div>${escapePath(x.axis)}</div><b>Objectif</b><div>${escapePath(x.objective)}</div><b>Nombre</b><div>${escapePath(x.count ?? '')}</div></div>`)
+    }));
+  } else if (type === 'actorRelations') {
+    label = 'Relations acteurs';
+    items = statsCache.actorRelations.map(x => ({
+      search: `${x.actor} ${x.axis} ${x.objective} ${x.initiative}`,
+      html: renderDetailItem(x.actor,
+        `<div class="path-grid"><b>Axe</b><div>${escapePath(x.axis)}</div><b>Objectif</b><div>${escapePath(x.objective)}</div><b>Initiative</b><div>${escapePath(x.initiative)}</div></div>`)
+    }));
+  } else {
+    label = 'Relations KPI';
+    items = statsCache.kpiRelations.map(x => ({
+      search: `${x.kpi} ${x.actor} ${x.axis} ${x.objective} ${x.initiative}`,
+      html: renderDetailItem(x.kpi,
+        `<div class="path-grid"><b>Acteur</b><div>${escapePath(x.actor)}</div><b>Initiative</b><div>${escapePath(x.initiative)}</div><b>Objectif</b><div>${escapePath(x.objective)}</div><b>Axe</b><div>${escapePath(x.axis)}</div></div>`)
+    }));
+  }
+
+  title.textContent = `${items.length} — ${label}`;
+  subtitle.textContent =
+    type === 'actorRelations'
+      ? 'Une relation acteur correspond à un acteur rattaché à une initiative dans un chemin Axe → Objectif → Initiative.'
+      : type === 'kpiRelations'
+      ? 'Une relation KPI correspond à un KPI rattaché à un acteur dans un chemin complet Axe → Objectif → Initiative → Acteur → KPI.'
+      : `Liste des ${label.toLowerCase()} présents dans la hiérarchie PVT.`;
+
+  function draw(filter='') {
+    const q = filter.trim().toLowerCase();
+    const filtered = q ? items.filter(i => i.search.toLowerCase().includes(q)) : items;
+    content.innerHTML = `<div class="detail-list">${filtered.map(i => i.html).join('')}</div>`;
+  }
+
+  search.value = '';
+  search.oninput = e => draw(e.target.value);
+  draw();
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => search.focus(), 0);
+}
+
+function closeStatsModal() {
+  document.getElementById('stats-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeStatsModal();
+});
+
+
+buildTree();
+document.getElementById('search').addEventListener('input',e=>applySearch(e.target.value));
+</script>
+
+<div id="stats-modal" class="modal-backdrop" onclick="if(event.target===this) closeStatsModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title">
+    <div class="modal-head">
+      <div>
+        <h2 id="stats-modal-title">Détail</h2>
+        <p id="stats-modal-subtitle"></p>
+      </div>
+      <button class="modal-close" onclick="closeStatsModal()" aria-label="Fermer">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tools">
+        <input id="modal-search" class="modal-search" type="search" placeholder="Filtrer le contenu affiché…">
+      </div>
+      <div id="stats-modal-content"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
